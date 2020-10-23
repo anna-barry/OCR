@@ -73,6 +73,8 @@ Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
 
         sizeMat.matrix[i*sizeMat.width+j] = 0;
       }
+    }
+  }
 }
 
 
@@ -128,7 +130,7 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
     for (int i = 0; i < sizeMat.height; i++) {
       for (size_t j = 0; j < sizeMat.width; j++) {
-        
+
         resized.matrix[i*resized.width+j] = sizeMat.matrix[i*sizeMat.width+j];
       }
     }
