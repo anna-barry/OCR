@@ -2,8 +2,9 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "pixel_operations.h"
+#include "../Tools/matrix.h"
 
-// by marie maturana
+// by marie maturana and geoffroy du mesnil du buisson
 
 
 void init_sdl()
@@ -77,7 +78,7 @@ float compteOtsuseuil(float hist[],int width, int height )
   int nombrep = width * height;
   int t = 0;
 
-   float w1 = 0; 
+   float w1 = 0;
    float w2 = 0;
     int q1 = 0;
     int q2 = 0;
@@ -108,22 +109,49 @@ float compteOtsuseuil(float hist[],int width, int height )
 
       }
 
-    return t; 
+    return t;
 }
 
+int MatrixToImg_NB(Matrix M, char *str)
+{
+  SDL_Surface* image_surface;
 
+  Uint32 pixel;
+
+  init_sdl();
+
+  image_surface = SDL_CreateRGBSurface(0, M.width, M.height, 32, 0, 0, 0, 0);
+
+  for (int i=0; i<M.height; i++)
+  {
+    for (int j=0; j<M.width; j++)
+    {
+      if (M.matrix[i*M.width+j]==1)
+        pixel = SDL_MapRGB(image_surface->format, 0, 0, 0);
+      else
+        pixel = SDL_MapRGB(image_surface->format, 255, 255, 255);
+      put_pixel(image_surface, i, j, pixel);
+
+    }
+  }
+  SDL_SaveBMP(image_surface, str);
+
+  SDL_FreeSurface(image_surface);
+
+  return 0;
+}
 
 int main()
 {
     SDL_Surface* image_surface;
     SDL_Surface* screen_surface = NULL;
 
-    init_sdl(); 
+    init_sdl();
 
-    image_surface = load_image("minion.jpg");
+    image_surface = load_image("loremipsum.jpg");
 
     screen_surface = display_image(image_surface);
-    
+
     wait_for_keypressed();
 
     int width = image_surface->w;
@@ -183,7 +211,7 @@ int main()
 	       {
 		   Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
 		   put_pixel(image_surface,x,y,pixel1);
-		    dernierhisto[x][y] = 1; 
+		    dernierhisto[x][y] = 1;
 	       }
 	   }
 
@@ -191,12 +219,12 @@ int main()
 
     update_surface(screen_surface, image_surface);
 
-     
+
 
 
     wait_for_keypressed();
-    
-    SDL_FreeSurface(image_surface);    
+
+    SDL_FreeSurface(image_surface);
 
     SDL_FreeSurface(screen_surface);
 
