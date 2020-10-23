@@ -68,3 +68,17 @@ void freeMatrix(Matrix M){
     M.width = 0;
     M.height = 0;
 }
+
+Matrix cutMatrix(Matrix M, int x ,int xlen,int height)
+{
+    Matrix cutted= new_Matrix(xlen,height);
+    for (int xi=0; xi<xlen; x++)
+    {
+        for (int yi=0; yi<height; y++)
+        {
+            cutted[xi*xlen+yi]=M[(x+xi)*xlen+(yi+y)];
+        }
+    }
+    return cutted;
+}
+
