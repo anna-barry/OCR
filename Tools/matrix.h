@@ -1,6 +1,9 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <stdlib.h>
+#include <SDL.h>
+
 typedef struct Matrix{
   int width;
   int height;

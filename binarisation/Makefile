@@ -7,17 +7,15 @@ CFLAGS= -Wall -Wextra -Werror -std=c99 -O3
 LDFLAGS=
 LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
-all: display binarisation
+all: binarisation
 
-display: display.o
-binarisation: pixel_operations.o binarisation.o
+binarisation: pixel_operations.o binarisation.o matrix.o
 
-binarisation.o: pixel_operations.h
+binarisation/.o: pixel_operations.h matrix.h
 
 clean:
 	${RM} *.o
 	${RM} *.d
-	${RM} display
 	${RM} binarisation
 
 # END

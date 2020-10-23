@@ -112,31 +112,100 @@ float compteOtsuseuil(float hist[],int width, int height )
     return t;
 }
 
-int MatrixToImg_NB(Matrix M, char *str)
-{
-  SDL_Surface* image_surface;
+Matrix imgToMat(SDL_Surface* img){//geoffroy
+  int width = img->w;
+
+  int height = img->h;
+
+  Uint8 r,v,b;
+
+  for (int x = 0; x < width; x++){
+       for (int y = 0; y < height; y++){
+
+         Uint32 pixel = get_pixel(img, x, y);
+
+         SDL_GetRGB(pixel, img->format, &r, &v, &b);
+
+         Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
+
+         Uint32 pixel1 = SDL_MapRGB(img->format, valeur_pixel, valeur_pixel, valeur_pixel);
+
+         put_pixel(img,x,y,pixel1);
+       }
+  }
+
+  float histo[256];
+
+  for (int x = 0; x < width; x++){
+    for (int y = 0; y < height; y++){
+
+      Uint32 pixel = get_pixel(img, x, y);
+      SDL_GetRGB(pixel, img->format, &r, &v, &b);
+
+      histo[r]+=1;
+    }
+  }
+
+  float seuil = compteOtsuseuil(histo, width, height );
+
+  Matrix derhistoMat = new_Matrix(height, width);//int dernierhisto[width][height];
+
+  for (int i = 0; i < derhistoMat.width; i++){
+       for (int j = 0; j < derhistoMat.height; j++){
+
+         Uint32 pixel = get_pixel(img, i, j);
+         SDL_GetRGB(pixel, img->format, &r, &v,&b);
+
+         if( r <= (int)seuil ){
+
+           Uint32 pixel1 = SDL_MapRGB(img->format, 255, 255, 255);
+           put_pixel(img,i,j,pixel1);
+
+           derhistoMat.matrix[i*derhistoMat.width+j] = 0; //dernierhisto[i][j] = 0;
+
+         }
+         else{
+
+           Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
+           put_pixel(img,i,j,pixel1);
+
+           derhistoMat.matrix[i*derhistoMat.width+j] = 1; //dernierhisto[i][j] = 1;
+         }
+      }
+  }
+  return derhistoMat;//retourne ta matrice derhistoMat
+
+  SDL_FreeSurface(img);
+}
+
+int matToImg(Matrix M, char *str){//geoffroy
+  SDL_Surface* img;
 
   Uint32 pixel;
 
   init_sdl();
 
-  image_surface = SDL_CreateRGBSurface(0, M.width, M.height, 32, 0, 0, 0, 0);
+  img = SDL_CreateRGBSurface(0, M.width, M.height, 32, 0, 0, 0, 0);
 
-  for (int i=0; i<M.height; i++)
-  {
-    for (int j=0; j<M.width; j++)
-    {
-      if (M.matrix[i*M.width+j]==1)
-        pixel = SDL_MapRGB(image_surface->format, 0, 0, 0);
-      else
-        pixel = SDL_MapRGB(image_surface->format, 255, 255, 255);
-      put_pixel(image_surface, i, j, pixel);
+  for (int i=0; i<M.height; i++){
+    for (int j=0; j<M.width; j++){
 
+      if (M.matrix[i*M.width+j]==1){
+
+        pixel = SDL_MapRGB(img->format, 0, 0, 0);
+      }
+      else{
+
+        pixel = SDL_MapRGB(img->format, 255, 255, 255);
+      }
+
+      put_pixel(img, i, j, pixel);
     }
   }
-  SDL_SaveBMP(image_surface, str);
 
-  SDL_FreeSurface(image_surface);
+  SDL_SaveBMP(img, str);
+
+  SDL_FreeSurface(img);
 
   return 0;
 }
@@ -160,67 +229,66 @@ int main()
 
     Uint8 r,v,b;
 
-    for (int x = 0; x < width; x++)
-        {
-         for (int y = 0; y < height; y++)
-         {
-	      Uint32 pixel = get_pixel(image_surface, x, y);
-	      SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
-	      Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
-	      Uint32 pixel1 = SDL_MapRGB(image_surface->format, valeur_pixel, valeur_pixel, valeur_pixel);
-	      put_pixel(image_surface,x,y,pixel1);
-	 }
+    for (int x = 0; x < width; x++){
+         for (int y = 0; y < height; y++){
 
-	}
+	         Uint32 pixel = get_pixel(image_surface, x, y);
+
+	         SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
+
+	         Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
+
+	         Uint32 pixel1 = SDL_MapRGB(image_surface->format, valeur_pixel, valeur_pixel, valeur_pixel);
+
+	         put_pixel(image_surface,x,y,pixel1);
+	       }
+	  }
 
     update_surface(screen_surface,image_surface);
 
     float histo[256];
 
-    for (int x = 0; x < width; x++)
-      {
-	for (int y = 0; y < height; y++)
-	  {
-	    Uint32 pixel = get_pixel(image_surface, x, y);
-	    SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
-	    histo[r]+=1;
-	  }
-      }
+    for (int x = 0; x < width; x++){
+	    for (int y = 0; y < height; y++){
 
+	      Uint32 pixel = get_pixel(image_surface, x, y);
+	      SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
 
+	      histo[r]+=1;
+	    }
+    }
 
     float seuil = compteOtsuseuil(histo, width, height );
-    int dernierhisto[width][height];
+
+    Matrix derhistoMat = new_Matrix(height, width);//int dernierhisto[width][height];
 
     wait_for_keypressed();
 
-    for (int x = 0; x < width; x++)
-       {
-         for (int y = 0; y < height; y++)
-	   {
-	     Uint32 pixel = get_pixel(image_surface, x, y);
-	     SDL_GetRGB(pixel, image_surface->format, &r, &v,&b);
+    for (int i = 0; i < derhistoMat.width; i++){
+         for (int j = 0; j < derhistoMat.height; j++){
 
-	     if( r <= (int)seuil )
-	       {
-		 Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
-		 put_pixel(image_surface,x,y,pixel1);
-	         dernierhisto[x][y] = 0;
-	       }
-	     else
-	       {
-		   Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
-		   put_pixel(image_surface,x,y,pixel1);
-		    dernierhisto[x][y] = 1;
-	       }
-	   }
+	         Uint32 pixel = get_pixel(image_surface, i, j);
+	         SDL_GetRGB(pixel, image_surface->format, &r, &v,&b);
 
-       }
+	         if( r <= (int)seuil ){
+
+		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
+		         put_pixel(image_surface,i,j,pixel1);
+
+             derhistoMat.matrix[i*derhistoMat.width+j] = 0; //dernierhisto[i][j] = 0;
+
+	         }
+	         else{
+
+		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
+		         put_pixel(image_surface,i,j,pixel1);
+
+		         derhistoMat.matrix[i*derhistoMat.width+j] = 1; //dernierhisto[i][j] = 1;
+	         }
+	      }
+    }
 
     update_surface(screen_surface, image_surface);
-
-
-
 
     wait_for_keypressed();
 

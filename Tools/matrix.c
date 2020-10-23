@@ -17,7 +17,7 @@ Matrix new_Matrix(int H, int W){
 Matrix andLogicMartix(Matrix m1,Matrix m2){
   Matrix m3 = new_Matrix(m1.height, m1.with);
   for (int i = 0 ; i < m1.height ; i++){
-      for (int j = 0 ; j < M.width ; j++){
+      for (int j = 0 ; j < m1.width ; j++){
               m3.matrix[i*m3.width+j]=m1.matrix[i*m1.width+j]*m2.matrix[i*m2.width+j];
       }
   }
