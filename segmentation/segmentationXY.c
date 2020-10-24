@@ -372,7 +372,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int li
                 {
                 tocut=cutMatrix(M,0,ybeg,width,y-ybeg);
                 og2=cutMatrix(og,0,ybeg,width,y-ybeg);
-                *verticalcut(T,tocut,og2,1,vertical,0);
+                verticalcut(T,tocut,og2,1,vertical,0);
                 y=lenght;
                 }
                 if (line==1)
@@ -468,7 +468,7 @@ void verticalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical, int lin
                 }
                 tocut=cutMatrix(M,x,0,x-xbeg,lenght);
                 og2=cutMatrix(og,x,0,x-xbeg,lenght);
-                verticalcut(T,tocut,horizontal,vertical,line);
+                verticalcut(T,tocut,og2,horizontal,vertical,line);
                 x=width;
             }
             else if( started==0 && y<lenght && M.matrix[y*lenght+x]==1)
