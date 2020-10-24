@@ -4,7 +4,21 @@
 #include <stdio.h>
 
 Matrix newMatrix(int H, int W){
+/*
+description :
 
+initialization of a new matrix
+
+parameters :
+
+int H : the height of the matrix
+int W : the width of the matrix
+
+dates/authors :
+12/10
+geoffroy du mesnil du buisson
+
+*/
   Matrix M;
 
   M.height = H;
@@ -20,7 +34,23 @@ Matrix newMatrix(int H, int W){
 }
 
 Matrix andLogicMartix(Matrix m1,Matrix m2){
+  /*
+  description :
 
+  multiplie each value of a matrix full of 1 and 0 by an
+  other matrix full of 1 and 0 for the same index and
+  return the result in a new matrix of the same size
+
+  parameters :
+
+  Matrix m1 : the first matrix full of 1 and 0
+  Matrix m2 : the second full of 1 and 0
+
+  dates/authors :
+  14/10
+  geoffroy du mesnil du buisson
+
+  */
   Matrix m3;
 
   m3.height = m1.height;
@@ -37,7 +67,20 @@ Matrix andLogicMartix(Matrix m1,Matrix m2){
 }
 
 Matrix copyMatrix(Matrix M){
+  /*
+  description :
 
+  create a copy of a matrix to not madifiying directly a matrix
+
+  parameters :
+
+  Matrix M : the matrix to copy
+
+  dates/authors :
+  14/10
+  geoffroy du mesnil du buisson
+
+  */
     Matrix mcopy;
 
     mcopy.height = M.height;
@@ -53,15 +96,40 @@ Matrix copyMatrix(Matrix M){
 
 
 void freeMatrix(Matrix M){
-    free(M.matrix);
-    M.width = 0;
-    M.height = 0;
+  /*
+  description :
+  unallocate the memory that have been allocate for a matrix
+
+  parameters :
+  Matrix M : the matrix that we want to supress because we
+  dont need it anymore
+
+  dates/authors :
+  12/10
+  geoffroy du mesnil du buisson
+
+  */
+  free(M.matrix);
+  M.width = 0;
+  M.height = 0;
 }
 
 
 // Return the cuted matrix (part of the original matrix)
 Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the cuted matrix (part of the original matrix)
 {
+  /*
+  description :
+  //TODO
+
+  parameters :
+  //TODO
+
+  dates/authors :
+  23/10
+  marine thunet
+
+  */
         Matrix cut;
         cut.height = height;
         cut.width = width;
@@ -75,4 +143,3 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
 
         return cut;
 }
-

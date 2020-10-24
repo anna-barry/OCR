@@ -6,17 +6,15 @@
 
 Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   /*
-  description genral :
-  general description :
+   * General description:
+    Function that takes a matrix and returns a new one with the right size while keeping all its content 
+    --> zooms in the matrix
 
-  Fonction qui prend une matrice et la retourne en etant à la bonne taille tout en gardant le contenu (fonction qui zoom)
-
-
-  Les parametres :
-
-  Matrix M : Matrice sur la quelle nous allons appliquer le zoom
-
-  Les dates de modifications :
+Parameters:
+_ Matrix M: Matrix which we'll zoom
+_ int top: the top of the matrix
+_ int bot: bottom of the matrix 
+_ int size: size of the matrix 
 
   */
 
@@ -24,10 +22,11 @@ Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   double x, y, x1, y1, x2, y2, x3, y3;
   double delta1, delta2, delta3, delta4;
   double voisin11, voisin22, voisin21,voisin12;
+  double somme;
 
-  M = cutMatrix(M, top, 0, bot-top+1, M.width);	// coupe la matrice pour ne garder que le char
+  M = cutMatrix(M, top, 0, bot-top+1, M.width);	// cuts said matrix to fit rightly -> cut on the edges
 
-  if (M.height > M.width){ // produit en croix pour que la nouvelle matrice soit proportinel à l'ancienne
+  if (M.height > M.width){ // checking if the new Matrix is proportional compared to the old one
 
     newSizeH = size;
     newSizeW = (int) (M.width * newSizeH/(double)M.height);
@@ -38,21 +37,25 @@ Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
     newSizeH = (int) (M.height * newSizeW/(double)M.width);
   }
 
-  Matrix sizeMat = newMatrix(newSizeH, newSizeW);	//nouvelle matrice de la bonne taille (size)
+  Matrix sizeMat = newMatrix(newSizeH, newSizeW);	//new matrix of the same size
 
+  // Bilinear Interpolation 
+  // For each of its 4 pixel neighbours calculate the sum of product of their differences 
   for (int i = 0 ; i < sizeMat.height ; i++){
-    for (int j = 0 ; j < sizeMat.width ; j++){ //algorithme d'interpolation bilinéaire qui pour les quatres voisins d'un point retourne la somme du produit de leurs difference
+    for (int j = 0 ; j < sizeMat.width ; j++){
 
       x = j * M.width/sizeMat.width;
       y = i * M.height/sizeMat.height;
 
-      x1 = myintpart(x); //retourne la partie entiere pour avoir le voisin entier inferieur
+      // Returns integer part to get the smallest neighbour
+
+      x1 = myintpart(x);
       y1 = myintpart(y);
 
-      x3 = x1+1; //ajoute 1 pour avoir le voisin entier superieur
+      x3 = x1+1; //+ 1 to get the superior neighbour
       y3 = y1+1;
 
-      if (x1 == M.width-1){ // determination de quel est le bon voisin
+      if (x1 == M.width-1){ // getting the right neighbour
         x2 = M.width-1;
       }
       else{
@@ -66,19 +69,24 @@ Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
         y2 = y3;
       }
 
-      delta1 = myabs((x3-x)*(y3-y)); //retourne la valeur absolue du produit des diference
+      // Returns absolute number of these differences
+      delta1 = myabs((x3-x)*(y3-y));
       delta2 = myabs((x3-x)*(y-y1));
       delta3 = myabs((x-x1)*(y3-y));
       delta4 = myabs((x-x1)*(y-y1));
 
-      voisin11 = M.matrix[(int) (y1*M.width+x1)] * delta1; //multiplie delta par la valeur à lemplacement voisin
+      // Multiply delta x value of the neighbour
+      voisin11 = M.matrix[(int) (y1*M.width+x1)] * delta1;
       voisin12 = M.matrix[(int) (y1*M.width+x2)] * delta2;
       voisin21 = M.matrix[(int) (y2*M.width+x1)] * delta3;
       voisin22 = M.matrix[(int) (y2*M.width+x2)] * delta4;
 
-      somme = voisin11 + voisin22 + voisin21 + voisin12; //somme des voisins
+      // Sum of neighbours
+      somme = voisin11 + voisin22 + voisin21 + voisin12;
 
-      if(somme > 0.5){//si la somme des voisins est superieur à 0.5 alors la valeur dans la nouvelle matrice est passé à 1 sinon 0
+      //if sum>0,5 then value in new matrix is 1, else 0
+
+      if(somme > 0.5){
 
         sizeMat.matrix[i*sizeMat.width+j] = 1;
       }
@@ -113,15 +121,15 @@ int *getCornerMatrix(Matrix M){
   int topindex =-1;//intitalisation de boolean indiquant si les angles on etait trouvé
   int botindex =-1;
 
-  for (int i = 0; (topindex == -1 || botindex_i == -1) && i < M.height; i++) { // les boucles tournent tant que les deux index ne sont
-    for (size_t j = 0; (topindex == -1 || botindex_i == -1) && j < M.width; j++) {//pas trouvé ou que la matrice n'as pas encore etait parcourus entierment
+  for (int i = 0; (topindex == -1 || botindex == -1) && i < M.height; i++) { // les boucles tournent tant que les deux index ne sont
+    for (size_t j = 0; (topindex == -1 || botindex == -1) && j < M.width; j++) {//pas trouvé ou que la matrice n'as pas encore etait parcourus entierment
 
       if ((M.matrix[i*M.width+j] == 1)&&(topindex == -1)){//si l'angle n'avais pas etait trouvé topindex prend la coordoné de l'angle
 
           topindex = i;
       }
 
-      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(botindex_i == -1)) {//si l'angle n'avais pas etait trouvé botindex prend la coordoné de l'angle
+      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(botindex == -1)) {//si l'angle n'avais pas etait trouvé botindex prend la coordoné de l'angle
 
           botindex = M.height-1-i;
       }
@@ -156,7 +164,8 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
   Matrix resized = newMatrix(size,size);
 
-  int array_top_bot[2] = getCornerMatrix(matrixChar);
+  int array_top_bot[2];
+  array_top_bot = getCornerMatrix(matrixChar);
 
   int top = array_top_bot[0];//top corner
   int bot = array_top_bot[1];//botom corner

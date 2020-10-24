@@ -18,6 +18,19 @@ Matrix horizonRLSA (Matrix img, int seuil){
   Les dates de modifications :
 
   */
+  /*
+  description :
+  function that go thru a matrix from horizontal way
+  and apply to it the RLSA algorthm
+
+  parameters :
+  //TODO
+
+  dates/authors :
+  23/10
+  geoffroy du mesnil du buisson
+
+  */
 
 
   Matrix m = copyMatrix(img);
@@ -119,3 +132,15 @@ Matrix rlsa(Matrix img, int verticSeuil, int horizonSeuil){
 
   return m;
 }
+/*
+description :
+//TODO
+
+parameters :
+//TODO
+
+dates/authors :
+23/10
+geoffroy du mesnil du buisson
+
+*/
