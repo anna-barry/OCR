@@ -71,18 +71,18 @@ void wait_for_keypressed()
 
 void SDL_FreeSurface(SDL_Surface *surface);
 
-//otsu threshold calculation function 
+
 float compteOtsuseuil(float hist[],int width, int height )
 {
 
-  int nombrep = width * height; //number of pixel
-  int t = 0; //threshold
+  int nombrep = width * height;
+  int t = 0;
 
-  float w1 = 0; //sum of probability 1
-  float w2 = 0;//sum of probability 2
+   float w1 = 0;
+   float w2 = 0;
     int q1 = 0;
     int q2 = 0;
-    float max = 0; //max variance
+    float max = 0;
 
     for (int i = 0; i <= 255; i++)
     {
@@ -96,14 +96,11 @@ float compteOtsuseuil(float hist[],int width, int height )
 
 
       w2 += (float) (i * ((int)hist[i]));
-      float m1 = w2 / q1; //average calculation 1
-      float m2 = (w1 - w2) / q2; //average calculation 2
+      float m1 = w2 / q1;
+      float m2 = (w1 - w2) / q2;
 
-
-      //variance calculation for t
       float res = (float) q1 * (float) q2 * (m1 - m2) * (m1 - m2);
 
-      //choose the max
       if (res > max)
       {
         max = res;
@@ -151,7 +148,7 @@ Matrix imgToMat(SDL_Surface* img){//geoffroy
 
   float seuil = compteOtsuseuil(histo, width, height );
 
-  Matrix derhistoMat = newMatrix(height, width);
+  Matrix derhistoMat = newMatrix(height, width);//int dernierhisto[width][height];
 
   for (int i = 0; i < derhistoMat.width; i++){
        for (int j = 0; j < derhistoMat.height; j++){
@@ -164,7 +161,7 @@ Matrix imgToMat(SDL_Surface* img){//geoffroy
            Uint32 pixel1 = SDL_MapRGB(img->format, 255, 255, 255);
            put_pixel(img,i,j,pixel1);
 
-           derhistoMat.matrix[i*derhistoMat.width+j] = 0; 
+           derhistoMat.matrix[i*derhistoMat.width+j] = 0; //dernierhisto[i][j] = 0;
 
          }
          else{
@@ -172,11 +169,11 @@ Matrix imgToMat(SDL_Surface* img){//geoffroy
            Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
            put_pixel(img,i,j,pixel1);
 
-           derhistoMat.matrix[i*derhistoMat.width+j] = 1;
+           derhistoMat.matrix[i*derhistoMat.width+j] = 1; //dernierhisto[i][j] = 1;
          }
       }
   }
-  return derhistoMat;//return the matrix derhistoMat
+  return derhistoMat;//retourne ta matrice derhistoMat
 
   SDL_FreeSurface(img);
 }
@@ -220,7 +217,7 @@ int main()
 
     init_sdl();
 
-    image_surface = SDL_LoadBMP("loremipsum.bmp");
+    image_surface = load_image("loremipsum.jpg");
 
     screen_surface = display_image(image_surface);
 
@@ -263,7 +260,7 @@ int main()
 
     float seuil = compteOtsuseuil(histo, width, height );
 
-    Matrix derhistoMat = newMatrix(height, width);
+    Matrix derhistoMat = newMatrix(height, width);//int dernierhisto[width][height];
 
     wait_for_keypressed();
 
@@ -278,7 +275,7 @@ int main()
 		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
 		         put_pixel(image_surface,i,j,pixel1);
 
-             derhistoMat.matrix[i*derhistoMat.width+j] = 0; 
+             derhistoMat.matrix[i*derhistoMat.width+j] = 0; //dernierhisto[i][j] = 0;
 
 	         }
 	         else{
@@ -286,7 +283,7 @@ int main()
 		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
 		         put_pixel(image_surface,i,j,pixel1);
 
-		         derhistoMat.matrix[i*derhistoMat.width+j] = 1; 
+		         derhistoMat.matrix[i*derhistoMat.width+j] = 1; //dernierhisto[i][j] = 1;
 	         }
 	      }
     }
