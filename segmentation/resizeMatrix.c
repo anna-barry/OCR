@@ -1,4 +1,3 @@
-#include "segmentation.h"
 #include "../Tools/matrix.h"
 #include "../Tools/minifunc.h"
 
@@ -8,8 +7,10 @@
 Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   /*
   description genral :
+  general description :
 
   Fonction qui prend une matrice et la retourne en etant à la bonne taille tout en gardant le contenu (fonction qui zoom)
+
 
   Les parametres :
 

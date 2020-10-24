@@ -60,19 +60,16 @@ void freeMatrix(Matrix M){
 
 
 // Return the cuted matrix (part of the original matrix)
-Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the cuted matrix (part of the original matrix)
+Matrix cutMatrix(Matrix M, int x ,int xlen,int height)
 {
-        Matrix cut;
-        cut.height = height;
-        cut.width = width;
-        cut.matrix = malloc(height*width*sizeof(double));
-
-        for (int i = x ; i < x+cut.height ; i++)
+    Matrix cutted= newMatrix(xlen,height);
+    cutted.matrix = malloc(height*xlen*sizeof(double));
+    for (int xi=0; xi<xlen; xi++)
     {
-        for (int j = y ; j < y+cut.width ; j++) cut.matrix[(i-x)*cut.width+(j-y)] = M.matrix[i*M.width+j];
-
+        for (int yi=0; yi<height; yi++)
+        {
+            cutted.matrix[xi*xlen+yi]=M[(x+xi)*xlen+(yi+y)];
+        }
     }
-
-        return cut;
+    return cutted;
 }
-
