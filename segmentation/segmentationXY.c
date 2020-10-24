@@ -372,7 +372,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int li
                 {
                 tocut=cutMatrix(M,0,ybeg,width,y-ybeg);
                 og2=cutMatrix(og,0,ybeg,width,y-ybeg);
-                verticalcut(T,tocut,og2,1,vertical,0);
+                *verticalcut(T,tocut,og2,1,vertical,0);
                 y=lenght;
                 }
                 if (line==1)
@@ -399,7 +399,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int li
 
 //__________________CUTTING VERTICAL BLANKS______________________________
 
-void verticalcut(Tree T,Matrix M,Matrix og,int horizontal,int vertical, int line)
+void verticalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical, int line)
 {
     /*
     description :
@@ -511,12 +511,10 @@ Tree *beginSeg(Matrix M)
     marine thunet
 
     */
-    Tree *txt = new_Tree(-4);
-    
+    Tree *txt = newTree(-4);
     Matrix og= copyMatrix(M);
-    Tree *T= newTree(-3);
     M = rlsa(M,10,10);
-    horizontalcut(T,M,og,1,1,0);
+    horizontalcut(txt,M,og,1,1,0);
     
     return txt;
 
