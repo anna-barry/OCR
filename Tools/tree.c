@@ -1,6 +1,6 @@
 #include "tree.h"
 #include <stdio.h>
-#include <stdlib.h>stdio
+#include <stdlib.h>
 
 Tree *newTree(int Key)
 {
