@@ -120,11 +120,16 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
 {
   /*
   description :
-  //TODO
+  creates a new rectangular matrix from the coordinates
+  x,y to x+height,y+width of the original matrix
 
   parameters :
-  //TODO
-
+  Matrix M = the orginal matrix, the picture that became binar
+  int x = the x coordinate to begin to cut the matrix
+  int y = the y coordinate to begin to cut the matrix
+  int height = the height of the Matrix to create
+  int width = the width of the Matrix to create
+   
   dates/authors :
   23/10
   marine thunet

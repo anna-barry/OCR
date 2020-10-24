@@ -1,5 +1,5 @@
 //_________________Convolution___________________
-//__________________enlever_les_taches___________
+//_________________Remove_Spots___________
 
 //________________include________________________
 
@@ -8,11 +8,31 @@
 #iclude "../Tools/matrix.h"
 
 
-//_______retirer_taches___________________________
-//methode_médiane
+//_______Begin___________________________
 
+//median_method
+
+//TO DO NOT FINISHED
 Matrix smooth(Matrix M)
 {
+    /*
+    description :
+
+    -taking each 8 pixel around the middle pixel
+    -replacing the middle pixel by the median of both
+    of them
+    -helps to smooth
+
+    parameters :
+
+    Matric M: the matrix of the picture
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
+    
     int width=M.width;
     int height=M.height;
     int array[9];
@@ -103,6 +123,21 @@ Matrix smooth(Matrix M)
 
 void array_select_sort(int array[], size_t len)
 {
+    /*
+    description :
+
+    sorting a given list
+
+    parameters :
+
+    int array[] = lists containing 9 information
+    size_t len = length of the list
+     
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
     for (size_t i=0; i<len; i++)
     {
         size_t pos=i;
@@ -122,5 +157,6 @@ void array_select_sort(int array[], size_t len)
 
 Matrix contrast(Matrix M)
 {
-    
+    //TO DO
+    pass
 }

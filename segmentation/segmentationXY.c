@@ -11,12 +11,32 @@
 
 //________________begining_________________________//
 
-//the fonction that begins the others
 Tree *beginSeg(Matrix M)
 {
+    /*
+    description :
+
+    -fonction to help begin the others
+    -starting the segmentation
+
+    parameters :
+
+    Matric M: the matrix of the picture
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
     Tree *txt = new_Tree(-4);
-    segmentation(M);
+    
+    Matrix og= copyMatrix(M);
+    Tree *T= newTree(-3);
+    M = rlsa(M,10,10);
+    horizontalcut(T,M,og,1,1,0);
+    
     return txt;
+
 }
 
 
@@ -69,26 +89,30 @@ Tree *beginSeg(Matrix M)
 
 //__________________CUTTING HORIZONTAL BLANKS______________________________
 
-//2nd major function
-//fonction linking rsla to xy-cut
-void segmentation(Matrix M)
-{
-    int widht= M.width;
-    int lenght= M.height;
-    int horizontal=1;
-    Matrix og= copyMatrix(M);
-    Tree *T= newTree(-3);
-    M = rlsa(M,10,10);
-
-    int xbeg=0;
-
-    horizontalcut(T,M,og,1,1,0);
-
-    return T;
-}
 
 void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int line)
 {
+    /*
+    description :
+
+    -cuts first horizontal block founded
+    -treats the block founded
+    -the rest of the block is treated horizontally
+
+    parameters :
+
+    Tree *T : the pointer to the tree that is building
+    Matric M : the matrix of the picture
+    int horizontal : 2 if horizonral cuts can go further
+    int vertical : 2 if vertical cuts can no go further
+    int line : boolean teeling us if we are cutting a line (1) or a word (0)
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
+    
     int width= M.width;
     int lenght= M.height;
     int y=0;
@@ -166,6 +190,26 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int li
 
 void verticalcut(Tree T,Matrix M,Matrix og,int horizontal,int vertical, int line)
 {
+    /*
+    description :
+
+    -cuts first vertical block founded
+    -treats the block founed
+    -the rest of the block is treated vertically
+
+    parameters :
+
+    Tree *T : the pointer to the tree that is building
+    Matric M : the matrix of the picture
+    int horizontal : 2 if horizonral cuts can go further
+    int vertical : 2 if vertical cuts can no go further
+    int line : boolean teeling us if we are cutting a line or a word
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
     int width= M.width;
     int lenght= M.height;
     int y=0;
@@ -240,6 +284,22 @@ void verticalcut(Tree T,Matrix M,Matrix og,int horizontal,int vertical, int line
 //column reding to cut in vertical//
 Matrix vertical(Matrix M)
 {
+    
+/*
+description :
+-on this function we recon that noises and spots were treated
+-traces a black column if 1 pixel is in the column
+-goes along each colum, it will help to detect easily
+
+parameters :
+
+Matric M: the matrix of the picture
+
+dates/authors :
+17/10
+marine thunet
+
+    */
     int h_size = M.height;
     int w_size = M.width;
     int y=0;
@@ -269,6 +329,26 @@ Matrix vertical(Matrix M)
 
 void _trycut(Matrix M, int line, Tree *T)
 {
+    /*
+    description :
+
+    -the function cuts vertical lines
+    -adds each segmente to the tree
+        -if word then level -1
+        -if char then level 0
+
+    parameters :
+
+    Matric M: the matrix of the picture
+    int line: boolean teeling us if we are cutting a line or a word
+    Tree *T: the pointer to the tree that is building
+
+    dates/authors :
+    15/10
+    marine thunet
+
+    */
+    
     //copying the og matrix
     Matrix reel = copyMatrix(M);
 
