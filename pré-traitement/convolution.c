@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#iclude "../Tools/matrix.h"
+#include "../Tools/matrix.h"
 
 
 //_______Begin___________________________
