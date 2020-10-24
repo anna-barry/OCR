@@ -3,7 +3,7 @@
 #include "../Tools/minifunc.h"
 
 #include <stdio.h>
-#include <sdio.h>
+#include <stdlib.h>
 
 Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   /*

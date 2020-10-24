@@ -30,7 +30,7 @@ Matrix horizonRLSA (Matrix img, int seuil){
   for (int i = 0; i < m.height ; i++) {//parcours classique de la matrice
 
     j=0;
-    while (j < m.widht) {
+    while (j < m.width) {
 
       if (m.matrix[i*m.width+j]!=1){
 
@@ -44,12 +44,12 @@ Matrix horizonRLSA (Matrix img, int seuil){
         }
         if (nbzeros<=seuil){// si le nombre de zeros est inferieur ou eguale au seuil alors les zeros se transforme en 1
 
-          for (size_t l = j; l < nbzeros; l++) {
+          for (int l = j; l < nbzeros; l++) {
 
             m.matrix[i*m.width+l]=1;
           }
         }
-        j+=nbzeros//on augmente notre index du nombre de zeros que nous avons parcourus
+        j+=nbzeros;//on augmente notre index du nombre de zeros que nous avons parcourus
       }//end if
       j++;
     }//end while
@@ -74,9 +74,9 @@ Matrix verticRLSA (Matrix img, int seuil){
 
   Matrix m = copyMatrix(img);
 
-  int nbzeros;
+  int nbzeros;//nombres de zeros à la suite
 
-  int j;
+  int i;
   int k;
   for (int j = 0; j < m.width ; j++) {
 
@@ -92,19 +92,19 @@ Matrix verticRLSA (Matrix img, int seuil){
           nbzeros++;
           k++;
         }
-        if (nbzeros<=seil){
+        if (nbzeros<=seuil){
 
-          for (size_t l = i; l < nb; l++) {
+          for (int l = i; l < nbzeros; l++) {
 
             m.matrix[i*m.width+l]=1;
           }
         }
-        i+=nbzeros+1
+        i+=nbzeros+1;
       }
       i++;
     }
   }
-  return m
+  return m;
 }
 
 Matrix rlsa(Matrix img, int verticSeuil, int horizonSeuil){
@@ -112,7 +112,7 @@ Matrix rlsa(Matrix img, int verticSeuil, int horizonSeuil){
   Matrix horizonMatrix = horizonRLSA(img, horizonSeuil);
   Matrix verticMatrix = verticRLSA(img, verticSeuil);
 
-  Matrix m = andLogicMartix(horizonRLSA,verticRLSA);
+  Matrix m = andLogicMartix(horizonMatrix,verticMatrix);
 
   freeMatrix(horizonMatrix);
   freeMatrix(verticMatrix);
