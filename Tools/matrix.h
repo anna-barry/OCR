@@ -13,7 +13,7 @@ Matrix newMatrix(int H, int W);
 
 Matrix andLogicMartix(Matrix m1,Matrix m2);
 
-Matrix cutMatrix(Matrix M, int x ,int height,int width);
+Matrix cutMatrix(Matrix M, int x ,int y,int height,int width);
 
 Matrix copyMatrix(Matrix M);
 
