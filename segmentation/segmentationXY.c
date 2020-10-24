@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//________________debut_des_fonctions_________________________//
+//________________begining_________________________//
 
 
 //column reding to cut in vertical//
@@ -18,10 +18,10 @@ Matrix vertical(Matrix M)
     int h_size = M.height;
     int w_size = M.width;
     int y=0;
-    //Dectecter les zones d'espaces
-    //principe:
-    //si un pixel noir est present: ce n'est pas une séparation donc
-    //la colonne devient noir
+    //Detect zone spaces
+    //principle
+    //if there is a black pixel-> it is a separation
+    //the column becomes black
     
     for (int x=0; x<w_size ;x++)
     {
@@ -44,10 +44,9 @@ Matrix vertical(Matrix M)
 
 Tree _trycut(Matrix M, int line, Tree *T)
 {
-    //copie de la matrice pour recupérer la matrice d'origine quand necessaire
+    //copying the og matrix
     Matrix reel = copyMatrix(M);
-    
-    int x=0;
+
     int y = 0;
     int h_size = M.height;
     int w_size = M.width;
@@ -69,7 +68,9 @@ Tree _trycut(Matrix M, int line, Tree *T)
 /*_____________INITIALISATION VARIABLES COMMUNES________________*/
     
     int previous=0; //valeur du pixel precedent
-    int x=0;        //valeur du départ coordoné départ du mot/ de la lettre
+    
+    int x=0;
+    //valeur du départ coordoné départ du mot/ de la lettre
     
     //booléens pour se repérer dans les fonctions
     int begin=0; //1 si le mot est en cours de traitement
@@ -130,7 +131,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
                     if (totalspace>average || end == 1 )
                     {
                         //matrix of the word that was found
-                        createseg=_cutMatrix(reel,x,ix-totalspace,h_size);
+                        createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
                         
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
@@ -168,7 +169,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
                 if (begin == 0 && end == 0) //the letter starts
                 {
                     begin=1;
-                    x=xi; //the letter starts at the xy: x=xi
+                    x=ix; //the letter starts at the xy: x=xi
                     //xlen=1;
                 }
                 else
@@ -179,7 +180,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
                     {
                         
                         //creating a matrix for the caracter that was found
-                        createseg=_cutMatrix(reel,x,ix-totalspace,h_size);
+                        createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
                         
                         createseg=resizeMatrix(createseg,30);
                         
@@ -192,10 +193,10 @@ Tree _trycut(Matrix M, int line, Tree *T)
                         //letter=ascii code;
                     
                         Tree *Child = newTree(0);
-                        AddChild(T, createseg);
+                        AddChild(T, 0); //will be the value of the char
                         
                         //reinitialisation
-                        free_Matrix(createseg);
+                        freeMatrix(createseg);
                         begin=0;
                     }
                 }
@@ -210,7 +211,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
         }
     }
     
-    free_Matrix(reel);
+    freeMatrix(reel);
         
 }
 
@@ -262,9 +263,153 @@ Tree _trycut(Matrix M, int line, Tree *T)
     //découper la matrice en plusieurs sous matrices
     //placer plusieurs matrices en racine de l'abre
     //rapeller la fonction en enfant de l'arbre pour ajouter les paragraphes, lignes....
-}
+}*/
 
 //fonction qui lie le RLSA au XY-Cut
 
+Tree horizontalcut(Tree T,Matrix M,Matrix og,int horizontal,int vertical,int line)
+{
+    int width= M.width;
+    int lenght= M.height;
+    int y=0;
+    int x=0;
+    int started=0;
+    int xbeg=0;
+    Matrix tocut;
+    Matrix og1;
+    Matrix og2;
+    Matrix rest;
+    
+    if (horizontal==2 && vertical==2)
+    {
+        Tree *Child = newTree(-3);
+        AddChild(T, Child);
+        _trycut(og,1,Child);
+    }
+
+    if (horizontal==2 && vertical==2)
+    {
+        Tree *Child = newTree(-3);
+        AddChild(T, Child);
+        horizontalcut(Child,rlsa(og),og,1,1,1);
+    }
+
+    
+    while(y<lenght)
+        {
+            x=0;
+            while(x<width && M.matrix[y*lenght+x]==0)
+            {
+                x++;
+            }
+            if (x==width && started==1)
+            {
+                tocut=cutMatrix(M,xbeg,0,x-xbeg,width);
+                og2==cutMatrix(og,xbeg,0,x-xbeg,width);
+                if (y=!lenght)
+                {
+                    rest=cutMatrix(M,x,0,w_size-x,width);
+                    og1=cutMatrix(og,x,0,w_size-x,width);
+                    horizontal(T,rest,og1,1,vertical);
+                }
+                vertical(T,tocut,og2,2,vertical);
+                y=lenght;
+            }
+            else if( started==0 && x<width && M.matrix[y*lenght+x]==1)
+            {
+                xbeg=x;
+                x=0
+                started=1;
+            }
+            else if (x<width && M.matrix[y*lenght+x]==1)
+            {
+                x=0;
+            }
+            y++;
+        }
+}
+
+Tree verticalcut(Tree T,Matrix M,Matrix og,int horizontal,int vertical, int line)
+{
+    int width= M.width;
+    int lenght= M.height;
+    int y=0;
+    int x=0;
+    int started=0;
+    int ybeg=0;
+    Matrix tocut;
+    Matrix og1;
+    Matrix og2;
+    Matrix rest;
+    
+    if (horizontal==2 && vertical==2 && line=1)
+    {
+        Tree *Child = newTree(-3);
+        AddChild(T, Child);
+        _trycut(og,1,Child);
+    }
+    if (horizontal==2 && vertical==2)
+    {
+        Tree *Child = newTree(-3);
+        AddChild(T, Child);
+        horizontalcut(Child,rlsa(og),og,1,1,1);
+    }
+
+    
+    while(x<width)
+        {
+            y=0;
+            while(y<lenght && M.matrix[y*lenght+x]==0)
+            {
+                y++;
+            }
+            if (y==lenght && started==1)
+            {
+                tocut=cutMatrix(M,0,ybeg,width,y-ybeg);
+                og2=cutMatrix(og,0,ybeg,width,y-ybeg);
+                if (x=!width)
+                {
+                    rest=cutMatrix(M,0,y,width,height-y);
+                    og1=cutMatrix(og,0,y,width,height-y);
+                    horizontal(T,rest,horizontal,vertical);
+                }
+                vertical(T,tocut,horizontal,2);
+                x=width
+            }
+            else if( started==0 && y<length && M.matrix[y*lenght+x]==1)
+            {
+                ybeg=y;
+                y=0
+                started=1;
+            }
+            else if (y<length && M.matrix[y*lenght+x]==1)
+            {
+                y=0;
+            }
+            x++;
+            
+        }
+    
+    return T;
+}
+
     //créer la matrice
-*/
+Tree segmentation(Matrix M)
+{
+    int widht= M.width;
+    int lenght= M.length;
+    int horizontal=1;
+    Matrix og= copyMatrix(M);
+    Tree T= newTree(-3);
+    //ibtiti
+    M = rsla(M,5,2);
+    int y=0;
+    int x=0;
+    
+    int xbeg=0;
+    
+    T=horizontalcut(T,M,og,1,1);
+    
+    }
+    
+}

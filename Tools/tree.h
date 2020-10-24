@@ -4,8 +4,8 @@
 typedef struct Tree
 {
     int key;
-    struct Tree *Child;
-    struct Tree *Sibling;
+    struct Tree *child;
+    struct Tree *sibling;
     
 } Tree;
 
