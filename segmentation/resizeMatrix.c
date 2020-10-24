@@ -1,6 +1,6 @@
 #include "segmentation.h"
-#include "rlsa.h"
 #include "../Tools/matrix.h"
+#include "../Tools/minifunc.h"
 
 #include <stdio.h>
 #include <sdio.h>
