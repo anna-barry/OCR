@@ -60,7 +60,7 @@ void freeMatrix(Matrix M){
 
 
 // Return the cuted matrix (part of the original matrix)
-Matrix cut_Matrix(Matrix M, int x, int y, int height, int width)    // Return the cuted matrix (part of the original matrix)
+Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the cuted matrix (part of the original matrix)
 {
         Matrix cut;
         cut.height = height;
