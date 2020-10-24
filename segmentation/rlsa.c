@@ -5,49 +5,97 @@
 
 
 Matrix horizonRLSA (Matrix img, int seuil){
+  /*
+  description genral :
+
+  Fonction qui parcour la matrice horizontalement et qui applique l'algo RLSA
+
+  Les parametres :
+
+  Matrix img : Matrice sur la quelle nous allons appliquer le RLSA
+  int seuil : seil que nous fixons pour le RLSA
+
+  Les dates de modifications :
+
+  */
+
+
   Matrix m = copyMatrix(img);
+
   int nbzeros;//nombres de zeros à la suite
+
   int j;//compteur sur la largeur de la matrice
   int k;//compteur sur les zeros à la suite
-  for (int i = 0; i < m.height ; i++) {
+
+  for (int i = 0; i < m.height ; i++) {//parcours classique de la matrice
+
     j=0;
     while (j < m.widht) {
+
       if (m.matrix[i*m.width+j]!=1){
+
         k=j;
         nbzeros=0;
-        while (m.matrix[i*m.width+k]!=1&&k< m.width) {
+
+        while (m.matrix[i*m.width+k]!=1&&k< m.width) {//on compte le nombre de zeros à la suite entre deux 1
+
           nbzeros++;
           k++;
         }
-        if (nbzeros<=seuil){
+        if (nbzeros<=seuil){// si le nombre de zeros est inferieur ou eguale au seuil alors les zeros se transforme en 1
+
           for (size_t l = j; l < nbzeros; l++) {
+
             m.matrix[i*m.width+l]=1;
           }
         }
-        j+=nbzeros
+        j+=nbzeros//on augmente notre index du nombre de zeros que nous avons parcourus
       }//end if
       j++;
     }//end while
   }
-  return m;
+  return m;//on retourne la matrice
 }
 
 Matrix verticRLSA (Matrix img, int seuil){
-  Matrix m = copyMatrix(img);int nbzeros;
+  /*
+  description genral :
+
+  Fonction qui parcour la matrice verticalement et qui applique l'algo RLSA
+
+  Les parametres :
+
+  Matrix img : Matrice sur la quelle nous allons appliquer le RLSA
+  int seuil : seil que nous fixons pour le RLSA
+
+  Les dates de modifications :
+
+  */
+
+  Matrix m = copyMatrix(img);
+
+  int nbzeros;
+
   int j;
   int k;
   for (int j = 0; j < m.width ; j++) {
-    j=0;
+
+    i=0;
     while (i < m.height) {
+
       if (m.matrix[i*m.width+j]!=1){
+
         k=i;
         nbzeros=0;
         while (m.matrix[i*m.width+k]!=1&&k< m.height) {
+
           nbzeros++;
           k++;
         }
         if (nbzeros<=seil){
+
           for (size_t l = i; l < nb; l++) {
+
             m.matrix[i*m.width+l]=1;
           }
         }
@@ -60,10 +108,14 @@ Matrix verticRLSA (Matrix img, int seuil){
 }
 
 Matrix rlsa(Matrix img, int verticSeuil, int horizonSeuil){
+
   Matrix horizonMatrix = horizonRLSA(img, horizonSeuil);
   Matrix verticMatrix = verticRLSA(img, verticSeuil);
+
   Matrix m = andLogicMartix(horizonRLSA,verticRLSA);
+
   freeMatrix(horizonMatrix);
   freeMatrix(verticMatrix);
+
   return m;
 }
