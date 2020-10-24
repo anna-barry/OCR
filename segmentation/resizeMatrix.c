@@ -24,6 +24,7 @@ Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   double x, y, x1, y1, x2, y2, x3, y3;
   double delta1, delta2, delta3, delta4;
   double voisin11, voisin22, voisin21,voisin12;
+  double somme;
 
   M = cutMatrix(M, top, 0, bot-top+1, M.width);	// coupe la matrice pour ne garder que le char
 
@@ -113,15 +114,15 @@ int *getCornerMatrix(Matrix M){
   int topindex =-1;//intitalisation de boolean indiquant si les angles on etait trouvé
   int botindex =-1;
 
-  for (int i = 0; (topindex == -1 || botindex_i == -1) && i < M.height; i++) { // les boucles tournent tant que les deux index ne sont
-    for (size_t j = 0; (topindex == -1 || botindex_i == -1) && j < M.width; j++) {//pas trouvé ou que la matrice n'as pas encore etait parcourus entierment
+  for (int i = 0; (topindex == -1 || botindex == -1) && i < M.height; i++) { // les boucles tournent tant que les deux index ne sont
+    for (size_t j = 0; (topindex == -1 || botindex == -1) && j < M.width; j++) {//pas trouvé ou que la matrice n'as pas encore etait parcourus entierment
 
       if ((M.matrix[i*M.width+j] == 1)&&(topindex == -1)){//si l'angle n'avais pas etait trouvé topindex prend la coordoné de l'angle
 
           topindex = i;
       }
 
-      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(botindex_i == -1)) {//si l'angle n'avais pas etait trouvé botindex prend la coordoné de l'angle
+      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(botindex == -1)) {//si l'angle n'avais pas etait trouvé botindex prend la coordoné de l'angle
 
           botindex = M.height-1-i;
       }
@@ -156,7 +157,8 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
   Matrix resized = newMatrix(size,size);
 
-  int array_top_bot[2] = getCornerMatrix(matrixChar);
+  int array_top_bot[2];
+  array_top_bot = getCornerMatrix(matrixChar);
 
   int top = array_top_bot[0];//top corner
   int bot = array_top_bot[1];//botom corner
