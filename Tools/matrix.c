@@ -59,17 +59,19 @@ void freeMatrix(Matrix M){
 }
 
 
-// Return the cuted matrix (part of the original matrix)
-Matrix cutMatrix(Matrix M, int x ,int xlen,int height)
+
+// Return the cuted matrix (part of the original matrix, only vertical cut)
+Matrix _cutMatrix(Matrix M, int x ,int xlen,int height)
 {
-    Matrix cutted= new_Matrix(xlen,height);
-    cut.matrix = malloc(height*xlen*sizeof(double));
+    Matrix cutted= newMatrix(xlen,height);
+    cutted.matrix = malloc(height*xlen*sizeof(double));
     for (int xi=0; xi<xlen; x++)
     {
-        for (int yi=0; yi<height; y++)
+        for (int yi=0; yi<height; yi++)
         {
-            cutted.matrix[xi*xlen+yi]=M[(x+xi)*xlen+(yi+y)];
+            cutted.matrix[xi*xlen+yi]=M.matrix[(x+xi)*xlen+(yi)];
         }
     }
     return cutted;
 }
+

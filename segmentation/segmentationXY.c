@@ -5,16 +5,19 @@
 #include "../Tools/matrix.h"
 #include "../Tools/tree.h"
 #include "rlsa.h"
+#include "resizeMatrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 //________________debut_des_fonctions_________________________//
-//redimensionner matrice
 
 
-//parcours de ligne ou de mots et pour decoupage vertical//
-Matric vertical(Matrix M)
+//column reding to cut in vertical//
+Matrix vertical(Matrix M)
 {
+    int h_size = M.height;
+    int w_size = M.width;
+    int y=0;
     //Dectecter les zones d'espaces
     //principe:
     //si un pixel noir est present: ce n'est pas une séparation donc
@@ -23,7 +26,7 @@ Matric vertical(Matrix M)
     for (int x=0; x<w_size ;x++)
     {
         y=0;
-        while (y<h_size && M.matrix[y*w_size + x]=!1)
+        while ((y<h_size) && (M.matrix[y*w_size + x]=!1))
         {
             y++;
         }
@@ -39,11 +42,12 @@ Matric vertical(Matrix M)
 }
 
 
-tree _trycut(Matrix M, bool line, Tree *T)
+Tree _trycut(Matrix M, int line, Tree *T)
 {
     //copie de la matrice pour recupérer la matrice d'origine quand necessaire
     Matrix reel = copyMatrix(M);
     
+    int x=0;
     int y = 0;
     int h_size = M.height;
     int w_size = M.width;
@@ -73,20 +77,19 @@ tree _trycut(Matrix M, bool line, Tree *T)
     
     Matrix createseg;
     
-    //_______DECOUPAGE LIGNE______________________________________________
-    if (line)
+    int totalspace=0;//number of white pixel/separation
+    
+    //_______LINEAR CUT______________________________________________
+    if (line==1)
     {
         int nbspace=-1;  //compte le nombre de suite de pixels blancs
                         //commence a -1 car compte automatiquement au premier pixel
         
-        int totalspace=0;
-        //compte le nombre des pixel blancs par zone de séparation
-        
-        /*_______Detecter des espaces & moyenne des espaces_____________*/
+        /*_______Detect spaces &  average of spaces_____________*/
         for (int c; c<w_size; c++)
         {
             
-            if (M.matrix[j] == 0)
+            if (M.matrix[c] == 0)
             {
                 totalspace++;
             }
@@ -101,39 +104,39 @@ tree _trycut(Matrix M, bool line, Tree *T)
         }
         
         int average= totalspace/nbspace;
-        //moyenne des espaces entre les mots/caractères
+        //average space between word and char
         
-        //on reinitialise les variables
+        //reinitialisation
         totalspace=0;
         previous=0;
         
         for (int ix=0; ix<w_size; ix++)
         {
-            if (ix+1=w_size)
+            if (ix+1==w_size)
             {
                 end=1;
             }
             
             if (M.matrix[w_size]==1 || end==1)
             {
-                if (begin == 0 && end == 0) //premiere condition validée mais mots pas démarré
+                if (begin == 0 && end == 0) //word starts
                 {
-                    begin=1; //le mot demarre
-                    x=xi; //on note: image commence a xi
+                    begin=1;
+                    x=ix; //word begins at x=xi here y doesn't matter
                 }
                 else
                 {
                     
                     if (totalspace>average || end == 1 )
                     {
-                        //petite matrice du mot repéré
-                        createseg=cutMatrix(reel,x,ix-totalspace,h_size);
+                        //matrix of the word that was found
+                        createseg=_cutMatrix(reel,x,ix-totalspace,h_size);
                         
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
-                        _trycut(createseg,false,Child);
+                        _trycut(createseg,0,Child);
                         
-                        free_Matrix(createseg);
+                        freeMatrix(createseg);
                         begin=0;
                     }
                 }
@@ -151,21 +154,21 @@ tree _trycut(Matrix M, bool line, Tree *T)
     
     else
     {
-        int letter=0;//la valeur de la lettre en ascii
+        int letter=0;//the code og the letter to put in the tree then
         for (int ix=0; ix<w_size; ix++)
         {
             
-            if (ix+1=w_size)
+            if (ix+1==w_size)
             {
                 end=1;
             }
             
             if (M.matrix[w_size]==1 || end==1)
             {
-                if (begin == 0 && end == 0) //premiere condition validée donc la lettre demarre
+                if (begin == 0 && end == 0) //the letter starts
                 {
                     begin=1;
-                    x=xi; //on dit que le mot commence au coordonées xi
+                    x=xi; //the letter starts at the xy: x=xi
                     //xlen=1;
                 }
                 else
@@ -175,23 +178,23 @@ tree _trycut(Matrix M, bool line, Tree *T)
                     if ( begin==1 && end == 1 )
                     {
                         
-                        //petite matrice du caractère repéré
-                        createseg=cutMatrix(reel,x,ix-totalspace,h_size);
+                        //creating a matrix for the caracter that was found
+                        createseg=_cutMatrix(reel,x,ix-totalspace,h_size);
                         
-                        //TO DO
-                        //createseg=redimensionner(createseg)
+                        createseg=resizeMatrix(createseg,30);
                         
-                        //pour____SOUTENANCES______2
-                        //mettre fonction qui converti l'image en caractère
-                        //letter=convert(createseg);
+                        //____FINAL___________
+                        //intergrate the fonction when the
+                        //neural network is created
     
-                        //pour le moment on fait ca mais inutile,
-                        //il faudra renvoyer le code ascii de chaque caractère
-                        letter=0;
+                        //for now that is how it works but useless,
+                        //we'll have to send the ascii code of the char
+                        //letter=ascii code;
                     
                         Tree *Child = newTree(0);
-                        AddChild(T, letter)
-                    
+                        AddChild(T, createseg);
+                        
+                        //reinitialisation
                         free_Matrix(createseg);
                         begin=0;
                     }
