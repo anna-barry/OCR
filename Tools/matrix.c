@@ -47,36 +47,22 @@ Matrix copyMatrix(Matrix M){
     return mcopy;
 }
 
-Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the cuted matrix (part of the original matrix)
-{
-        Matrix cut;
-        cut.height = height;
-        cut.width = width;
-        cut.matrix = malloc(height*width*sizeof(double));
-
-        for (int i = x ; i < x+cut.height ; i++){
-          for (int j = y ; j < y+cut.width ; j++){
-            
-            cut.matrix[(i-x)*cut.width+(j-y)] = M.matrix[i*M.width+j];
-          }
-        }
-        return cut;
-}
-
 void freeMatrix(Matrix M){
     free(M.matrix);
     M.width = 0;
     M.height = 0;
 }
 
+// Return the cuted matrix (part of the original matrix)
 Matrix cutMatrix(Matrix M, int x ,int xlen,int height)
 {
     Matrix cutted= new_Matrix(xlen,height);
+    cut.matrix = malloc(height*xlen*sizeof(double));
     for (int xi=0; xi<xlen; x++)
     {
         for (int yi=0; yi<height; y++)
         {
-            cutted[xi*xlen+yi]=M[(x+xi)*xlen+(yi+y)];
+            cutted.matrix[xi*xlen+yi]=M[(x+xi)*xlen+(yi+y)];
         }
     }
     return cutted;

@@ -5,7 +5,6 @@
 #include "../Tools/matrix.h"
 #include "../Tools/tree.h"
 #include "rlsa.h"
-//#include "../Processing/processing.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,9 +12,34 @@
 //redimensionner matrice
 
 
-//fonction XYcut
+//parcours de ligne ou de mots et pour decoupage vertical//
+Matric vertical(Matrix M)
+{
+    //Dectecter les zones d'espaces
+    //principe:
+    //si un pixel noir est present: ce n'est pas une séparation donc
+    //la colonne devient noir
+    
+    for (int x=0; x<w_size ;x++)
+    {
+        y=0;
+        while (y<h_size && M.matrix[y*w_size + x]=!1)
+        {
+            y++;
+        }
+        if (y!=h_size)
+        {
+            for (int i; i<h_size; i++)
+            {
+                M.matrix[i*w_size + x]=1;
+            }
+        }
+    }
+    return M;
+}
 
-tree _XYcut(Matrix M, bool line, Tree *T)
+
+tree _trycut(Matrix M, bool line, Tree *T)
 {
     //copie de la matrice pour recupérer la matrice d'origine quand necessaire
     Matrix reel = copyMatrix(M);
@@ -32,24 +56,8 @@ tree _XYcut(Matrix M, bool line, Tree *T)
     //on a soit des lignes soit des mots, donc parcours vertical
     //on part du principe qu'il n'y a plus de taches ou de grain
     
-    //Dectecter les zones d'espaces
-    //principe:
-    //si un pixel noir est present: ce n'est pas une séparation donc ligne noir
-    for (int x=0; x<w_size ;x++)
-    {
-        y=0;
-        while (y<h_size && M.matrix[y*w_size + x]=!1)
-        {
-            y++;
-        }
-        if (y!=h_size)
-        {
-            for (int i; i<h_size; i++)
-            {
-                M.matrix[i*w_size + x]=1;
-            }
-        }
-    }
+    M=vertical(M);
+    
     //matrice de blocs noirs obtenus
     //il faut choisir si l'on souhaite decouper des mots ou des lignes
     //le decoupage n'est pas le même
@@ -123,7 +131,7 @@ tree _XYcut(Matrix M, bool line, Tree *T)
                         
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
-                        _XYcut(createseg,false,Child);
+                        _trycut(createseg,false,Child);
                         
                         free_Matrix(createseg);
                         begin=0;
@@ -216,11 +224,38 @@ tree _XYcut(Matrix M, bool line, Tree *T)
 
     //fonction qui créé
 
-Tree segmentation(Matrix M)
+/*Tree segmentation(Matrix M)
 {
+    int widht= M.width;
+    int lenght= M.length;
     Matrix og= copyMatrix(M);
+    Tree T= newTree(-3);
     //ibtiti
     M = rsla(M);
+    int started=0;      //if started
+    int previouspix=0;
+    int xbeg=0;
+    int xend=0;
+    int yend=0;
+    int ybeg=0
+    int x=0;
+    int y=0;
+    while (x<length && y<widht)
+    {
+        if  (started==0 && M.matrix[y*length+x]==1)
+        {
+            started=1;
+            xbeg=x;
+            ybeg=y;
+        }
+        if (started==1 && M.matrix[y*lenght+x]==0 && xend==0)
+        {
+            xend=x;
+            y++;
+            x--;
+        }
+    }
+    
     //découper la matrice en plusieurs sous matrices
     //placer plusieurs matrices en racine de l'abre
     //rapeller la fonction en enfant de l'arbre pour ajouter les paragraphes, lignes....
@@ -229,4 +264,4 @@ Tree segmentation(Matrix M)
 //fonction qui lie le RLSA au XY-Cut
 
     //créer la matrice
-
+*/

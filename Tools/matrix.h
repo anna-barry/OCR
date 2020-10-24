@@ -2,7 +2,7 @@
 #define MATRIX_H
 
 #include <stdlib.h>
-#include <SDL.h>
+#include <SDL2.h>
 
 typedef struct Matrix{
   int width;
@@ -17,5 +17,7 @@ Matrix andLogicMartix(Matrix m1,Matrix m2);
 Matrix copyMatrix(Matrix M);
 
 void freeMatrix(Matrix M);
+
+Matrix cutMatrix(Matrix M, int x ,int xlen,int height);
 
 #endif
