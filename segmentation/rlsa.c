@@ -6,28 +6,17 @@
 
 Matrix horizonRLSA (Matrix img, int seuil){
   /*
-  description genral :
-
-  Fonction qui parcour la matrice horizontalement et qui applique l'algo RLSA
-
-  Les parametres :
-
-  Matrix img : Matrice sur la quelle nous allons appliquer le RLSA
-  int seuil : seil que nous fixons pour le RLSA
-
-  Les dates de modifications :
-
-  */
-  /*
   description :
   function that go thru a matrix from horizontal way
   and apply to it the RLSA algorthm
 
   parameters :
-  //TODO
+  Matrix img : matrix where we are going to apply the RLSA algorthm
+  int seuil : limite the we fix for the RLSA system
+
 
   dates/authors :
-  23/10
+  14/10
   geoffroy du mesnil du buisson
 
   */
@@ -35,12 +24,12 @@ Matrix horizonRLSA (Matrix img, int seuil){
 
   Matrix m = copyMatrix(img);
 
-  int nbzeros;//nombres de zeros à la suite
+  int nbzeros;//nubers of 0 followed
 
-  int j;//compteur sur la largeur de la matrice
-  int k;//compteur sur les zeros à la suite
+  int j;//index on the width of the matrix
+  int k;//index on the nubers of 0 followed
 
-  for (int i = 0; i < m.height ; i++) {//parcours classique de la matrice
+  for (int i = 0; i < m.height ; i++) {//classic search in the matrix
 
     j=0;
     while (j < m.width) {
@@ -50,48 +39,50 @@ Matrix horizonRLSA (Matrix img, int seuil){
         k=j;
         nbzeros=0;
 
-        while (m.matrix[i*m.width+k]!=1&&k< m.width) {//on compte le nombre de zeros à la suite entre deux 1
+        while (m.matrix[i*m.width+k]!=1&&k< m.width) {//counting the numbers of 0 followed between two 1
 
           nbzeros++;
           k++;
         }
-        if (nbzeros<=seuil){// si le nombre de zeros est inferieur ou eguale au seuil alors les zeros se transforme en 1
+        if (nbzeros<=seuil){//if the numbers of 0 is lower or equal to the limite (seuil) all the 0 pass to 1
 
           for (int l = j; l < nbzeros; l++) {
 
             m.matrix[i*m.width+l]=1;
           }
         }
-        j+=nbzeros;//on augmente notre index du nombre de zeros que nous avons parcourus
+        j+=nbzeros;//we increment the index of the number of 0 we had seen
       }//end if
       j++;
     }//end while
   }
-  return m;//on retourne la matrice
+  return m;//return the matrix
 }
 
 Matrix verticRLSA (Matrix img, int seuil){
   /*
-  description genral :
+  description :
+  function that go thru a matrix from vertical way
+  and apply to it the RLSA algorthm
 
-  Fonction qui parcour la matrice verticalement et qui applique l'algo RLSA
+  parameters :
+  Matrix img : matrix where we are going to apply the RLSA algorthm
+  int seuil : limite the we fix for the RLSA system
 
-  Les parametres :
 
-  Matrix img : Matrice sur la quelle nous allons appliquer le RLSA
-  int seuil : seil que nous fixons pour le RLSA
-
-  Les dates de modifications :
+  dates/authors :
+  14/10
+  geoffroy du mesnil du buisson
 
   */
 
   Matrix m = copyMatrix(img);
 
-  int nbzeros;//nombres de zeros à la suite
+  int nbzeros;//nubers of 0 followed
 
-  int i;
-  int k;
-  for (int j = 0; j < m.width ; j++) {
+  int i;//index on the height of the matrix
+  int k;//index on the nubers of 0 followed
+  for (int j = 0; j < m.width ; j++) {//vertical search in the matrix
 
     i=0;
     while (i < m.height) {
@@ -100,27 +91,41 @@ Matrix verticRLSA (Matrix img, int seuil){
 
         k=i;
         nbzeros=0;
-        while (m.matrix[i*m.width+k]!=1&&k< m.height) {
+        while (m.matrix[i*m.width+k]!=1&&k< m.height) {//counting the numbers of 0 followed between two 1
 
           nbzeros++;
           k++;
         }
-        if (nbzeros<=seuil){
+        if (nbzeros<=seuil){//if the numbers of 0 is lower or equal to the limite (seuil) all the 0 pass to 1
 
           for (int l = i; l < nbzeros; l++) {
 
             m.matrix[i*m.width+l]=1;
           }
         }
-        i+=nbzeros+1;
-      }
+        i+=nbzeros+1;//we increment the index of the number of 0 we had seen
+      }//end if
       i++;
-    }
+    }//end while
   }
-  return m;
+  return m;//return the matrix
 }
 
 Matrix rlsa(Matrix img, int verticSeuil, int horizonSeuil){
+  /*
+  description :
+  return the mix of horizonRLSA and verticRLSA in a new matrix m
+
+  parameters :
+  Matrix img : the matrix of the whole image only compose with somme 0 and 1
+  int verticSeuil : the limite of zero we want for the RLSA in vertical
+  int horizonSeuil : the limite of zero we want for the RLSA in horizontal
+
+  dates/authors :
+  14/10
+  geoffroy du mesnil du buisson
+
+  */
 
   Matrix horizonMatrix = horizonRLSA(img, horizonSeuil);
   Matrix verticMatrix = verticRLSA(img, verticSeuil);
@@ -130,17 +135,5 @@ Matrix rlsa(Matrix img, int verticSeuil, int horizonSeuil){
   freeMatrix(horizonMatrix);
   freeMatrix(verticMatrix);
 
-  return m;
+  return m;//return the new matrix
 }
-/*
-description :
-//TODO
-
-parameters :
-//TODO
-
-dates/authors :
-23/10
-geoffroy du mesnil du buisson
-
-*/

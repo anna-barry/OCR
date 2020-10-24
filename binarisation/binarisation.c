@@ -74,7 +74,7 @@ void wait_for_keypressed()
 
 void SDL_FreeSurface(SDL_Surface *surface);
 
-//otsu threshold calculation function 
+//otsu threshold calculation function
 float compteOtsuseuil(float hist[],int width, int height )
 {
 
@@ -119,7 +119,7 @@ float compteOtsuseuil(float hist[],int width, int height )
 }
 //geoffroy
 //transform the image to matrix
-//use the binarisation method (otsu) 
+//use the binarisation method (otsu)
 Matrix imgToMat(SDL_Surface* img){
   int width = img->w;
 
@@ -188,7 +188,7 @@ Matrix imgToMat(SDL_Surface* img){
 
 //geoffroy
 //transform the matrix to image
-//use the binarisation method (otsu) 
+//use the binarisation method (otsu)
 
 int matToImg(Matrix M, char *str){//geoffroy
   SDL_Surface* img;
@@ -229,7 +229,7 @@ int main()
 
     init_sdl();
 
-    //load image in bmp 
+    //load image in bmp
 
     image_surface = SDL_LoadBMP("loremipsum.bmp");
 
@@ -242,7 +242,7 @@ int main()
     int height = image_surface->h;
 
 
-    //grayscale 
+    //grayscale
     Uint8 r,v,b;
 
     for (int x = 0; x < width; x++){
@@ -304,7 +304,7 @@ int main()
 		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
 		         put_pixel(image_surface,i,j,pixel1);
 
-             derhistoMat.matrix[i*derhistoMat.width+j] = 0; 
+             derhistoMat.matrix[i*derhistoMat.width+j] = 0;
 
 	         }
 	         else{
@@ -312,7 +312,7 @@ int main()
 		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
 		         put_pixel(image_surface,i,j,pixel1);
 
-		         derhistoMat.matrix[i*derhistoMat.width+j] = 1; 
+		         derhistoMat.matrix[i*derhistoMat.width+j] = 1;
 	         }
 	      }
     }

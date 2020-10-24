@@ -4,17 +4,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+struct Tuple{
+  int top;
+  int bottom;
+};
+//initialize the Tuple struct to save two values in a one value
+
 Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   /*
    * General description:
-    Function that takes a matrix and returns a new one with the right size while keeping all its content 
+    Function that takes a matrix and returns a new one with the right size while keeping all its content
     --> zooms in the matrix
 
-Parameters:
-_ Matrix M: Matrix which we'll zoom
-_ int top: the top of the matrix
-_ int bot: bottom of the matrix 
-_ int size: size of the matrix 
+    Parameters:
+    _ Matrix M: Matrix which we'll zoom
+    _ int top: the top of the matrix
+    _ int bot: bottom of the matrix
+    _ int size: size of the matrix
+
+    dates/authors :
+    24/10
+    geoffroy du mesnil du buisson
 
   */
 
@@ -39,8 +50,8 @@ _ int size: size of the matrix
 
   Matrix sizeMat = newMatrix(newSizeH, newSizeW);	//new matrix of the same size
 
-  // Bilinear Interpolation 
-  // For each of its 4 pixel neighbours calculate the sum of product of their differences 
+  // Bilinear Interpolation
+  // For each of its 4 pixel neighbours calculate the sum of product of their differences
   for (int i = 0 ; i < sizeMat.height ; i++){
     for (int j = 0 ; j < sizeMat.width ; j++){
 
@@ -102,44 +113,41 @@ _ int size: size of the matrix
 
 
 
-int *getCornerMatrix(Matrix M){
+struct Tuple getCornerMatrix(Matrix M){
   /*
-  description genral :
+  description :
+  function that return the angles of the charactere we want to resize
 
-  Fonction qui retourne un tableau composé des angles d'en haut à guanche et en bas à droite
+  parameters :
+  Matrix M : the matrix of a charactere
 
-  Les parametres :
 
-  Matrix M : Matrice dont on veut connaitre les angles
-
-  Les dates de modifications :
+  dates/authors :
+  21/10
+  geoffroy du mesnil du buisson
 
   */
+  struct Tuple tuple;
 
-  int array_top_bot[2];//intitalisation du tableau
+  tuple.top =-1;//intitalization of boolean telling if the angles have been found
+  tuple.bottom =-1;
 
-  int topindex =-1;//intitalisation de boolean indiquant si les angles on etait trouvé
-  int botindex =-1;
+  for (int i = 0; (tuple.top == -1 || tuple.bottom == -1) && i < M.height; i++) { //the loops continue while the both index have not been
+    for (size_t j = 0; (tuple.top == -1 || tuple.bottom == -1) && j < M.width; j++) {//founded or we arrive at the end of the matrix
 
-  for (int i = 0; (topindex == -1 || botindex == -1) && i < M.height; i++) { // les boucles tournent tant que les deux index ne sont
-    for (size_t j = 0; (topindex == -1 || botindex == -1) && j < M.width; j++) {//pas trouvé ou que la matrice n'as pas encore etait parcourus entierment
+      if ((M.matrix[i*M.width+j] == 1)&&(tuple.top == -1)){
 
-      if ((M.matrix[i*M.width+j] == 1)&&(topindex == -1)){//si l'angle n'avais pas etait trouvé topindex prend la coordoné de l'angle
-
-          topindex = i;
+          tuple.top = i; //if the angle had not been finded top take the index of the angle
       }
 
-      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(botindex == -1)) {//si l'angle n'avais pas etait trouvé botindex prend la coordoné de l'angle
+      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(tuple.bottom == -1)) {
 
-          botindex = M.height-1-i;
+          tuple.bottom = M.height-1-i; //if the angle had not been finded bottom take the index of the angle
       }
     }
   }
 
-  array_top_bot[0]=topindex; //rentre la coordoné des angles dans le tableau
-  array_top_bot[1]=botindex;
-
-  return array_top_bot; //retourn de tableau
+  return tuple; //return the tuble with both the top and the bottom vulue
 }
 
 
@@ -161,20 +169,36 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
   Les dates de modifications :
 
   */
+  /*
+  description :
+  function that a matrice of a char and resize it to a commun size that will be used
+  for all the char without changing the shape of the char
 
-  Matrix resized = newMatrix(size,size);
+  parameters :
+  Matrix M : matrix that we want to resize
+  int size : the comun size we want for all the matrix
 
-  int array_top_bot[2];
-  array_top_bot = getCornerMatrix(matrixChar);
 
-  int top = array_top_bot[0];//top corner
-  int bot = array_top_bot[1];//botom corner
+  dates/authors :
+  21/10
+  geoffroy du mesnil du buisson
 
-  if (top == -1){
+  */
+
+  Matrix resized = newMatrix(size,size); //initialize a matrix in the good size
+
+  struct Tuple tuple;
+
+  tuple = getCornerMatrix(matrixChar);
+
+  int top = tuple.top;//top corner
+  int bot = tuple.bottom;//botom corner
+
+  if (top == -1){//there is no char, the matrix is full of 0
 
     return resized;
   }
-  else{
+  else{//there is a char so we put in the good size
 
     Matrix sizeMat = bilinearInterpolation(matrixChar,top, bot, size);
 
@@ -186,6 +210,6 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
     }
 
     freeMatrix(sizeMat);
-    return resized;
+    return resized; //return the good sized matrix
   }
 }
