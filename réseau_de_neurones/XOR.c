@@ -1,6 +1,14 @@
 /* 
  *                                               XOR NEURAL NETWORK 
  *
+ *                          A neural network capable of learning the XOR function
+ *                          By A.Barry
+ *
+ * Memory usage:
+ * - 2 neuronModels for the hidden layer of neurons
+ * - 1 neuronModel for the output neuron
+ * - 1 training model for the current model that is trained
+ *
  */
 
 
@@ -31,18 +39,13 @@ struct neuronModel
   };
 
 
-
-// Personal note for number in for:
-//
-// The hidden layer gets its inputs directly from original inputs and the output layer also gets its inputs from the hidden layer (intermediate one) so basically:
 // 2 inputs -> hidden layer= intermediate layer - 2 inputs -> output layer 
 //So need for 2 input array per neuron
 
 
 //_________________________________ Needed Maths functions ___________________
 
-// Math functions as macros so they don't use less memory than a function,
-// While still being humanly readable
+// Sigmoid and its derivative
 #define SIGMOID(x)       ( 1. / (1. + exp(-x)) )
 #define SIGMOID_DERIV(x) ( exp(-x)/((1+exp(-x)*(1+exp(-x)))))
 
@@ -80,9 +83,6 @@ int main()
      output_neuron->bias=random6;
 
     // Creating intermediate layer -> array of 2 neurons
- 
-    //struct neuronModel *intermediate_neurons[2];
-    //intermediate_neurons[2]=(struct neuronModel [] *) malloc (2*sizeof(struct neuronModel));
     struct neuronModel *intermediate_neurons;
     intermediate_neurons=(struct neuronModel *)  malloc(2* sizeof(struct neuronModel));
     
@@ -110,7 +110,7 @@ int main()
     struct TM *t;
     t=(struct TM *) malloc (sizeof(struct TM));
     
-  for (unsigned long ktests = 0; ktests < 400000000; ktests++)
+  for (unsigned long ktests = 0; ktests < 40000000000; ktests++)
   {
       
     // Random test (for now then will put inputs)
@@ -124,11 +124,6 @@ int main()
 
     t = &(all_xor[RANDOM_RANGE(4)]);
     
-    //Print the two inputs
-        if (ktests%10000000==0)
-   {
-     printf("\n%d XOR %d ", (int)t->inputs[0], (int)t->inputs[1]);
-    }    
      //_________________________________________________________________________
     // Step 2- Forward propagate 
     // Feedforward= called feedforward because information only travels forward in the network (no loops)
@@ -163,7 +158,7 @@ int main()
 
 
     //Print Loss function every 10000 000times
-    if (ktests%10000000==0)
+    if (ktests%100000000==0)
     {
         printf("Entraînement n°%lu, fonction de perte= %f \n",ktests,output);
     }
@@ -172,7 +167,7 @@ int main()
     // Step 4- Differentiation
     
     double differentiation = SIGMOID_DERIV(output) * (t->result - output);
-    if (ktests%10000000==0)
+    if (ktests%100000000==0)
      {
          printf("Differentiation= %f \n \n",differentiation);
      }
@@ -180,8 +175,6 @@ int main()
     //
     //Step 5- Back-propagation and Step 6- Weight update
     // See ouput weigths before back propagation using SGD
-    if (ktests%10000000==0)
-         {printf("Poids du neurone de sortie avant propagation arrière, 1=%f 2=%f and bias=%f \n", output_neuron->weights[0], output_neuron->weights[1],output_neuron->bias);}
     
              for(size_t b=0;b<2;b++)
     {
@@ -201,20 +194,21 @@ int main()
       }
       intermediate_neurons[i].bias +=errors;
       
-      if(ktests%10000000==0)
+      if(ktests%100000000==0)
       {
-      printf("Mise à jour du poids du neurone n°%zu de la couche cachée:  n1= %f n2=%f et biais= %f \n \n",i, intermediate_neurons[i].inputs[0], intermediate_neurons[i].inputs[1], intermediate_neurons[i].bias);
+      printf("Mise à jour du poids du neurone n°%zu de la couche cachée:  n1= %f n2=%f et biais= %f \n",i, intermediate_neurons[i].inputs[0], intermediate_neurons[i].inputs[1], intermediate_neurons[i].bias);
         }
      
     }
    //_____________________________________________________________________________ 
     //Step 7- Iterate until convergence --> for ...
 
-    if(ktests%10000000==0)
-  {printf("Poids des neurones de sortie, n°1=%f n°2=%f et biais=%f \n_________________________________________________________________________ \n", output_neuron->weights[0], output_neuron->weights[1],output_neuron->bias);
+    if(ktests%100000000==0)
+  {printf("Poids du neurone de sortie, n°1=%f n°2=%f et biais=%f \nRésultat final: \n%d XOR %d = %d \n_______________________________________________________________________________________________ \n", output_neuron->weights[0], output_neuron->weights[1],output_neuron->bias,(int)t->inputs[0], (int)t->inputs[1], output>0.5);
+
   }
      
-      if (ktests==400000000)
+      if (ktests==40000000000)
       {
       if(output_neuron != NULL){
          free(output_neuron);

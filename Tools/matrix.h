@@ -9,13 +9,13 @@ typedef struct Matrix{
   double *matrix;
 } Matrix;
 
-Matrix new_Matrix(int H, int W);
+Matrix newMatrix(int H, int W);
 
 Matrix andLogicMartix(Matrix m1,Matrix m2);
 
-Matrix copyMatrix(Matrix M);
+Matrix cutMatrix(Matrix M, int x ,int y,int height,int width);
 
-Matrix cutMatrix(Matrix M, int x, int y, int height, int width);
+Matrix copyMatrix(Matrix M);
 
 void freeMatrix(Matrix M);
 

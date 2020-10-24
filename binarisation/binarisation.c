@@ -5,6 +5,9 @@
 #include "../Tools/matrix.h"
 
 // by marie maturana and geoffroy du mesnil du buisson
+//  15/10 -> 24/10
+// grayscale and binarisation with the otsu method
+// matrix creation
 
 
 void init_sdl()
@@ -71,18 +74,18 @@ void wait_for_keypressed()
 
 void SDL_FreeSurface(SDL_Surface *surface);
 
-
+//otsu threshold calculation function 
 float compteOtsuseuil(float hist[],int width, int height )
 {
 
-  int nombrep = width * height;
-  int t = 0;
+  int nombrep = width * height; //number of pixel
+  int t = 0; //threshold
 
-   float w1 = 0;
-   float w2 = 0;
+  float w1 = 0; //sum of probability 1
+  float w2 = 0;//sum of probability 2
     int q1 = 0;
     int q2 = 0;
-    float max = 0;
+    float max = 0; //max variance
 
     for (int i = 0; i <= 255; i++)
     {
@@ -96,11 +99,14 @@ float compteOtsuseuil(float hist[],int width, int height )
 
 
       w2 += (float) (i * ((int)hist[i]));
-      float m1 = w2 / q1;
-      float m2 = (w1 - w2) / q2;
+      float m1 = w2 / q1; //average calculation 1
+      float m2 = (w1 - w2) / q2; //average calculation 2
 
+
+      //variance calculation for t
       float res = (float) q1 * (float) q2 * (m1 - m2) * (m1 - m2);
 
+      //choose the max
       if (res > max)
       {
         max = res;
@@ -111,8 +117,10 @@ float compteOtsuseuil(float hist[],int width, int height )
 
     return t;
 }
-
-Matrix imgToMat(SDL_Surface* img){//geoffroy
+//geoffroy
+//transform the image to matrix
+//use the binarisation method (otsu) 
+Matrix imgToMat(SDL_Surface* img){
   int width = img->w;
 
   int height = img->h;
@@ -148,7 +156,7 @@ Matrix imgToMat(SDL_Surface* img){//geoffroy
 
   float seuil = compteOtsuseuil(histo, width, height );
 
-  Matrix derhistoMat = new_Matrix(height, width);//int dernierhisto[width][height];
+  Matrix derhistoMat = newMatrix(height, width);
 
   for (int i = 0; i < derhistoMat.width; i++){
        for (int j = 0; j < derhistoMat.height; j++){
@@ -161,7 +169,7 @@ Matrix imgToMat(SDL_Surface* img){//geoffroy
            Uint32 pixel1 = SDL_MapRGB(img->format, 255, 255, 255);
            put_pixel(img,i,j,pixel1);
 
-           derhistoMat.matrix[i*derhistoMat.width+j] = 0; //dernierhisto[i][j] = 0;
+           derhistoMat.matrix[i*derhistoMat.width+j] = 0; 
 
          }
          else{
@@ -169,14 +177,18 @@ Matrix imgToMat(SDL_Surface* img){//geoffroy
            Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
            put_pixel(img,i,j,pixel1);
 
-           derhistoMat.matrix[i*derhistoMat.width+j] = 1; //dernierhisto[i][j] = 1;
+           derhistoMat.matrix[i*derhistoMat.width+j] = 1;
          }
       }
   }
-  return derhistoMat;//retourne ta matrice derhistoMat
+  return derhistoMat;//return the matrix derhistoMat
 
   SDL_FreeSurface(img);
 }
+
+//geoffroy
+//transform the matrix to image
+//use the binarisation method (otsu) 
 
 int matToImg(Matrix M, char *str){//geoffroy
   SDL_Surface* img;
@@ -217,7 +229,9 @@ int main()
 
     init_sdl();
 
-    image_surface = load_image("loremipsum.jpg");
+    //load image in bmp 
+
+    image_surface = SDL_LoadBMP("loremipsum.bmp");
 
     screen_surface = display_image(image_surface);
 
@@ -227,14 +241,20 @@ int main()
 
     int height = image_surface->h;
 
+
+    //grayscale 
     Uint8 r,v,b;
 
     for (int x = 0; x < width; x++){
          for (int y = 0; y < height; y++){
 
+	   // have pixel and rvb
+
 	         Uint32 pixel = get_pixel(image_surface, x, y);
 
 	         SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
+
+		 // calculation of grayscale
 
 	         Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
 
@@ -244,7 +264,12 @@ int main()
 	       }
 	  }
 
+    //change image
+
     update_surface(screen_surface,image_surface);
+
+    //calculation of number of pixel for
+    //each level of 0 to 255
 
     float histo[256];
 
@@ -258,11 +283,15 @@ int main()
 	    }
     }
 
+    //calculation of otsu level
+
     float seuil = compteOtsuseuil(histo, width, height );
 
-    Matrix derhistoMat = new_Matrix(height, width);//int dernierhisto[width][height];
+    Matrix derhistoMat = newMatrix(height, width);
 
     wait_for_keypressed();
+
+    //put in black and white with the threshold
 
     for (int i = 0; i < derhistoMat.width; i++){
          for (int j = 0; j < derhistoMat.height; j++){
@@ -275,7 +304,7 @@ int main()
 		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
 		         put_pixel(image_surface,i,j,pixel1);
 
-             derhistoMat.matrix[i*derhistoMat.width+j] = 0; //dernierhisto[i][j] = 0;
+             derhistoMat.matrix[i*derhistoMat.width+j] = 0; 
 
 	         }
 	         else{
@@ -283,10 +312,13 @@ int main()
 		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
 		         put_pixel(image_surface,i,j,pixel1);
 
-		         derhistoMat.matrix[i*derhistoMat.width+j] = 1; //dernierhisto[i][j] = 1;
+		         derhistoMat.matrix[i*derhistoMat.width+j] = 1; 
 	         }
 	      }
     }
+
+    //put the image in white and black
+    //to show in the firt soutenance if the binarisation is done
 
     update_surface(screen_surface, image_surface);
 
