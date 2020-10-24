@@ -166,18 +166,18 @@ Matrix imgToMat(SDL_Surface* img){
 
          if( r <= (int)seuil ){
 
-           Uint32 pixel1 = SDL_MapRGB(img->format, 255, 255, 255);
+           Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
            put_pixel(img,i,j,pixel1);
 
-           derhistoMat.matrix[i*derhistoMat.width+j] = 0; 
+           derhistoMat.matrix[i*derhistoMat.width+j] = 1; 
 
          }
          else{
 
-           Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
+           Uint32 pixel1 = SDL_MapRGB(img->format, 255,255, 255);
            put_pixel(img,i,j,pixel1);
 
-           derhistoMat.matrix[i*derhistoMat.width+j] = 1;
+           derhistoMat.matrix[i*derhistoMat.width+j] = 0;
          }
       }
   }
@@ -301,18 +301,18 @@ int main()
 
 	         if( r <= (int)seuil ){
 
-		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
+		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
 		         put_pixel(image_surface,i,j,pixel1);
 
-             derhistoMat.matrix[i*derhistoMat.width+j] = 0;
+			 derhistoMat.matrix[i*derhistoMat.width+j] = 1;
 
 	         }
 	         else{
 
-		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
+		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
 		         put_pixel(image_surface,i,j,pixel1);
 
-		         derhistoMat.matrix[i*derhistoMat.width+j] = 1;
+		         derhistoMat.matrix[i*derhistoMat.width+j] = 0;
 	         }
 	      }
     }
