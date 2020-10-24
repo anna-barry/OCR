@@ -21,7 +21,11 @@ Matrix newMatrix(int H, int W){
 
 Matrix andLogicMartix(Matrix m1,Matrix m2){
 
-  Matrix m3 = new_Matrix(m1.height, m1.with);
+  Matrix m3;
+
+  m3.height = m1.height;
+  m3.width = m1.width;
+  m3.matrix = malloc(m3.height*m3.width*sizeof(double));
 
   for (int i = 0 ; i < m1.height ; i++){
       for (int j = 0 ; j < m1.width ; j++){
@@ -47,8 +51,7 @@ Matrix copyMatrix(Matrix M){
     return mcopy;
 }
 
-Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the cuted matrix (part of the original matrix)
-{
+Matrix cutMatrix(Matrix M, int x, int y, int height, int width){
         Matrix cut;
         cut.height = height;
         cut.width = width;
@@ -56,7 +59,7 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
 
         for (int i = x ; i < x+cut.height ; i++){
           for (int j = y ; j < y+cut.width ; j++){
-            
+
             cut.matrix[(i-x)*cut.width+(j-y)] = M.matrix[i*M.width+j];
           }
         }
@@ -68,17 +71,3 @@ void freeMatrix(Matrix M){
     M.width = 0;
     M.height = 0;
 }
-
-Matrix cutMatrix(Matrix M, int x ,int xlen,int height)
-{
-    Matrix cutted= new_Matrix(xlen,height);
-    for (int xi=0; xi<xlen; x++)
-    {
-        for (int yi=0; yi<height; y++)
-        {
-            cutted[xi*xlen+yi]=M[(x+xi)*xlen+(yi+y)];
-        }
-    }
-    return cutted;
-}
-
