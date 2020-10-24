@@ -1,5 +1,4 @@
 # Simple SDL mini Makefile
-#include "../Tools/matrix.h
 
 CC=gcc
 
