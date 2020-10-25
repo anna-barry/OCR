@@ -12,37 +12,6 @@
 
 ////____________FROM RLSA TO XY-CUT______________________________
 
-/*Tree segmentation(Matrix M)
-{
-    int widht= M.width;
-    int lenght= M.length;
-    Matrix og= copyMatrix(M);
-    Tree T= newTree(-3);
-    M = rsla(M);
-    int started=0;      //if started
-    int previouspix=0;
-    int xbeg=0;
-    int xend=0;
-    int yend=0;
-    int ybeg=0
-    int x=0;
-    int y=0;
-    while (x<length && y<widht)
-    {
-        if  (started==0 && M.matrix[y*length+x]==1)
-        {
-            started=1;
-            xbeg=x;
-            ybeg=y;
-        }
-        if (started==1 && M.matrix[y*lenght+x]==0 && xend==0)
-        {
-            xend=x;
-            y++;
-            x--;
-        }
-    }
- }*/
     
 // THE IDEA:
 
@@ -298,8 +267,9 @@ void _trycut(Matrix M, int line, Tree *T)
     //return *T;
 }
 
-//__________________CUTTING HORIZONTAL BLANKS______________________________
 
+//__________________CUTTING HORIZONTAL BLANKS______________________________
+void verticalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical, int line);
 
 void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int line)
 {
@@ -396,6 +366,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int li
             y++;
         }
 }
+
 
 //__________________CUTTING VERTICAL BLANKS______________________________
 

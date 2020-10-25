@@ -157,6 +157,87 @@ void array_select_sort(int array[], size_t len)
 
 Matrix contrast(Matrix M)
 {
-    //TO DO
-    pass
+    int width=M.width;
+    int height=M.height;
+    
+    
+    //variables a definir: di pour diagonale, h pour haut,b pour bas, g pour gauche, d pour droit
+    int center=0
+    int g=0;
+    int h=0;
+    int b=0;
+    int d=0;
+    
+    int compteur=0;
+    
+    for (int x=0; w<width; i++)
+    {
+        compteur =0;
+        for (int y=0; y<height; y++)
+        {
+            center= m.Matrix[x+y*width];
+            array[1]=center;
+            //assimilation des valeurs pour chaque pixel
+            
+            if (x!=0)
+            {
+                g= m.Matrix[(x-1)+y*width];
+                compteur ++;
+            }
+            if (x!=width-1)
+            {
+                d= m.Matrix[(x+1)+y*width];
+                compteur ++;
+            }
+            if (y!=0)
+            {
+                h=m.Matrix[x+(y-1)*width];
+            }
+            if (y!=height-1)
+            {
+                b=m.Matrix[x+(y+1)*width];
+            }
+            
+            array_select_sort(array,9);
+            
+            int mid= array[4]; //(9-compteur+9)/2???
+            
+            m.Matrix[x+y*width]=g*h+ center*;
+            
+        }
+    }
+    
+    return Matrix;
+}
+
+void array_select_sort(int array[], size_t len)
+{
+    /*
+    description :
+
+    sorting a given list
+
+    parameters :
+
+    int array[] = lists containing 9 information
+    size_t len = length of the list
+     
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
+    for (size_t i=0; i<len; i++)
+    {
+        size_t pos=i;
+        for (size_t j=i; j<len; j++)
+        {
+            if(array[pos] > array[j])
+            pos=j;
+        }
+        if(pos != i)
+        {
+            array_swap(array,i,pos);
+        }
+    }
 }
