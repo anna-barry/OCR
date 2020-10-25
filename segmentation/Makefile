@@ -8,3 +8,8 @@ segmentationXY.o: segmentationXY.c
 
 main.o: main.c segmentationXY.h
 	gcc -c main.c
+
+clean:
+	rm -f *.o
+	rm -f ${DEP}
+	rm -f ${PRG}
