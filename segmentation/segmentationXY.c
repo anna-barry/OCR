@@ -9,19 +9,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//________________debut_des_fonctions_________________________//
 
+////____________FROM RLSA TO XY-CUT______________________________
+
+    
+// THE IDEA:
+
+    //cut 1 matrix into several small matrices
+    //put each matrix on the tree on the level were it belongs
+    /*      -3 : paragraph
+            -2 : lines
+            -1 : words
+             0 : letters    */
+ 
+
+//recursively calling a new cutting process to add each step into the tree
+
+
+///________________________CUTTING WORDS AND LINES____________________
+///__________________________XY-CUT_____________________________________
 
 //column reding to cut in vertical//
 Matrix vertical(Matrix M)
 {
+    
+/*
+description :
+-on this function we recon that noises and spots were treated
+-traces a black column if 1 pixel is in the column
+-goes along each colum, it will help to detect easily
+
+parameters :
+
+Matric M: the matrix of the picture
+
+dates/authors :
+17/10
+marine thunet
+
+    */
     int h_size = M.height;
     int w_size = M.width;
     int y=0;
-    //Dectecter les zones d'espaces
-    //principe:
-    //si un pixel noir est present: ce n'est pas une séparation donc
-    //la colonne devient noir
+    //Detect zone spaces
+    //principle
+    //if there is a black pixel-> it is a separation
+    //the column becomes black
     
     for (int x=0; x<w_size ;x++)
     {
@@ -42,38 +75,58 @@ Matrix vertical(Matrix M)
 }
 
 
-Tree _trycut(Matrix M, int line, Tree *T)
+void _trycut(Matrix M, int line, Tree *T)
 {
-    //copie de la matrice pour recupérer la matrice d'origine quand necessaire
-    Matrix reel = copyMatrix(M);
+    /*
+    description :
+
+    -the function cuts vertical lines
+    -adds each segmente to the tree
+        -if word then level -1
+        -if char then level 0
+
+    parameters :
+
+    Matric M: the matrix of the picture
+    int line: boolean teeling us if we are cutting a line or a word
+    Tree *T: the pointer to the tree that is building
+
+    dates/authors :
+    15/10
+    marine thunet
+
+    */
     
-    int x=0;
+    //copying the og matrix
+    Matrix reel = copyMatrix(M);
+
     int y = 0;
     int h_size = M.height;
     int w_size = M.width;
     
-    
+
     //___________________________TO DO_____________________________________//
-    //il faudrait aussi affiner les lignes au maximum: parcours horizontal//
-    //améliorer la technique: histogrammes si restes de taches, grains...//
+    //we should get the lines as thin as possible: horzontal path//
+    //get the technique better: histogrammes if spots and grains left...//
     
-    //on a soit des lignes soit des mots, donc parcours vertical
-    //on part du principe qu'il n'y a plus de taches ou de grain
+    //either lines or word, so vertical exam
+    //for now we assume their isn't any defaults left
     
     M=vertical(M);
-    
-    //matrice de blocs noirs obtenus
-    //il faut choisir si l'on souhaite decouper des mots ou des lignes
-    //le decoupage n'est pas le même
+    //black blocks matrix
+    //now choose if it's cuting line or words
+    //it's not made the same way
     
 /*_____________INITIALISATION VARIABLES COMMUNES________________*/
     
-    int previous=0; //valeur du pixel precedent
-    int x=0;        //valeur du départ coordoné départ du mot/ de la lettre
+    int previous=0; //previous pixel value
+    
+    int x=0;
+    //first value of the x of  the element
     
     //booléens pour se repérer dans les fonctions
-    int begin=0; //1 si le mot est en cours de traitement
-    int end=0;   //1 si on est au dernier pixel de la ligne
+    int begin=0; //1 if the word has started
+    int end=0;   //1 if it is the last pixel of the line
     
     Matrix createseg;
     
@@ -82,8 +135,8 @@ Tree _trycut(Matrix M, int line, Tree *T)
     //_______LINEAR CUT______________________________________________
     if (line==1)
     {
-        int nbspace=-1;  //compte le nombre de suite de pixels blancs
-                        //commence a -1 car compte automatiquement au premier pixel
+        int nbspace=-1;  //number of white pixel suite
+                        //begins at -1 because it counts one more
         
         /*_______Detect spaces &  average of spaces_____________*/
         for (int c; c<w_size; c++)
@@ -130,7 +183,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
                     if (totalspace>average || end == 1 )
                     {
                         //matrix of the word that was found
-                        createseg=_cutMatrix(reel,x,ix-totalspace,h_size);
+                        createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
                         
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
@@ -150,7 +203,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
         }
         
     }
-    //____________________DECOUPAGES_MOTS____________________________________
+    //____________________WORD_CUTTING____________________________________
     
     else
     {
@@ -168,7 +221,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
                 if (begin == 0 && end == 0) //the letter starts
                 {
                     begin=1;
-                    x=xi; //the letter starts at the xy: x=xi
+                    x=ix; //the letter starts at the xy: x=xi
                     //xlen=1;
                 }
                 else
@@ -179,7 +232,7 @@ Tree _trycut(Matrix M, int line, Tree *T)
                     {
                         
                         //creating a matrix for the caracter that was found
-                        createseg=_cutMatrix(reel,x,ix-totalspace,h_size);
+                        createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
                         
                         createseg=resizeMatrix(createseg,30);
                         
@@ -192,10 +245,10 @@ Tree _trycut(Matrix M, int line, Tree *T)
                         //letter=ascii code;
                     
                         Tree *Child = newTree(0);
-                        AddChild(T, createseg);
+                        AddChild(T, 0); //will be the value of the char
                         
                         //reinitialisation
-                        free_Matrix(createseg);
+                        freeMatrix(createseg);
                         begin=0;
                     }
                 }
@@ -204,67 +257,236 @@ Tree _trycut(Matrix M, int line, Tree *T)
         
         else
             {
-                //le nmb d'espace augmente
+                //number of space adds up
                 totalspace++;
             }
         }
     }
     
-    free_Matrix(reel);
-        
+    freeMatrix(reel);
+    //return *T;
 }
 
-      //fonction qui trace des lignes verticales
-     //detecte les espaces des séparation de caractères/moyenne
-    //des espaces
 
-    //fonction qui forme des mots
-        //fonction qui ajoute dans un arbre a bon endroit et qui appelle une nouvelle fonction
+//__________________CUTTING HORIZONTAL BLANKS______________________________
+void verticalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical, int line);
 
-    //fonction qui forme des caractères
-        //redimensionne l'image
-        //ajoute chaque caractère en bout d'arbre.//appel de réseau de neuronnes
-
-    //fonction qui créé
-
-/*Tree segmentation(Matrix M)
+void horizontalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical,int line)
 {
-    int widht= M.width;
-    int lenght= M.length;
-    Matrix og= copyMatrix(M);
-    Tree T= newTree(-3);
-    //ibtiti
-    M = rsla(M);
-    int started=0;      //if started
-    int previouspix=0;
-    int xbeg=0;
-    int xend=0;
-    int yend=0;
-    int ybeg=0
-    int x=0;
+    /*
+    description :
+
+    -cuts first horizontal block founded
+    -treats the block founded
+    -the rest of the block is treated horizontally
+
+    parameters :
+
+    Tree *T : the pointer to the tree that is building
+    Matric M : the matrix of the picture
+    int horizontal : 2 if horizonral cuts can go further
+    int vertical : 2 if vertical cuts can no go further
+    int line : boolean teeling us if we are cutting a line (1) or a word (0)
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
+    
+    int width= M.width;
+    int lenght= M.height;
     int y=0;
-    while (x<length && y<widht)
+    int x=0;
+    int started=0;
+    int ybeg=0;
+    Matrix tocut;
+    Matrix og1;
+    Matrix og2;
+    Matrix rest;
+    
+    if (horizontal==2 && vertical==2 && line==1)
     {
-        if  (started==0 && M.matrix[y*length+x]==1)
-        {
-            started=1;
-            xbeg=x;
-            ybeg=y;
-        }
-        if (started==1 && M.matrix[y*lenght+x]==0 && xend==0)
-        {
-            xend=x;
-            y++;
-            x--;
-        }
+        Tree *Child = newTree(-2);
+        AddChild(T, Child);
+        _trycut(og,1,Child);
     }
     
-    //découper la matrice en plusieurs sous matrices
-    //placer plusieurs matrices en racine de l'abre
-    //rapeller la fonction en enfant de l'arbre pour ajouter les paragraphes, lignes....
+    if (horizontal==2 && vertical==2)
+    {
+        Tree *Child = newTree(-3);
+        AddChild(T, Child);
+        horizontalcut(Child,rlsa(og,4,4),og,1,1,1);
+    }
+    
+    while(y<lenght)
+        {
+            x=0;
+            while(x<width && M.matrix[y*lenght+x]==0)
+            {
+                x++;
+            }
+            if (y==lenght && x==width && started==0)
+            {
+                horizontal=2;
+            }
+            if (x==width && started==1)
+            {
+                if (y!=lenght)
+                {
+                    rest=cutMatrix(M,0,y,width,lenght-y);
+                    og1=cutMatrix(og,0,y,width,lenght-y);
+                    horizontalcut(T,rest,og1,1,vertical,line);
+                }
+                if (line==0)
+                {
+                tocut=cutMatrix(M,0,ybeg,width,y-ybeg);
+                og2=cutMatrix(og,0,ybeg,width,y-ybeg);
+                verticalcut(T,tocut,og2,1,vertical,0);
+                y=lenght;
+                }
+                if (line==1)
+                {
+                og2=cutMatrix(og,0,ybeg,width,lenght-y);
+                Tree *Child = newTree(-2);
+                AddChild(T, Child);
+                _trycut(og,1,Child);
+                }
+            }
+            else if( started==0 && x<width && M.matrix[y*lenght+x]==1)
+            {
+                ybeg=y;
+                x=0;
+                started=1;
+            }
+            else if (x<width && M.matrix[y*lenght+x]==1)
+            {
+                x=0;
+            }
+            y++;
+        }
 }
 
-//fonction qui lie le RLSA au XY-Cut
 
-    //créer la matrice
-*/
+//__________________CUTTING VERTICAL BLANKS______________________________
+
+void verticalcut(Tree *T,Matrix M,Matrix og,int horizontal,int vertical, int line)
+{
+    /*
+    description :
+
+    -cuts first vertical block founded
+    -treats the block founed
+    -the rest of the block is treated vertically
+
+    parameters :
+
+    Tree *T : the pointer to the tree that is building
+    Matric M : the matrix of the picture
+    int horizontal : 2 if horizonral cuts can go further
+    int vertical : 2 if vertical cuts can no go further
+    int line : boolean teeling us if we are cutting a line or a word
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
+    int width= M.width;
+    int lenght= M.height;
+    int y=0;
+    int x=0;
+    int started=0;
+    int xbeg=0;
+    Matrix tocut;
+    Matrix og1;
+    Matrix og2;
+    Matrix rest;
+    
+    if (horizontal==2 && vertical==2 && line==1)
+    {
+        Tree *Child = newTree(-2);
+        AddChild(T, Child);
+        _trycut(og,1,Child);
+    }
+    if (horizontal==2 && vertical==2)
+    {
+        Tree *Child = newTree(-3);
+        AddChild(T, Child);
+        horizontalcut(Child,rlsa(og,4,4),og,1,1,1);
+    }
+
+    
+    while(x<width)
+        {
+            y=0;
+            while(y<lenght && M.matrix[y*lenght+x]==0)
+            {
+                y++;
+            }
+            if (y==lenght && x==width && started==0)
+            {
+                vertical=2;
+            }
+            if (y==lenght && started==1)
+            {
+                
+                if (x!=width)
+                {
+                    rest=cutMatrix(M,xbeg,0,width-x,lenght);
+                    og1=cutMatrix(og,xbeg,0,width-x,lenght);
+                    horizontalcut(T,rest,og1,horizontal,vertical,line);
+                }
+                tocut=cutMatrix(M,x,0,x-xbeg,lenght);
+                og2=cutMatrix(og,x,0,x-xbeg,lenght);
+                verticalcut(T,tocut,og2,horizontal,vertical,line);
+                x=width;
+            }
+            else if( started==0 && y<lenght && M.matrix[y*lenght+x]==1)
+            {
+                xbeg=x;
+                y=0;
+                started=1;
+            }
+            else if (y<lenght && M.matrix[y*lenght+x]==1)
+            {
+                y=0;
+            }
+            x++;
+            
+        }
+        //return T;
+}
+
+
+
+
+
+//________________begining_________________________//
+
+
+Tree *beginSeg(Matrix M)
+{
+    /*
+    description :
+
+    -fonction to help begin the others
+    -starting the segmentation
+
+    parameters :
+
+    Matric M: the matrix of the picture
+
+    dates/authors :
+    24/10
+    marine thunet
+
+    */
+    Tree *txt = newTree(-4);
+    Matrix og= copyMatrix(M);
+    M = rlsa(M,10,10);
+    horizontalcut(txt,M,og,1,1,0);
+    
+    return txt;
+
+}

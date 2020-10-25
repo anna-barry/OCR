@@ -1,0 +1,11 @@
+______________________________________________________________________
+
+                            Projet OCR
+
+______________________________________________________________________
+
+Pour la première soutenance:
+
+* pour lancer le réseau de neurones et voir son évolution on tape "make XOR" dans son terminal puis la commande "./XOR"
+
+* il en est de même pour les parties de segmentation et de binarisation

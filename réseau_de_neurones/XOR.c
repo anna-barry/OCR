@@ -110,7 +110,7 @@ int main()
     struct TM *t;
     t=(struct TM *) malloc (sizeof(struct TM));
     
-  for (unsigned long ktests = 0; ktests < 40000000000; ktests++)
+  for (unsigned long ktests = 0; ktests < 400000000; ktests++)
   {
       
     // Random test (for now then will put inputs)
@@ -208,7 +208,7 @@ int main()
 
   }
      
-      if (ktests==40000000000)
+      if (ktests==400000000)
       {
       if(output_neuron != NULL){
          free(output_neuron);
