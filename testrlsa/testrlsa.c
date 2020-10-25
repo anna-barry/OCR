@@ -514,7 +514,7 @@ int main()
 
     //print_Matrix(m);
 
-    //matToImg(m, "rlsa_paragraphe_img");
+    matToImg(m, "rlsa_paragraphe_img");
 
     SDL_FreeSurface(image_surface);
 
