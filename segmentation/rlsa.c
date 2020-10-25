@@ -34,19 +34,19 @@ Matrix horizonRLSA (Matrix img, int seuil){
     j=0;
     while (j < m.width) {
 
-      if (m.matrix[i*m.width+j]!=1){
+      if ((int)m.matrix[i*m.width+j]!=1){
 
         k=j;
         nbzeros=0;
 
-        while (m.matrix[i*m.width+k]!=1&&k< m.width) {//counting the numbers of 0 followed between two 1
+        while (((int)m.matrix[i*m.width+k]!=1)&&(k< m.width)) {//counting the numbers of 0 followed between two 1
 
           nbzeros++;
           k++;
         }
         if (nbzeros<=seuil){//if the numbers of 0 is lower or equal to the limite (seuil) all the 0 pass to 1
 
-          for (int l = j; l < nbzeros; l++) {
+          for (int l = j; l < nbzeros+j; l++) {
 
             m.matrix[i*m.width+l]=1;
           }
@@ -80,32 +80,32 @@ Matrix verticRLSA (Matrix img, int seuil){
 
   int nbzeros;//nubers of 0 followed
 
-  int i;//index on the height of the matrix
+  int y;//index on the height of the matrix
   int k;//index on the nubers of 0 followed
-  for (int j = 0; j < m.width ; j++) {//vertical search in the matrix
+  for (int x = 0; x < m.width ; x++) {//vertical search in the matrix
 
-    i=0;
-    while (i < m.height) {
+    y=0;
+    while (y < m.height) {
 
-      if (m.matrix[i*m.width+j]!=1){
+      if ((int)m.matrix[y*m.width+x]!=1){
 
-        k=i;
+        k=y;
         nbzeros=0;
-        while (m.matrix[i*m.width+k]!=1&&k< m.height) {//counting the numbers of 0 followed between two 1
+        while ((int)m.matrix[k*m.width+x]!=1&&k< m.height) {//counting the numbers of 0 followed between two 1
 
           nbzeros++;
           k++;
         }
         if (nbzeros<=seuil){//if the numbers of 0 is lower or equal to the limite (seuil) all the 0 pass to 1
 
-          for (int l = i; l < nbzeros; l++) {
+          for (int l = y; l < nbzeros+y; l++) {
 
-            m.matrix[i*m.width+l]=1;
+            m.matrix[l*m.width+x]=1;
           }
         }
-        i+=nbzeros+1;//we increment the index of the number of 0 we had seen
+        y+=nbzeros;//we increment the index of the number of 0 we had seen
       }//end if
-      i++;
+      y++;
     }//end while
   }
   return m;//return the matrix
