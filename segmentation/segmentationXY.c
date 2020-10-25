@@ -2,8 +2,8 @@
 
 
 //_____________________include________________________________//
-#include "../Tools/matrix.h"
-#include "../Tools/tree.h"
+#include "matrix.h"
+#include "tree.h"
 #include "rlsa.h"
 #include "resizeMatrix.h"
 #include <stdio.h>
