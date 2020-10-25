@@ -6,6 +6,24 @@ ______________________________________________________________________
 
 Pour la première soutenance:
 
-* pour lancer le réseau de neurones et voir son évolution on tape "make XOR" dans son terminal puis la commande "./XOR"
+* l'ensemble des fonctions présentes dans un algarithme sont dans des
+  fichiers ".c" nommé en fonction de l'algorithme chacun de ces fichiers
+  est dans le dossier de partie de traitement concerné.
 
-* il en est de même pour les parties de segmentation et de binarisation
+* pour lancer le réseau de neurones et voir son évolution on tape
+  "make XOR" dans son terminal puis la commande "./XOR".
+
+* pour lancer la binarisation et voir son évolution on tape
+  "make all" dans son terminal dans le dossier testbinarisation
+  puis la commande "./binarisation" et enfin nous pouvons
+  nettoyer le dossier en faisans "make clean".
+
+* pour lancer le RLSA et voir son évolution on tape
+  "make all" dans son terminal dans le dossier testrlsa
+  puis la commande "./testrlsa" et enfin nous pouvons
+  nettoyer le dossier en faisans "make clean".
+
+* pour lancer le XYCut et voir son évolution on tape
+  "make all" dans son terminal dans le dossier testxycut
+  puis la commande "./testxycut" et enfin nous pouvons
+  nettoyer le dossier en faisans "make clean".
