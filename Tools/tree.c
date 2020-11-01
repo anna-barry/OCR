@@ -77,3 +77,11 @@ marine thunet
         T->child=Child;
     }
 }
+
+/*void print_tree (Tree T)
+{
+    if (T)
+    {
+        
+    }
+}*/

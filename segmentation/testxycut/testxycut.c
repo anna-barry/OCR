@@ -1102,6 +1102,21 @@ Tree *beginSeg(Matrix M)
 
 }
 
+void printTree(Tree T,char name[])
+{
+    if (T.key)
+    {
+        for (int i=0; T.children[i]!=NULL; i++)
+        {
+            //name+=i;
+           prinTree(T.children[i],name+".%i",i)
+        }
+        
+        matToImg(T.key, name);
+        
+    }
+}
+
 int main()
 {
     SDL_Surface* image_surface;
@@ -1228,6 +1243,7 @@ int main()
 
     //Matrix m = rlsa(rlsa(derhistoMat,1000000000,1000000000),1000000000,1000000000);
     beginSeg(derhistoMat);
+    printTree(txt,level1)
 
     SDL_FreeSurface(image_surface);
 

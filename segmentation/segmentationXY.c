@@ -106,7 +106,7 @@ void _trycut(Matrix M, int line, Tree *T)
     
 
     //___________________________TO DO_____________________________________//
-    //we should get the lines as thin as possible: horzontal path//
+    //we should get the lines as thin as possible: horizontal path//
     //get the technique better: histogrammes if spots and grains left...//
     
     //either lines or word, so vertical exam
@@ -489,4 +489,10 @@ Tree *beginSeg(Matrix M)
     
     return txt;
 
+}
+
+void printTree(Tree T)
+{
+    if T.key:
+        
 }
