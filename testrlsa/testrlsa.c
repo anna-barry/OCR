@@ -222,38 +222,6 @@ int matToImg(Matrix M, char *str){//geoffroy
   return 0;
 }
 
-// void print_Matrix(Matrix M)    // Print a matrix
-// {
-//   int n = 0;
-//     for (int i = 0 ; i < M.height ; i++)
-//         {
-//                 for (int j = 0 ; j < M.width ; j++){
-//                   printf("%i  ,", (int)M.matrix[i*M.width+j]);
-//                   n++;
-//                 }
-//                 printf("\n");
-//         }
-//
-//     printf("\n");
-//     printf("%i\n", n);
-// }
-
-// Matrix new_alea_Matrix(int H, int W)    // Create a new matrix init with random double
-// {
-//     Matrix M;
-//
-//         M.height = H;
-//         M.width = W;
-//
-//         M.matrix = malloc(H*W*sizeof(double));
-//         for (int i = 0 ; i < H*W ; i++)
-//         {
-//                 M.matrix[i] = rand() % 2;
-//         }
-//
-//         return M;
-//
-// }
 
 Matrix horizonRLSA (Matrix img, int seuil){
   /*
@@ -404,85 +372,86 @@ int main()
 
     wait_for_keypressed();
 
-    int width = image_surface->w;
-
-    int height = image_surface->h;
-
-
-    //grayscale
-    Uint8 r,v,b;
-
-    for (int x = 0; x < width; x++){
-         for (int y = 0; y < height; y++){
-
-	   // have pixel and rvb
-
-	         Uint32 pixel = get_pixel(image_surface, x, y);
-
-	         SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
-
-		 // calculation of grayscale
-
-	         Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
-
-	         Uint32 pixel1 = SDL_MapRGB(image_surface->format, valeur_pixel, valeur_pixel, valeur_pixel);
-
-	         put_pixel(image_surface,x,y,pixel1);
-	       }
-	  }
-
-    //change image
-
-    update_surface(screen_surface,image_surface);
-
-    //calculation of number of pixel for
-    //each level of 0 to 255
-
-    float histo[256];
-
-    for (int x = 0; x < width; x++){
-	    for (int y = 0; y < height; y++){
-
-	      Uint32 pixel = get_pixel(image_surface, x, y);
-	      SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
-
-	      histo[r]+=1;
-	    }
-    }
-
-    //calculation of otsu level
-
-    float seuil = compteOtsuseuil(histo, width, height );
-
-    Matrix derhistoMat = newMatrix(height, width);
-
-    wait_for_keypressed();
-
-    //put in black and white with the threshold
-
-    for (int i = 0; i < derhistoMat.width; i++){
-         for (int j = 0; j < derhistoMat.height; j++){
-
-	         Uint32 pixel = get_pixel(image_surface, i, j);
-	         SDL_GetRGB(pixel, image_surface->format, &r, &v,&b);
-
-	         if( r <= (int)seuil ){
-
-		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
-		         put_pixel(image_surface,i,j,pixel1);
-
-             derhistoMat.matrix[i*derhistoMat.width+j] = 1;
-
-	         }
-	         else{
-
-		         Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
-		         put_pixel(image_surface,i,j,pixel1);
-
-		         derhistoMat.matrix[i*derhistoMat.width+j] = 0;
-	         }
-	      }
-    }
+    // int width = image_surface->w;
+    //
+    // int height = image_surface->h;
+    //
+    //
+    // //grayscale
+    // Uint8 r,v,b;
+    //
+    // for (int x = 0; x < width; x++){
+    //      for (int y = 0; y < height; y++){
+    //
+	  //  // have pixel and rvb
+    //
+	  //        Uint32 pixel = get_pixel(image_surface, x, y);
+    //
+	  //        SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
+    //
+		//  // calculation of grayscale
+    //
+	  //        Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
+    //
+	  //        Uint32 pixel1 = SDL_MapRGB(image_surface->format, valeur_pixel, valeur_pixel, valeur_pixel);
+    //
+	  //        put_pixel(image_surface,x,y,pixel1);
+	  //      }
+	  // }
+    //
+    // //change image
+    //
+    // update_surface(screen_surface,image_surface);
+    //
+    // //calculation of number of pixel for
+    // //each level of 0 to 255
+    //
+    // float histo[256];
+    //
+    // for (int x = 0; x < width; x++){
+	  //   for (int y = 0; y < height; y++){
+    //
+	  //     Uint32 pixel = get_pixel(image_surface, x, y);
+	  //     SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
+    //
+	  //     histo[r]+=1;
+	  //   }
+    // }
+    //
+    // //calculation of otsu level
+    //
+    // float seuil = compteOtsuseuil(histo, width, height );
+    //
+    // Matrix derhistoMat = newMatrix(height, width);
+    //
+    // wait_for_keypressed();
+    //
+    // //put in black and white with the threshold
+    //
+    // for (int i = 0; i < derhistoMat.width; i++){
+    //      for (int j = 0; j < derhistoMat.height; j++){
+    //
+	  //        Uint32 pixel = get_pixel(image_surface, i, j);
+	  //        SDL_GetRGB(pixel, image_surface->format, &r, &v,&b);
+    //
+	  //        if( r <= (int)seuil ){
+    //
+		//          Uint32 pixel1 = SDL_MapRGB(image_surface->format, 0, 0, 0);
+		//          put_pixel(image_surface,i,j,pixel1);
+    //
+    //          derhistoMat.matrix[i*derhistoMat.width+j] = 1;
+    //
+	  //        }
+	  //        else{
+    //
+		//          Uint32 pixel1 = SDL_MapRGB(image_surface->format, 255, 255, 255);
+		//          put_pixel(image_surface,i,j,pixel1);
+    //
+		//          derhistoMat.matrix[i*derhistoMat.width+j] = 0;
+	  //        }
+	  //     }
+    // }
+    Matrix derhistoMat = imgToMat(image_surface);
 
     //put the image in white and black
     //to show in the firt soutenance if the binarisation is done
@@ -491,28 +460,7 @@ int main()
 
     wait_for_keypressed();
 
-    // //print_Matrix(derhistoMat);
-    // Matrix m = new_alea_Matrix(5,5);
-    //
-    // print_Matrix(m);
-    //
-    // Matrix t = horizonRLSA(m,1);
-    //
-    // print_Matrix(t);
-    //
-    // Matrix l = verticRLSA(m,1);
-    //
-    // print_Matrix(l);
-    //
-    // m = andLogicMartix(t,l);
-    //
-    //
-
-
-    //Matrix m = rlsa(rlsa(derhistoMat,1000000000,1000000000),1000000000,1000000000);
     Matrix m = rlsa(derhistoMat,300,600);
-
-    //print_Matrix(m);
 
     matToImg(m, "rlsa_paragraphe_img");
 

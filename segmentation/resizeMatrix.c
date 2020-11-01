@@ -155,23 +155,8 @@ struct Tuple getCornerMatrix(Matrix M){
 
 Matrix resizeMatrix(Matrix matrixChar, int size){
   /*
-  description genral :
-
-  Fonction qui prend une matrice d'un charachtere et qui le met à une taille
-  commune pour tout les chars sans deformer le charachtere
-
-  Les parametres :
-
-  Matrix M : Matrice sur la quelle nous allons appliquer le recadrage
-  int size : la taille que nous voulons avoir pour la nouvelle mtrice
-
-
-  Les dates de modifications :
-
-  */
-  /*
   description :
-  function that a matrice of a char and resize it to a commun size that will be used
+  function that take a matrice of a char and resize it to a commun size that will be used
   for all the char without changing the shape of the char
 
   parameters :

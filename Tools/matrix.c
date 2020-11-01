@@ -129,7 +129,7 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
   int y = the y coordinate to begin to cut the matrix
   int height = the height of the Matrix to create
   int width = the width of the Matrix to create
-   
+
   dates/authors :
   23/10
   marine thunet
@@ -147,4 +147,59 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
     }
 
         return cut;
+}
+
+
+void print_Matrix(Matrix M){
+  /*
+  description :
+  print a matrix and the nuber of element in the matrix
+
+  parameters :
+  Matrix M : the matrix that we want to print
+
+  dates/authors :
+  25/10
+  geoffroy du mesnil du buisson
+
+  */
+  int n = 0;
+    for (int i = 0 ; i < M.height ; i++){
+
+                for (int j = 0 ; j < M.width ; j++){
+
+                  printf("%i  ,", (int)M.matrix[i*M.width+j]);
+                  n++;
+                }
+                printf("\n");
+    }
+    printf("\n");
+    printf("%i\n", n);
+}
+
+Matrix new_alea_Matrix(int H, int W){
+  /*
+  description :
+  create a new matrix init with random double
+
+  parameters :
+  int H = the height of the Matrix to create
+  int W = the width of the Matrix to create
+
+  dates/authors :
+  25/10
+  geoffroy du mesnil du buisson
+
+  */
+    Matrix M;
+
+        M.height = H;
+        M.width = W;
+
+        M.matrix = malloc(H*W*sizeof(double));
+        for (int i = 0 ; i < H*W ; i++){
+
+          M.matrix[i] = rand() % 2;
+        }
+        return M;
 }
