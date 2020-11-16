@@ -1,8 +1,8 @@
 #include <err.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-#include "pixel_operations.h"
-#include "../Tools/matrix.h"
+#include "../../Tools/pixel_operations.h"
+#include "../../Tools/matrix.h"
 
 // by marie maturana and geoffroy du mesnil du buisson
 //  15/10 -> 24/10
@@ -120,77 +120,91 @@ float compteOtsuseuil(float hist[],int width, int height )
 //geoffroy
 //transform the image to matrix
 //use the binarisation method (otsu)
-Matrix imgToMat(SDL_Surface* img){
-  int width = img->w;
-
-  int height = img->h;
-
-  Uint8 r,v,b;
-
-  for (int x = 0; x < width; x++){
-       for (int y = 0; y < height; y++){
-
-         Uint32 pixel = get_pixel(img, x, y);
-
-         SDL_GetRGB(pixel, img->format, &r, &v, &b);
-
-         Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
-
-         Uint32 pixel1 = SDL_MapRGB(img->format, valeur_pixel, valeur_pixel, valeur_pixel);
-
-         put_pixel(img,x,y,pixel1);
-       }
-  }
-
-  float histo[256];
-
-  for (int x = 0; x < width; x++){
-    for (int y = 0; y < height; y++){
-
-      Uint32 pixel = get_pixel(img, x, y);
-      SDL_GetRGB(pixel, img->format, &r, &v, &b);
-
-      histo[r]+=1;
-    }
-  }
-
-  float seuil = compteOtsuseuil(histo, width, height );
-
-  Matrix derhistoMat = newMatrix(height, width);
-
-  for (int i = 0; i < derhistoMat.width; i++){
-       for (int j = 0; j < derhistoMat.height; j++){
-
-         Uint32 pixel = get_pixel(img, i, j);
-         SDL_GetRGB(pixel, img->format, &r, &v,&b);
-
-         if( r <= (int)seuil ){
-
-           Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
-           put_pixel(img,i,j,pixel1);
-
-           derhistoMat.matrix[i*derhistoMat.width+j] = 1;
-
-         }
-         else{
-
-           Uint32 pixel1 = SDL_MapRGB(img->format, 255,255, 255);
-           put_pixel(img,i,j,pixel1);
-
-           derhistoMat.matrix[i*derhistoMat.width+j] = 0;
-         }
-      }
-  }
-  return derhistoMat;//return the matrix derhistoMat
-
-  SDL_FreeSurface(img);
-}
+// Matrix imgToMat(SDL_Surface* img){
+//   int width = img->w;
+//
+//   int height = img->h;
+//
+//   Uint8 r,v,b;
+//
+//   for (int x = 0; x < width; x++){
+//        for (int y = 0; y < height; y++){
+//
+//          Uint32 pixel = get_pixel(img, x, y);
+//
+//          SDL_GetRGB(pixel, img->format, &r, &v, &b);
+//
+//          Uint8 valeur_pixel = 0.3*r + 0.59*v + 0.11*b;
+//
+//          Uint32 pixel1 = SDL_MapRGB(img->format, valeur_pixel, valeur_pixel, valeur_pixel);
+//
+//          put_pixel(img,x,y,pixel1);
+//        }
+//   }
+//
+//   float histo[256];
+//
+//   for (int x = 0; x < width; x++){
+//     for (int y = 0; y < height; y++){
+//
+//       Uint32 pixel = get_pixel(img, x, y);
+//       SDL_GetRGB(pixel, img->format, &r, &v, &b);
+//
+//       histo[r]+=1;
+//     }
+//   }
+//
+//   float seuil = compteOtsuseuil(histo, width, height );
+//
+//   Matrix derhistoMat = newMatrix(height, width);
+//
+//   for (int i = 0; i < derhistoMat.width; i++){
+//        for (int j = 0; j < derhistoMat.height; j++){
+//
+//          Uint32 pixel = get_pixel(img, i, j);
+//          SDL_GetRGB(pixel, img->format, &r, &v,&b);
+//
+//          if( r <= (int)seuil ){
+//
+//            Uint32 pixel1 = SDL_MapRGB(img->format, 0, 0, 0);
+//            put_pixel(img,i,j,pixel1);
+//
+//            derhistoMat.matrix[i*derhistoMat.width+j] = 1;
+//
+//          }
+//          else{
+//
+//            Uint32 pixel1 = SDL_MapRGB(img->format, 255,255, 255);
+//            put_pixel(img,i,j,pixel1);
+//
+//            derhistoMat.matrix[i*derhistoMat.width+j] = 0;
+//          }
+//       }
+//   }
+//   return derhistoMat;//return the matrix derhistoMat
+//
+//   SDL_FreeSurface(img);
+// }
 
 //geoffroy
 //transform the matrix to image
 //use the binarisation method (otsu)
 
-int matToImg(Matrix M, char *str){//geoffroy
+int matToImg(Matrix M, char *str){
+  /*
+  description :
+  function that go thru a matrix and for each element create a pixel in an image.
+
+  parameters :
+  Matrix M : matrix that we want to transform into an image.
+  char *str : the path to the image we want to create
+
+
+  dates/authors :
+  30/10
+  geoffroy du mesnil du buisson
+
+  */
   SDL_Surface* img;
 
   Uint32 pixel;

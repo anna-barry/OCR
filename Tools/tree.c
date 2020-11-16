@@ -4,7 +4,7 @@
 
 Tree *newTree(int Key)
 {
-    
+
 /*
 description :
 
@@ -23,13 +23,13 @@ marine thunet
     T->key=Key;
     T->sibling=NULL;
     T->child=NULL;
-    
+
     return T;
 }
 
 void AddSibling(Tree *T, Tree *Sibling)
 {
-    
+
 /*
 description :
 
@@ -78,10 +78,51 @@ marine thunet
     }
 }
 
-/*void print_tree (Tree T)
-{
-    if (T)
-    {
-        
+void print_tree (Tree *T){
+  /*
+  description :
+  print a tree
+
+  parameters :
+  Tree T : the tree that we want to print
+
+  dates/authors :
+  16/11
+  geoffroy du mesnil du buisson
+
+  */
+  if (T){
+    printf("%s\n", T->key);
+    Tree child = T->child;
+    while (child!=NULL) {
+      print_tree(child);
+      child = T->child;
     }
-}*/
+  }
+  else{
+    printf("the tree is empty")
+  }
+}
+
+
+void freeTree (Tree *T){
+  /*
+  description :
+  unallocate the memory that have been allocate for a Tree
+
+  parameters :
+  Tree T : the tree that we want to supress because we
+  dont need it anymore
+
+  dates/authors :
+  16/11
+  geoffroy du mesnil du buisson
+
+  */
+
+  free(*T);
+  T->key=NULL;
+  T->sibling=NULL;
+  T->child=NULL;
+
+}

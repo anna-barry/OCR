@@ -2,7 +2,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "pixel_operations.h"
-#include "../Tools/matrix.h"
+#include "matrix.h"
 
 // by marie maturana and geoffroy du mesnil du buisson
 //  15/10 -> 24/10
@@ -232,7 +232,7 @@ int main()
 
     //load image in bmp
 
-    image_surface = SDL_LoadBMP("loremipsum.bmp");
+    image_surface = SDL_LoadBMP("lorem.bmp");
 
     screen_surface = display_image(image_surface);
 
