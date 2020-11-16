@@ -1,5 +1,5 @@
-#ifndef CONVOLUTION_H
-#define CONVOLUTION_H
+#ifndef TRAITEMENT_H
+#define TRAITEMENT_H
 
 #include <../Tools/matrix.h"
 

@@ -1,9 +1,9 @@
 #include <err.h>
 #include "tree.h"
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include "pixel_operations.h"
-#include "../Tools/matrix.h"
+#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -472,21 +472,22 @@ int matToImg(Matrix M, char *str){//geoffroy
   return 0;
 }
 
-// void print_Matrix(Matrix M)    // Print a matrix
-// {
-//   int n = 0;
-//     for (int i = 0 ; i < M.height ; i++)
-//         {
-//                 for (int j = 0 ; j < M.width ; j++){
-//                   printf("%i  ,", (int)M.matrix[i*M.width+j]);
-//                   n++;
-//                 }
-//                 printf("\n");
-//         }
-//
-//     printf("\n");
-//     printf("%i\n", n);
-// }
+void print_Matrix(Matrix M)    // Print a matrix
+{
+    int n = 0;
+    for (int i = 0 ; i < M.height ; i++)
+        {
+            for (int j = 0 ; j < M.width ; j++)
+            {
+                printf("%i  ,", (int)M.matrix[i*M.width+j]);
+                n++;
+            }
+                printf("\n");
+         }
+
+    printf("\n");
+    printf("%i\n", n);
+}
 
 // Matrix new_alea_Matrix(int H, int W)    // Create a new matrix init with random double
 // {
@@ -1106,10 +1107,9 @@ void printTree(Tree T,char name[])
 {
     if (T.key)
     {
-        for (int i=0; T.children[i]!=NULL; i++)
+        while (T.sibling)
         {
-            //name+=i;
-           prinTree(T.children[i],name+".%i",i)
+            printTree(*T.child,"test");
         }
         
         matToImg(T.key, name);
@@ -1242,8 +1242,9 @@ int main()
 
 
     //Matrix m = rlsa(rlsa(derhistoMat,1000000000,1000000000),1000000000,1000000000);
+    Tree *txt;
     beginSeg(derhistoMat);
-    printTree(txt,level1)
+    printTree(*txt,"level1");
 
     SDL_FreeSurface(image_surface);
 

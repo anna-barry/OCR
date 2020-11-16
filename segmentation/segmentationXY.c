@@ -482,17 +482,11 @@ Tree *beginSeg(Matrix M)
     marine thunet
 
     */
-    Tree *txt = newTree(-4);
+    Tree *txt = newTree(M,-4);
     Matrix og= copyMatrix(M);
     M = rlsa(M,10,10);
     horizontalcut(txt,M,og,1,1,0);
     
     return txt;
 
-}
-
-void printTree(Tree T)
-{
-    if T.key:
-        
 }
