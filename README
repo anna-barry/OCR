@@ -16,14 +16,14 @@ Pour la première soutenance:
 * pour lancer la binarisation et voir son évolution on tape
   "make all" dans son terminal dans le dossier testbinarisation
   puis la commande "./binarisation" et enfin nous pouvons
-  nettoyer le dossier en faisans "make clean".
+  nettoyer le dossier en faisant "make clean".
 
 * pour lancer le RLSA et voir son évolution on tape
   "make all" dans son terminal dans le dossier testrlsa
   puis la commande "./testrlsa" et enfin nous pouvons
-  nettoyer le dossier en faisans "make clean".
+  nettoyer le dossier en faisant "make clean".
 
 * pour lancer le XYCut et voir son évolution on tape
   "make all" dans son terminal dans le dossier testxycut
   puis la commande "./testxycut" et enfin nous pouvons
-  nettoyer le dossier en faisans "make clean".
+  nettoyer le dossier en faisant "make clean".
