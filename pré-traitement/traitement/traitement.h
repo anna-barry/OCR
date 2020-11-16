@@ -3,8 +3,9 @@
 
 #include <../Tools/matrix.h"
 
+int summul(Matrix m1, Matrix m2);
 Matrix smooth (Matrix x);
-void array_select_sort(int array[],size_t len);
+int mul(Matrix m1, Matrix m2, Matrix r);
 Matrix contrast(Matrix M);
 
 #endif
