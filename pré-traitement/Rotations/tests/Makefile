@@ -9,8 +9,8 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: rotationMAN
 
-rotationMAN= ../../Tools/pixel_operations.o rotationMAN.o
-rotationMAN.o: ../../Tools/pixel_operations.h
+rotationMAN= ../../../Tools/pixel_operations.o ../../../Tools/help4display.o  main4man.o  
+rotationMAN.o: ../../../Tools/pixel_operations.h ../../../Tools/help4display.h ../rotationMAN.h
 
 clean:
 	${RM} *.o
