@@ -1,4 +1,3 @@
-# Simple SDL mini Makefile
 
 CC=gcc
 
@@ -9,13 +8,18 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: testrlsa
 
-testrlsa: pixel_operations.o testrlsa.o matrix.o
+testrlsa: ../../Tools/pixel_operations.o testrlsa.o ../../Tools/matrix.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o
 
-testrlsa/.o: pixel_operations.h matrix.h
+testrlsa/.o: pixel_operations.h matrix.h binarisation.h rlsa.h
 
 clean:
 	${RM} *.o
 	${RM} *.d
+	${RM} ../*.o
+	${RM} ../*.d
+	${RM} ../../Tools/*.o
+	${RM} ../../Tools/*.d
+	${RM} ../../pré-traitement/binarisation/*.o
+	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} testrlsa
-
-# END
+	${RM} test_soutenance

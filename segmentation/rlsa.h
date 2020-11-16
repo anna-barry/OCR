@@ -1,6 +1,5 @@
 #ifndef RLSA_H
 #define RLSA_H
-
 #include "../Tools/matrix.h"
 
 
