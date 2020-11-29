@@ -8,21 +8,21 @@
 int main()
 { 
     SDL_Surface* image_surface;
-    SDL_Surface* screen_surface = NULL;
-
+    SDL_Surface* screen_surface;
+    SDL_Surface* surface_image;
     init_sdl();
 
     image_surface = load_image("loremipsum.bmp");
     screen_surface = display_image(image_surface);
     wait_for_keypressed();
   
-    screen_surface = ManualRotation(image_surface, 30);
-    update_surface(screen_surface, image_surface);
+    surface_image = ManualRotation(image_surface, 30);
+    screen_surface = display_image(surface_image);
+    update_surface(screen_surface, surface_image);
     wait_for_keypressed();
     SDL_FreeSurface(image_surface);
-
     SDL_FreeSurface(screen_surface);
-
+    SDL_FreeSurface(surface_image);
     return 0;
 
 
