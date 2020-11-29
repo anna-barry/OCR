@@ -45,9 +45,11 @@ dates/authors :
 marine thunet
 
 */
-    while(T->sibling)
+    while (T->sibling)
     {
-        T=T->sibling;
+        T = T->sibling;
+        T->sibling = Sibling;
+        
     }
 }
 
@@ -78,7 +80,7 @@ marine thunet
     }
 }
 
-void print_tree (Tree *T){
+//void print_tree (Tree *T){
   /*
   description :
   print a tree
@@ -91,7 +93,7 @@ void print_tree (Tree *T){
   geoffroy du mesnil du buisson
 
   */
-  if (T){
+  /*if (T){
     printf("%s\n", T->key);
     Tree child = T->child;
     while (child!=NULL) {
@@ -100,12 +102,12 @@ void print_tree (Tree *T){
     }
   }
   else{
-    printf("the tree is empty")
+      printf("the tree is empty");
   }
-}
+}*/
 
 
-void freeTree (Tree *T){
+//void freeTree (Tree *T){
   /*
   description :
   unallocate the memory that have been allocate for a Tree
@@ -120,9 +122,9 @@ void freeTree (Tree *T){
 
   */
 
-  free(*T);
+  /*free(*T);
   T->key=NULL;
   T->sibling=NULL;
   T->child=NULL;
 
-}
+}*/

@@ -1,4 +1,5 @@
-testxycut.o: testxycut.c /usr/local/include/SDL/SDL.h \
+../../Tools/pixel_operations.o: ../../Tools/pixel_operations.c \
+  ../../Tools/pixel_operations.h /usr/local/include/SDL/SDL.h \
   /usr/local/include/SDL/SDL_main.h /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
   /usr/local/include/SDL/SDL_platform.h \
@@ -16,8 +17,4 @@ testxycut.o: testxycut.c /usr/local/include/SDL/SDL.h \
   /usr/local/include/SDL/SDL_joystick.h \
   /usr/local/include/SDL/SDL_quit.h /usr/local/include/SDL/SDL_loadso.h \
   /usr/local/include/SDL/SDL_timer.h \
-  /usr/local/include/SDL/SDL_version.h \
-  /usr/local/include/SDL/SDL_image.h ../../Tools/pixel_operations.h \
-  ../../Tools/matrix.h ../../Tools/tree.h \
-  ../../pré-traitement/binarisation/binarisation.h ../rlsa.h \
-  ../segmentationXY.h
+  /usr/local/include/SDL/SDL_version.h

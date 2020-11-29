@@ -1,9 +1,8 @@
 //_____________________XY-cut_________________________________//
 
-
 //_____________________include________________________________//
-#include "../matrix.h"
-#include "../tree.h"
+#include "../Tools/matrix.h"
+#include "../Tools/tree.h"
 #include "rlsa.h"
 #include "resizeMatrix.h"
 #include <stdio.h>
@@ -25,6 +24,20 @@
 
 //recursively calling a new cutting process to add each step into the tree
 
+//only for the tests
+void print_matrix(Matrix m)
+{
+    printf("test =\n");
+    for (int x=0; x<m.height; x++)
+    {
+        for (int y=0; y<m.width; y++)
+        {
+            printf("%4g",m.matrix[x*m.width+y]);
+        }
+        printf("\n");
+    }
+}
+//erase then cause useless for the OCR
 
 ///________________________CUTTING WORDS AND LINES____________________
 ///__________________________XY-CUT_____________________________________
@@ -65,7 +78,7 @@ marine thunet
         }
         if (y!=h_size)
         {
-            for (int i; i<h_size; i++)
+            for (int i=0; i<h_size; i++)
             {
                 M.matrix[i*w_size + x]=1;
             }
@@ -100,7 +113,7 @@ void _trycut(Matrix M, int line, Tree *T)
     //copying the og matrix
     Matrix reel = copyMatrix(M);
 
-    int y = 0;
+    //int y = 0;
     int h_size = M.height;
     int w_size = M.width;
     
@@ -139,7 +152,7 @@ void _trycut(Matrix M, int line, Tree *T)
                         //begins at -1 because it counts one more
         
         /*_______Detect spaces &  average of spaces_____________*/
-        for (int c; c<w_size; c++)
+        for (int c=0; c<w_size; c++)
         {
             
             if (M.matrix[c] == 0)
@@ -184,6 +197,8 @@ void _trycut(Matrix M, int line, Tree *T)
                     {
                         //matrix of the word that was found
                         createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
+                        printf("last letters\n");
+                        print_matrix(createseg);
                         
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
@@ -207,7 +222,7 @@ void _trycut(Matrix M, int line, Tree *T)
     
     else
     {
-        int letter=0;//the code og the letter to put in the tree then
+        //int letter=0;//the code og the letter to put in the tree then
         for (int ix=0; ix<w_size; ix++)
         {
             
@@ -234,7 +249,10 @@ void _trycut(Matrix M, int line, Tree *T)
                         //creating a matrix for the caracter that was found
                         createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
                         
-                        createseg=resizeMatrix(createseg,30);
+                        createseg=resizeMatrix(createseg,16);
+                        //for the test
+                        printf("last letters\n");
+                        print_matrix(createseg);
                         
                         //____FINAL___________
                         //intergrate the fonction when the
@@ -244,7 +262,7 @@ void _trycut(Matrix M, int line, Tree *T)
                         //we'll have to send the ascii code of the char
                         //letter=ascii code;
                     
-                        Tree *Child = newTree(0);
+                        //Tree *Child = newTree(0);
                         AddChild(T, 0); //will be the value of the char
                         
                         //reinitialisation
@@ -482,7 +500,7 @@ Tree *beginSeg(Matrix M)
     marine thunet
 
     */
-    Tree *txt = newTree(M,-4);
+    Tree *txt = newTree(-4);
     Matrix og= copyMatrix(M);
     M = rlsa(M,10,10);
     horizontalcut(txt,M,og,1,1,0);
