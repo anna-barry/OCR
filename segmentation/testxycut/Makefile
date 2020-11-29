@@ -8,9 +8,9 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: testxycut
 
-testxycut: ../../Tools/pixel_operations.o testxycut.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o ../segmentationXY.o ../resizeMatrix.o
+testxycut: ../../Tools/pixel_operations.o testxycut.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o ../segmentationXY.o
 
-testxycut/.o: pixel_operations.h textxycut.h matrix.h tree.h binarisation.h rlsa.h segmentationXY.h resizeMatrix.h
+testxycut/.o: pixel_operations.h textxycut.h matrix.h tree.h binarisation.h rlsa.h segmentationXY.h
 
 clean:
 	${RM} *.o

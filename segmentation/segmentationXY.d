@@ -1,2 +1,2 @@
 ../segmentationXY.o: ../segmentationXY.c ../../Tools/matrix.h \
-  ../../Tools/tree.h ../rlsa.h ../resizeMatrix.h
+  ../../Tools/tree.h ../rlsa.h
