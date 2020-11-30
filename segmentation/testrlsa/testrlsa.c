@@ -15,7 +15,7 @@ int main()
 
     //load image in bmp
 
-    image_surface = SDL_LoadBMP("lorem.bmp");
+    image_surface = SDL_LoadBMP("loremipsum.bmp");
 
     screen_surface = display_image(image_surface);
 
