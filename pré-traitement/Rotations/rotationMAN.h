@@ -3,10 +3,12 @@
 
 #include <stdlib.h>
 #include <SDL.h>
-#include <SDL_image.h>
-#include "../../pixel_operations.h"
-#include "../../help4display.h"
+//#include <SDL_image.h>
+#include <math.h>
 
+#include "../../Tools/pixel_operations.h"
+
+struct Tuple{int x; int y;};
 SDL_Surface* ManualRotation(SDL_Surface* image_surface , int degrees);
 
 #endif
