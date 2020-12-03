@@ -76,7 +76,7 @@ SDL_Surface* ManualRotation(SDL_Surface* image_surface , int degrees)
         for (int j = 0; j < new_width; ++j)
         {
             // initialise with black pixels
-            Uint32 pixel = SDL_MapRGB(result->format, 0, 0, 0);
+            Uint32 pixel = SDL_MapRGB(result->format, 255, 255, 255);
             put_pixel(result,j,i,pixel);
         }
     }

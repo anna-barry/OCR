@@ -8,8 +8,8 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: main4man
 
-main4man= ../../../Tools/matrix.o ../../binarisation/binarisation.o ../../../Tools/pixel_operations.o  ../rotationMAN.o  main4man.o -lm 
-main4man/.o: binarisation.h matrix.h pixel_operations.h rotationMAN.h
+main4man=  ../../../Tools/pixel_operations.o  ../rotationMAN.o  main4man.o -lm 
+main4man/.o: pixel_operations.h rotationMAN.h
 
 clean:
 	${RM} *.o

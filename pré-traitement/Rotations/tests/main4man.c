@@ -1,16 +1,10 @@
 #include <err.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-//#undef ManualRotation
-//#undef update_surface
-//#include <stdio.h>
-#include "../../../Tools/matrix.h"
 #include "../../../Tools/pixel_operations.h"
-#include "../../binarisation/binarisation.h"
-//#include "../../../Tools/matrix.h"
 #include "../rotationMAN.h"
 
-/*void init_sdl()
+void init_sdl()
 {
     // Init only the video part.
     // If it fails, die with an error message.
@@ -74,7 +68,7 @@ void wait_for_keypressed()
 }
 
 void SDL_FreeSurface(SDL_Surface *surface);
-*/
+
 
 
 int main()
@@ -84,60 +78,14 @@ int main()
     SDL_Surface* surface_image;
     init_sdl();
 
-    /*_______ Init SDL
-    SDL_Init(SDL_INIT_VIDEO);
-
-    image_surface = SDL_LoadBMP("loremipsum.bmp");
-    
-    //________ Display Image 
-*/
+    image_surface = load_image("loremipsum.bmp");
     screen_surface = display_image(image_surface);
-    //screen_surface = SDL_SetVideoMode(image_surface->w, image_surface->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
-    
-   // SDL_UpdateRect(screen_surface, 0, 0, image_surface->w, image_surface->h);
-    
-    /*Wait_for_Keypressed();
-    SDL_Event event;
-
-    // Wait for a key to be down.
-    do
-    {
-        SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYDOWN);
-
-    // Wait for a key to be up.
-    do
-    {
-        SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYUP);
-    */
     wait_for_keypressed();
   
     surface_image = ManualRotation(image_surface, 30);
     screen_surface = display_image(surface_image);
-    //screen_surface = SDL_SetVideoMode(surface_image->w, surface_image->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
-    
-    //SDL_UpdateRect(screen_surface, 0, 0, surface_image->w, surface_image->h);
-
-
     update_surface(screen_surface, surface_image);
-    //wait_for_keypressed();
-    //Wait_for_Keypressed
-    //SDL_Event event;
-
-    /* Wait for a key to be down.
-    do
-    {
-        SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYDOWN);
-
-    // Wait for a key to be up.
-    do
-    {
-        SDL_PollEvent(&event);
-    } while(event.type != SDL_KEYUP);
-
-*/
+    wait_for_keypressed();
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(screen_surface);
     SDL_FreeSurface(surface_image);
