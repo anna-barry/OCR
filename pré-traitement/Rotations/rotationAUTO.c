@@ -8,19 +8,49 @@
  *          Automatic Rotation algorithm by A.Barry and G.Du Mesnil du Buisson
  *
  *  description:
- *  
- *      Function that sends back skew angle by calculating entropy 
+ *
+ *      Function that sends back skew angle by calculating entropy
  *      of the projection profiles
  *
  *  parameters:
- *      
+ *
  *      Surface* of image
  *
- *  Version 0.0 on 1/11/2020     
+ *  Version 0.0 on 1/11/2020
  */
 
 //Entropy Calculation Function
+double Entro(SDL_Surface* image_surface){
+  int width = image_surface->w;
+  int height = image_surface->h;
+  Uint8 verti_pp[width],hori_pp[height];
+  Uint8 r,v,b;
+  Uint32 pixel;
+  double entro_Hori=0,entro_Verti=0;
 
+  for (int i = 0; i < width; i++){
+    Uint8 sum_pixel;
+    for (int j = 0; j < height; j++){
+      pixel = get_pixel(image_surface, i, j);
+      SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
+      sum_pixel += r + v + b;
+    }
+    hori_pp[i]=sum_pixel;
+    entro_Hori += log(hori_pp[i])*(-hori_pp[i]);
+  }
+
+  for (int i = 0; i < height; i++){
+    Uint8 sum_pixel;
+    for (int j = 0; j < width; j++){
+      pixel = get_pixel(image_surface, j, i);
+      SDL_GetRGB(pixel, image_surface->format, &r, &v, &b);
+      sum_pixel += r + v + b;
+    }
+    verti_pp[i]=sum_pixel;
+    entro_Verti += log(verti_pp[i])*(-verti_pp[i]);
+  }
+  return entro_Verti,entro_Hori;
+}
 
 
 
@@ -61,4 +91,3 @@ double getSkewAngle(SDL_Surface* image_surface)
 
     return angleFinal;
 }
-

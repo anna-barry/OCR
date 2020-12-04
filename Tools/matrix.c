@@ -33,6 +33,16 @@ geoffroy du mesnil du buisson
   return M;
 }
 
+double matrix_get(Matrix m, int w, int h)
+{
+	return m.matrix[w * m.width + h];
+}
+
+void matrix_put(Matrix m, size_t w, size_t h, double value)
+{
+	m.matrix[w * m.width+ h] = value;
+}
+
 Matrix andLogicMartix(Matrix m1,Matrix m2){
   /*
   description :

@@ -1,8 +1,14 @@
 #include <err.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-#include "../../../Tools/pixel_operations.h"
-#include "../rotationMAN.h"
+#include "pixel_operations.h"
+#include "matrix.h"
+
+// by marie maturana and geoffroy du mesnil du buisson
+//  15/10 -> 24/10
+// grayscale and binarisation with the otsu method
+// matrix creation
+
 
 void init_sdl()
 {
@@ -12,19 +18,19 @@ void init_sdl()
         errx(1,"Could not initialize SDL: %s.\n", SDL_GetError());
 }
 
-
 SDL_Surface* load_image(char *path)
 {
     SDL_Surface *img;
 
     // Load an image using SDL_image with format detection.
     // If it fails, die with an error message.
-    img = SDL_LoadBMP(path);
+    img = IMG_Load(path);
     if (!img)
         errx(3, "can't load %s: %s", path, IMG_GetError());
 
     return img;
 }
+
 
 SDL_Surface* display_image(SDL_Surface *img)
 {
@@ -68,29 +74,4 @@ void wait_for_keypressed()
 }
 
 void SDL_FreeSurface(SDL_Surface *surface);
-
-
-
-int main()
-{ 
-    SDL_Surface* image_surface;
-    SDL_Surface* screen_surface;
-    SDL_Surface* surface_image;
-    init_sdl();
-
-    image_surface = load_image("loremipsum.bmp");
-    screen_surface = display_image(image_surface);
-    wait_for_keypressed();
-  
-    surface_image = ManualRotation(image_surface, 30);
-    screen_surface = display_image(surface_image);
-    update_surface(screen_surface, surface_image);
-    wait_for_keypressed();
-    SDL_FreeSurface(image_surface);
-    SDL_FreeSurface(screen_surface);
-    SDL_FreeSurface(surface_image);
-    return 0;
-
-
-}
 

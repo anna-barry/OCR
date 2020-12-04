@@ -1,5 +1,5 @@
-../../Tools/pixel_operations.o: ../../Tools/pixel_operations.c \
-  ../../Tools/pixel_operations.h /usr/local/include/SDL/SDL.h \
+../../../Tools/pixel_operations.o: ../../../Tools/pixel_operations.c \
+  ../../../Tools/pixel_operations.h /usr/local/include/SDL/SDL.h \
   /usr/local/include/SDL/SDL_main.h /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
   /usr/local/include/SDL/SDL_platform.h \

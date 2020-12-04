@@ -1,21 +1,26 @@
 # Simple SDL mini Makefile
-IDIR =../../../Tools/pixel_operations.h
 CC=gcc
 
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS= -Wall -Wextra -Werror -std=c99 -O3
+CFLAGS= -Wall -Wextra -std=c99 -O3
 LDFLAGS=
 LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
-all: rotationMAN
+all: main4man
 
-rotationMAN= ../../../Tools/pixel_operations.o ../../../Tools/help4display.o ../rotationMAN.o  main4man.o  
-rotationMAN.o: ../../../Tools/pixel_operations.h ../../../Tools/help4display.h ../rotationMAN.h
+main4man=  ../../../Tools/pixel_operations.o  ../rotationMAN.o  main4man.o -lm 
+main4man/.o: pixel_operations.h rotationMAN.h
 
 clean:
 	${RM} *.o
 	${RM} *.d
-	${RM} rotationMAN
-
+	${RM} ../rotationMAN
+	${RM} ../*.o
+	${RM} ../*.d
+	${RM} ../../../Tools/*.o
+	${RM} ../../../Tools/*.d
+	${RM} ../../pré-traitement/binarisation/*.o
+	${RM} ../../pré-traitement/binarisation/*.d
+	${RM} main4man
 
 # END
