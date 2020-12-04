@@ -25,11 +25,17 @@ int main()
 
     Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ;
 
-    Matrix s = rlsa(matricef,250,350);
+    Matrix s = rlsa(matricef,250,1200);
 
     Matrix m = rlsa(s,400,200);
 
-    matToImg(m, "new");
+    matToImg(m, "line");
+
+    Matrix p = rlsa(matricef,250,1200);
+
+    Matrix q = rlsa(p,400,1300);
+
+    matToImg(q, "para");
 
     SDL_FreeSurface(img);
 

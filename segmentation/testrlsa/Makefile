@@ -22,4 +22,5 @@ clean:
 	${RM} ../../pré-traitement/binarisation/*.o
 	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} testrlsa
-	${RM} new
+	${RM} line
+	${RM} para
