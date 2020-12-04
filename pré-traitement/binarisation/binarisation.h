@@ -1,6 +1,10 @@
 #ifndef BINARISATION_H
 #define BINARISATION_H
 
+#include <stdlib.h>
+#include <SDL.h>
+#include <SDL_image.h>
+
 //otsu threshold calculation function
 Matrix matrix_grayscale_to_binar(Matrix M, int threshold); 
 
