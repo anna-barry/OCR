@@ -11,29 +11,24 @@
 int main()
 {
 
-SDL_Surface* image_surface;
-SDL_Surface* screen_surface = NULL;
-
-init_sdl();
+    SDL_Surface* image_surface;
+    SDL_Surface* screen_surface = NULL;
+    init_sdl();
 
 //load image in bmp
 
-image_surface = SDL_LoadBMP("lorem.bmp");
+    image_surface = SDL_LoadBMP("loremipsum.bmp");
+    screen_surface = display_image(image_surface);
+    wait_for_keypressed();
+    int width = image_surface->w;
 
-screen_surface = display_image(image_surface);
-
-wait_for_keypressed();
-
-int width = image_surface->w;
-
-int height = image_surface->h;
-
+    int height = image_surface->h;
 
 //grayscale
-Uint8 r,v,b;
+    Uint8 r,v,b;
 
-for (int x = 0; x < width; x++){
-     for (int y = 0; y < height; y++){
+    for (int x = 0; x < width; x++){
+    for (int y = 0; y < height; y++){
 
    // have pixel and rvb
 
@@ -53,7 +48,7 @@ for (int x = 0; x < width; x++){
 
 //change image
 
-update_surface(screen_surface,image_surface);
+//update_surface(screen_surface,image_surface);
 
 //calculation of number of pixel for
 //each level of 0 to 255

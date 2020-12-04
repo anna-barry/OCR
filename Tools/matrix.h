@@ -19,4 +19,6 @@ Matrix copyMatrix(Matrix M);
 
 void freeMatrix(Matrix M);
 
+void print_Matrix(Matrix M);
+
 #endif

@@ -3,6 +3,7 @@
 //_____________________include________________________________//
 #include "../Tools/matrix.h"
 #include "../Tools/tree.h"
+//#include "../pré-traitement/binarisation/binarisation.h"
 #include "rlsa.h"
 //#include "resizeMatrix.h"
 #include <stdio.h>
@@ -24,19 +25,6 @@
 
 //recursively calling a new cutting process to add each step into the tree
 
-//only for the tests
-void print_matrix(Matrix m)
-{
-    printf("test =\n");
-    for (int x=0; x<m.height; x++)
-    {
-        for (int y=0; y<m.width; y++)
-        {
-            printf("%4g",m.matrix[x*m.width+y]);
-        }
-        printf("\n");
-    }
-}
 //erase then cause useless for the OCR
 
 ///________________________CUTTING WORDS AND LINES____________________
@@ -197,8 +185,9 @@ void _trycut(Matrix M, int line, Tree *T)
                     {
                         //matrix of the word that was found
                         createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
+                        
                         printf("last letters\n");
-                        print_matrix(createseg);
+                        print_Matrix(createseg);
                         
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
@@ -252,7 +241,7 @@ void _trycut(Matrix M, int line, Tree *T)
                         //createseg=resizeMatrix(createseg,16);
                         //for the test
                         printf("last letters\n");
-                        print_matrix(createseg);
+                        print_Matrix(createseg);
                         
                         //____FINAL___________
                         //intergrate the fonction when the
@@ -324,13 +313,16 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int cutted,int line)
     
     if (cutted==2 && line==1)
     {
+        print_Matrix(og);
         Tree *Child = newTree(-2);
         AddChild(T, Child);
         _trycut(og,1,Child);
+        
     }
     
     if (cutted==2)
     {
+        print_Matrix(og);
         Tree *Child = newTree(-3);
         AddChild(T, Child);
         horizontalcut(Child,rlsa(og,200,4),og,0,1);
@@ -340,23 +332,23 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int cutted,int line)
         {
             x=0;
             //parcours ligne tant que pas de pixel blanc
-            while(x<width && M.matrix[y*width+x]==0)
+            while(x<width && M.matrix[y*width+x]==1)
             {
                 x++;
             }
-            if (y==lenght && x==width && started==0)
+            if (y==lenght && x==width && started==1)
             {
                 cutted++;
             }
             //si on n'a pas deja commencé, mais que l'on trouve un pixel noir
-            if (started==0 && x<width && M.matrix[y*width+x]==1)
+            if (started==0 && x<width && M.matrix[y*width+x]==0)
             {
                 ybeg=y;
                 x=0;
                 started=1;
             }
             //si on a deja comméncé mais qu'on trouve un pixel noir
-            else if (x<width && M.matrix[y*width+x]==1)
+            else if (x<width && M.matrix[y*width+x]==0)
             {
                 x=0;
             }
@@ -446,22 +438,22 @@ void verticalcut(Tree *T,Matrix M,Matrix og,int cutted, int line)
     while(x<width)
         {
             y=0;
-            while(y<lenght && M.matrix[y*width+x]==0)
+            while(y<lenght && M.matrix[y*width+x]==1)
             {
                 y++;
             }
-            if (y==lenght && x==width && started==0)
+            if (y==lenght && x==width && started==1)
             {
                 cutted++;
             }
             
-            if( started==0 && y<lenght && M.matrix[y*width+x]==1)
+            if( started==0 && y<lenght && M.matrix[y*width+x]==0)
             {
                 xbeg=x;
                 y=0;
                 started=1;
             }
-            else if (y<lenght && M.matrix[y*width+x]==1)
+            else if (y<lenght && M.matrix[y*width+x]==0)
             {
                 y=0;
             }
@@ -507,6 +499,7 @@ Tree *beginSeg(Matrix M)
     marine thunet
 
     */
+    //printf("begin");
     Tree *txt = newTree(-4);
     Matrix og= copyMatrix(M);
     M = rlsa(M,2000,60);
