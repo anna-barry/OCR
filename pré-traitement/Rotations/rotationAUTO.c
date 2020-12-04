@@ -49,12 +49,8 @@ double Entro(SDL_Surface* image_surface){
     verti_pp[i]=sum_pixel;
     entro_Verti += log(verti_pp[i])*(-verti_pp[i]);
   }
-  return entro_Verti,entro_Hori;
+  return min(entro_Verti,entro_Hori);
 }
-
-
-
-
 
 //________________________________________________________________________
 //Function getSkewAngle
