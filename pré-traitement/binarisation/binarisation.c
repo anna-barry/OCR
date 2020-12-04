@@ -11,20 +11,34 @@
 // matrix creation
 
 
-Matrix matrix_grayscale_to_binar(Matrix M, int threshold)
+Matrix matrix_grayscale_to_binar(Matrix M, int seuil)
 {
-	Matrix THEmatrix = newMatrix(M.height,M.width);
+  Matrix THEmatrix = newMatrix(M.height,M.width);
 
-	for (int h = 0; h < M.width; h++)
+  for (int h = 0; h < M.height; h++)
+    {
+      for (int w = 0; w < M.width; w++)
 	{
-		for (int w = 0; w < M.height; w++)
-		{
-			matrix_put(THEmatrix, w, h, matrix_get(M, w, h) < threshold);
-		}
+		
+	  if( M.matrix[h*M.width+w] < seuil )
+	    {
+	 
+	      THEmatrix.matrix[h*THEmatrix.width+w] = 1;
+	    }
+
+	  else
+	    {
+	 
+	      THEmatrix.matrix[h*THEmatrix.width+w] = 0;
+	    }	
 	}
 
-	return THEmatrix;
+    }
+
+  return THEmatrix;
 }
+
+
 
 Matrix surface_to_matrix_grayscale(SDL_Surface *img)
 {
@@ -33,15 +47,15 @@ Matrix surface_to_matrix_grayscale(SDL_Surface *img)
   
   Matrix M = newMatrix(height, width);
  
-  for (int h = 0; h < M.width; h++)
+  for (int h = 0; h < M.height; h++)
     {
-      for (int w = 0; w < M.height; w++)
+      for (int w = 0; w < M.width; w++)
 	{
 	  Uint8 r, g, b;
 	  Uint32 pixel = get_pixel(img, w, h);
 	  SDL_GetRGB(pixel, img->format, &r, &g, &b);
 	  Uint8 valeur = 0.3*r + 0.59*g + 0.11*b;
-	  matrix_put(M, w, h, valeur);
+	  M.matrix[h*M.width+w] = valeur;
 	}
     }
 
@@ -64,80 +78,69 @@ Matrix create_histogram(Matrix M)
 	return histogram;
 }
 
-int max(int a, int b)
-{
-	if (a < b) return b;
-	return a;
-}
-
-int histogram_max(Matrix histogram)
-{
-	int maxi = 0;
-
-	for (int i = 0; i < 256; i++)
-	{
-		maxi = max(maxi, matrix_get(histogram, i, 0));
-	}
-
-	return maxi;
-}
-
 
 //Otsu's algorithm, calculate the optimal threshold
-int otsu(Matrix m)
+int otsu(SDL_Surface* img)
 {
-	Matrix histogram = create_histogram(m);
 
-	int total_pixels = m.width * m.height;
-	int total_weight = 0;
-	for (int i = 0; i < 256; i++)
-		total_weight += i * matrix_get(histogram, i, 0);
+  int width = img->w;
+  int height = img->h;
+  float hist[256];
 
-	int foreground_weight = 0;
-	int background_weight = total_weight;
-	int foreground_pixels = 0;
-	int background_pixels = total_pixels;
-	float variance_max = 0;
-	int threshold = 0;
-
-	int i = 0;
-	while (!matrix_get(histogram, i, 0)) i++;
-	while (i < 255 && background_pixels > 0)
+  for (int x = 0; x < width; x++)
+    {
+      for (int y = 0; y < height; y++)
 	{
-		int pixels = matrix_get(histogram, i, 0);
-		if (pixels != 0)
-		{
-			int weight = i * pixels;
-			foreground_pixels += pixels;
-			background_pixels -= pixels;
-			foreground_weight += weight;
-			background_weight -= weight;
+	  Uint8 r, v, b;
+	  Uint32 pixel = get_pixel(img, x, y);
+	  SDL_GetRGB(pixel, img->format, &r, &v, &b);
+	  hist[r]+=1;
+	}
+    }
+  
+  int nombrep = width * height; //number of pixel
+  int t = 0; //threshold
 
-			float average_foreground = (float) foreground_weight/\
-															foreground_pixels;
-			float average_background = (float) background_weight/\
-															background_pixels;
-			float average_diff = average_foreground - average_background;
+  float w1 = 0; //sum of probability 1
+  float w2 = 0;//sum of probability 2
+  int q1 = 0;
+  int q2 = 0;
+  float max = 0; //max variance
 
-			float variance = average_diff * average_diff * foreground_pixels *\
-						 background_pixels;
+  for (int i = 0; i <= 255; i++)
+    {
+      w1 += i * ((int)hist[i]);
+    }
 
-			if (variance > variance_max)
-			{
-				variance_max = variance;
-				threshold = i;
-			}
-		}
-		i++;
+  for (int i = 0 ; i <= 255 ; i++)
+    {
+      q1 += hist[i];
+      q2 = nombrep - q1;
+
+
+      w2 += (float) (i * ((int)hist[i]));
+      float m1 = w2 / q1; //average calculation 1
+      float m2 = (w1 - w2) / q2; //average calculation 2
+
+
+      //variance calculation for t
+      float res = (float) q1 * (float) q2 * (m1 - m2) * (m1 - m2);
+
+      //choose the max
+      if (res > max)
+	{
+	  max = res;
+	  t = i;
 	}
 
-	freeMatrix(histogram);
+    }
 
-	return threshold;
+  return t-20;
 }
 
-int matToImg(Matrix M, char *str){
-  
+int matToImg(Matrix M, char *str)
+{
+    
   SDL_Surface* img;
 
   Uint32 pixel;
@@ -146,19 +149,21 @@ int matToImg(Matrix M, char *str){
 
   img = SDL_CreateRGBSurface(0, M.width, M.height, 32, 0, 0, 0, 0);
 
-  for (int i=0; i<M.width; i++){
-    for (int j=0; j<M.height; j++){
+  for (int h=0; h<M.height; h++){
+    for (int w=0; w<M.width; w++){
 
-      if (M.matrix[i*M.width+j]==1){
+      if (M.matrix[h*M.width+w]==1)
+	{
 
         pixel = SDL_MapRGB(img->format, 0, 0, 0);
-      }
-      else{
+	}
+      else
+	{
 
         pixel = SDL_MapRGB(img->format, 255, 255, 255);
       }
 
-      put_pixel(img, i, j, pixel);
+      put_pixel(img,w ,h, pixel);
     }
   }
 
