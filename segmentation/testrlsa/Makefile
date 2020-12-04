@@ -8,9 +8,9 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: testrlsa
 
-testrlsa: ../../Tools/pixel_operations.o testrlsa.o ../../Tools/matrix.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o
+testrlsa: ../../Tools/pixel_operations.o testrlsa.o ../../Tools/matrix.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o ../../Tools/image_operations.o
 
-testrlsa/.o: pixel_operations.h matrix.h binarisation.h rlsa.h
+testrlsa/.o: pixel_operations.h matrix.h binarisation.h rlsa.h image_operations.h
 
 clean:
 	${RM} *.o
@@ -22,4 +22,4 @@ clean:
 	${RM} ../../pré-traitement/binarisation/*.o
 	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} testrlsa
-	${RM} test_soutenance
+	${RM} new

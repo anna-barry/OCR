@@ -19,18 +19,18 @@ Matrix matrix_grayscale_to_binar(Matrix M, int seuil)
     {
       for (int w = 0; w < M.width; w++)
 	{
-		
+
 	  if( M.matrix[h*M.width+w] < seuil )
 	    {
-	 
+
 	      THEmatrix.matrix[h*THEmatrix.width+w] = 1;
 	    }
 
 	  else
 	    {
-	 
+
 	      THEmatrix.matrix[h*THEmatrix.width+w] = 0;
-	    }	
+	    }
 	}
 
     }
@@ -44,9 +44,9 @@ Matrix surface_to_matrix_grayscale(SDL_Surface *img)
 {
   int width = img->w;
   int height = img->h;
-  
+
   Matrix M = newMatrix(height, width);
- 
+
   for (int h = 0; h < M.height; h++)
     {
       for (int w = 0; w < M.width; w++)
@@ -97,7 +97,7 @@ int otsu(SDL_Surface* img)
 	  hist[r]+=1;
 	}
     }
-  
+
   int nombrep = width * height; //number of pixel
   int t = 0; //threshold
 
@@ -140,7 +140,7 @@ int otsu(SDL_Surface* img)
 
 int matToImg(Matrix M, char *str)
 {
-    
+
   SDL_Surface* img;
 
   Uint32 pixel;
