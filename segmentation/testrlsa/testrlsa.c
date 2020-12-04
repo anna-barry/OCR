@@ -25,9 +25,9 @@ int main()
 
     Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ;
 
-    Matrix s = rlsa(matricef,200,1000);
+    Matrix s = rlsa(matricef,250,350);
 
-    Matrix m = rlsa(s,200,1000);
+    Matrix m = rlsa(s,400,200);
 
     matToImg(m, "new");
 
