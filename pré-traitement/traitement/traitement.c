@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../Tools/matrix.h"
+#include "../../Tools/help4display.c"
 
 
 //_______Begin___________________________
