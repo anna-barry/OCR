@@ -2,12 +2,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "pixel_operations.h"
-#include "matrix.h"
-
-// by marie maturana and geoffroy du mesnil du buisson
-//  15/10 -> 24/10
-// grayscale and binarisation with the otsu method
-// matrix creation
+//#include "matrix.h"
 
 
 void init_sdl()

@@ -9,6 +9,7 @@
 #include "../../Tools/pixel_operations.h"
 
 struct Tuple{int x; int y;};
+struct Tuple shear3(double angle,int x, int y);
 SDL_Surface* ManualRotation(SDL_Surface* image_surface , int degrees);
 
 #endif

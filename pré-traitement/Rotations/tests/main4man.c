@@ -2,8 +2,10 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "../../../Tools/pixel_operations.h"
+#include "../../../Tools/image_operations.h"
 #include "../rotationMAN.h"
 
+/*
 void init_sdl()
 {
     // Init only the video part.
@@ -69,14 +71,15 @@ void wait_for_keypressed()
 
 void SDL_FreeSurface(SDL_Surface *surface);
 
-
+*/
 
 int main()
 { 
+    init_sdl();
     SDL_Surface* image_surface;
     SDL_Surface* screen_surface;
     SDL_Surface* surface_image;
-    init_sdl();
+    //init_sdl();
 
     image_surface = load_image("loremipsum.bmp");
     screen_surface = display_image(image_surface);
