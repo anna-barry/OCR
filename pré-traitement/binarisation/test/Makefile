@@ -17,5 +17,7 @@ clean:
 	${RM} *.d
 	${RM} ../*.o
 	${RM} ../*.d
+	${RM} ../../../Tools/*.o
+	${RM} ../../../Tools/*.d
 	${RM} test
 	${RM} new

@@ -1,7 +1,7 @@
 #ifndef TRAITEMENT_H
 #define TRAITEMENT_H
 
-#include <../Tools/matrix.h"
+//#include <../Tools/matrix.h"
 
 int summul(Matrix m1, Matrix m2);
 Matrix smooth (Matrix x);

@@ -18,13 +18,13 @@ int main()
 
     init_sdl();
     
-    SDL_Surface* img = load_image("loremipsum.bmp");
+    SDL_Surface* img = load_image("lorem.bmp");
   
     Matrix matrice1 = surface_to_matrix_grayscale(img); 
 
-    int seuil = otsu(matrice1); 
+    int seuil = otsu(img); 
 
-    Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; 
+    Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ;
 
     matToImg(matricef, "new");
 
