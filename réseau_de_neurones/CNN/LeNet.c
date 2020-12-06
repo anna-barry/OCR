@@ -50,9 +50,10 @@ struct TM
 #define DIM_FILTER 5
 #define DIM_POOL1 14
 #define FILTER_WP1 2
-#define NB_FILTERS2 16
+#define NB_FILTERS2 12
 #define DIM_C2 10
 #define DIM_POOL2 5
+#define NB_Char 93
 
 //__________________________________________________________________________________
 //
@@ -126,6 +127,25 @@ struct PoolC2{
         pool2[i].width=DIM_POOL2;
     }
 };
+
+// Neuron Structure
+struct Neuron1{
+        double input;
+        double weight;
+        double bias;
+};
+
+//Flatterning Layer with neuron implementation -> Fully connected layer
+struct FL{
+    struct Neuron[DIM_POOL2*DIM_POOL2*NB_FILTERS2] flayer;
+};
+
+
+//Fully Connected Layer for output
+struct CL_out{
+    struct Neuron[NB_Char] outP;
+};
+
 
 //______ Function for filters C1 _________________________________________________________
 
@@ -362,13 +382,14 @@ struct PoolC2 * Pool2(struct ALLFM2 *fm2)
 }
 
 //____________________________________________________________________________________
-// 8) Flattern Layer
-double[] FlatternLayer(struct PoolC2 *pc2)
+// 8) Flattern Layer + First Fully Connected Layer
+void FlatternLayer(struct PoolC2 *pc2)
 {
 
     //double[length] *res;
     //res=(double [length] *) malloc (DIM_POOL2*DIM_POOL2*sizeof(double));
-    double[DIM_POOL2*DIM_POOL2*NB_FILTERS2] res;
+    struct FL res*;
+    res=(struct FL *) malloc (NB_FILTERS2*DIM_POOL2*DIM_POOL2*sizeof(struct Neuron));
 
 int count=0;
 for(int i=0; i<NB_FILTERS2; i++)
@@ -378,7 +399,11 @@ for(int i=0; i<NB_FILTERS2; i++)
 
         for(int k=0; k<DIM_POOL2;k++ )
         {
-            res[count]= pc2->Matrix[i].matrix[j*DIM_POOL2+k];
+            res->flayer[count].input= pc2->Matrix[i].matrix[j*DIM_POOL2+k];
+            res->flayer[count].weights= RAND_DOUBLE;
+            res->flayer[coun].bias=RAND_DOUBLE;
+
+            count+=1;
         }
     }
 }
@@ -388,38 +413,33 @@ for(int i=0; i<NB_FILTERS2; i++)
 //____________________________________________________________________________________
 //9) Fully Connected Layer
 
-//Get random weights 
-double[] RandomWeights()
+double GetInputFromFC(struct FL flatterned*)
 {
-    //double[DIM_POOL2*DIM_POOL2] *weights;
-    //weights=(double [DIM_POOL2*DIM_POOL2] *) malloc (DIM_POOL2*DIM_POOL2*sizeof(double));
-    
-    double [DIM_POOL2*DIM_POOL2*NB_FILTERS2] res;
-    for (int i = 0; i < [DIM_POOL2*DIM_POOL2*NB_FILTERS2]; i++)
+    double res=0
+    for(int i=0; i<NB_FILTERS2*DIM_POOL2*DIM_POOL2; i++)
     {
-        res[i]= RAND_DOUBLE;
+        //Dropout -> not all features are seen for better performance
+        double drop=RAND_DOUBLE;
+        if(drop>0.3)
+        {
+            res+=(flatterned->flayer[i].input*flatterned->flayer[i].weight) + flatterned->flayer[i].bias;
+        }
     }
-            
 
-    return res;
-        
+    return double;
 }
 
 
-
-
-double FullyConnectedLayer1(double[] *res,double[] *weights)
+void FullyConnectedLayer1(struct FL flatterned*, struct CL_out outin*)
 {
-    double sum=0;
-    double wei=weights;
-    for(int i=res; i<DIM_POOL2*DIM_POOL2;i++)
+    for(int i=0; i<NB_Char;i++)
     {
-        sum=sum+(*i * (*wei));
-        wei++
+        outin->outP[i].input= GetInputFromFC(flatterned);
     }
-
-    return sum;
 }
+
+
+//10) Get output with softmax
 
 //_____________________________________________________________________________________
 
