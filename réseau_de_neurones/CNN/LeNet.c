@@ -196,21 +196,6 @@ void ReluActiv1(struct ALLFM1 *fm1)
 
 
 // 4) Pooling after C1's activation
-double GetMaxValue(struct ALLFM1 *fm1, int i, int j, int k)
-{
-    double maxV=0;
-    for (int a=0; a<(j+FILTER_WP1); a++)
-    {
-        for(int b=0; b<(k+FILTER_WP1);b++)
-        {
-            maxV= max(fm1->Matrix[i].matrix[a*DIM_C1+b],maxV);
-        }
-    }
-
-    return GetMaxValue;
-}
-
-
 struct PoolC1 * Pool1(struct ALLFM1 *fm1)
 {
     struct PoolC1 *pc1;
@@ -218,28 +203,42 @@ struct PoolC1 * Pool1(struct ALLFM1 *fm1)
 
     for(int j=0; j< NB_FILTERS1; j++)
     {
-        double cur_y = 0; 
-        double out_y = 0;
 
-
-    for(int k=cur_y+FILTER_WP1; k<DIM_C1; k++)
+        for(int k=0; k<DIM_C1; k+=2)
     {
-        double cur_x=0;
-        double out_x=0;
-
-        double rowValue=fm1->Matrix[j].matrix[k*DIM_C1+0]*DIM_POOL1 + fm1->Matrix[j].matrix[k*DIM_C1+0];
-        
-        for(int l= cur_x+FILTER_WP1;l<DIM_C1;l++)
+        for(int l=0;l<DIM_C1;l+=2)
         {
-            double columnValue=fm1->Matrix[j].matrix[k*DIM_C1+l]*DIM_POOL1 + fm1->Matrix[j].matrix[k*DIM_C1+l];
-            double maxValue= GetMaxValue(fm1,j,k,l);
 
-            pc1->Matrix[j].matrix[out_y*DIM_POOL1+out_x]=max(maxValue,fm1->Matrix[j].matrix[k*DIM_C1+l]);
-            cur_x+=2;
-            out_x+=1;
+            double maxi=max(fm1->Matrix[j].matrix[k*DIM_C1+l],fm1->Matrix[j].matrix[k*DIM_C1+l+1]);
+            maxi=max(maxi,max(fm1->Matrix[j].matrix[k*DIM_C1+l+1],fm1->Matrix[j].matrix[k+1*DIM_C1+l+1]));
+
+            maxi=max(maxi,(max(fm1->Matrix[j].matrix[k+1*DIM_C1+l+1],fm1->Matrix[j].matrix[k+1*DIM_C1+l])));
+
+            maxi=max(maxi,(max(fm1->Matrix[j].matrix[k*DIM_C1+l],fm1->Matrix[j].matrix[k+1*DIM_C1+l])));
+
+            if(k==0 && l==0)
+            {
+            pc1->Matrix[j].matrix[k*DIM_POOL1+l]=maxi;
+                }
+            else
+            {
+                if(k==0)
+                {
+                    pc1->Matrix[j].matrix[k*DIM_POOL1+(l-1)]=maxi;
+                }
+                else
+                {
+                if(l==0)
+                {
+                    pc1->Matrix[j].matrix[(k-1)*DIM_POOL1+l]=maxi;
+                }
+                else
+                {
+                    pc1->Matrix[j].matrix[(k-1)*DIM_POOL1+(l-1)]=maxi;
+                }
+                }
+            }
         }
-        cur_y+=2;
-        out_y+=2;
     }
     }
     return pc1;
@@ -314,20 +313,6 @@ void ReluActiv2(struct ALLFM2 *fm2)
 //_____________________________________________________________________________________
 
 // 4) Pooling after C2's activation
-double GetMaxValue(struct ALLFM1 *fm2, int i, int j, int k)
-{
-    double maxV=0;
-    for (int a=0; a<(j+FILTER_WP1); a++)
-    {
-        for(int b=0; b<(k+FILTER_WP1);b++)
-        {
-            maxV= max(fm2->Matrix[i].matrix[a*DIM_C2+b],maxV);
-        }
-    }
-
-    return GetMaxValue;
-}
-
 struct PoolC2 * Pool2(struct ALLFM2 *fm2)
 {
     struct PoolC2 *pc2;
@@ -335,29 +320,42 @@ struct PoolC2 * Pool2(struct ALLFM2 *fm2)
 
     for(int j=0; j< NB_FILTERS2; j++)
     {
-        double cur_y = 0; 
-        double out_y = 0;
 
-
-    for(int k=cur_y+FILTER_WP1; k<DIM_C2; k++)
+        for(int k=0; k<DIM_C2; k+=2)
     {
-        double cur_x=0;
-        double out_x=0;
-
-        double rowValue=fm2->Matrix[j].matrix[k*DIM_C2+0]*DIM_POOL2 + fm2->Matrix[j].matrix[k*DIM_C2+0];
-
-        for(int l= cur_x+FILTER_WP1;l<DIM_C2;l++)
+        for(int l=0;l<DIM_C2;l+=2)
         {
-            double columnValue=fm2->Matrix[j].matrix[k*DIM_C2+l]*DIM_POOL2 + fm2->Matrix[j].matrix[k*DIM_C2+l];
-            double maxValue= GetMaxValue(fm2,j,k,l);
 
-            pc2->Matrix[j].matrix[out_y*DIM_POOL2+out_x]=max(maxValue,fm2->Matrix[j].matrix[k*DIM_C2+l]);
-            cur_x+=2;
-            out_x+=1;
+            double maxi=max(fm2->Matrix[j].matrix[k*DIM_C2+l],fm2->Matrix[j].matrix[k*DIM_C2+(l+1)]);
+            maxi=max(maxi,max(fm2->Matrix[j].matrix[k*DIM_C2+(l+1)],fm2->Matrix[j].matrix[k+1*DIM_C2+(l+1)]));
+
+            maxi=max(maxi,(max(fm2->Matrix[j].matrix[(k+1)*DIM_C2+(l+1)],fm2->Matrix[j].matrix[(k+1)*DIM_C2+l])));
+
+            maxi=max(maxi,(max(fm2->Matrix[j].matrix[k*DIM_C2+l],fm2->Matrix[j].matrix[(k+1)*DIM_C2+l])));
+
+            if(k==0 && l==0)
+            {
+            pc2->Matrix[j].matrix[k*DIM_POOL2+l]=maxi;
+                }
+            else
+            {
+                if(k==0)
+                {
+                    pc2->Matrix[j].matrix[k*DIM_POOL2+(l-1)]=maxi;
+                }
+                else
+                {
+                if(l==0)
+                {
+                    pc2->Matrix[j].matrix[(k-1)*DIM_POOL2+l]=maxi;
+                }
+                else
+                {
+                    pc2->Matrix[j].matrix[(k-1)*DIM_POOL2+(l-1)]=maxi;
+                }
+                }
+            }
         }
-        cur_y+=2;
-        out_y+=2;
-    }
     }
 
     return pc2;
@@ -365,29 +363,25 @@ struct PoolC2 * Pool2(struct ALLFM2 *fm2)
 
 //____________________________________________________________________________________
 // 8) Flattern Layer
-double[DIM_POOL2*DIM_POOL2] * FlatternLayer(struct PoolC2 *pc2)
+double[] FlatternLayer(struct PoolC2 *pc2)
 {
-    int length=DIM_POOL2*DIM_POOL2;
 
+    //double[length] *res;
+    //res=(double [length] *) malloc (DIM_POOL2*DIM_POOL2*sizeof(double));
+    double[DIM_POOL2*DIM_POOL2*NB_FILTERS2] res;
 
-    double[length] *res;
-    res=(double [length] *) malloc (DIM_POOL2*DIM_POOL2*sizeof(double));
-
-
-
-
-    int count=res;
-    
+int count=0;
+for(int i=0; i<NB_FILTERS2; i++)
+{
     for(int j=0; j<DIM_POOL2; j++)
     {
 
         for(int k=0; k<DIM_POOL2;k++ )
         {
-            *count= pc2->Matrix.matrice[k*DIM_POOL2j];
-            count+=1;
+            res[count]= pc2->Matrix[i].matrix[j*DIM_POOL2+k];
         }
     }
-
+}
     return res;
 }
 
@@ -395,25 +389,26 @@ double[DIM_POOL2*DIM_POOL2] * FlatternLayer(struct PoolC2 *pc2)
 //9) Fully Connected Layer
 
 //Get random weights 
-double[] * RandomWeights()
+double[] RandomWeights()
 {
-    double[DIM_POOL2*DIM_POOL2] *weights;
-    weights=(double [DIM_POOL2*DIM_POOL2] *) malloc (DIM_POOL2*DIM_POOL2*sizeof(double));
+    //double[DIM_POOL2*DIM_POOL2] *weights;
+    //weights=(double [DIM_POOL2*DIM_POOL2] *) malloc (DIM_POOL2*DIM_POOL2*sizeof(double));
     
-    for (int i = weights; i < weights+(DIM_POOL2*DIM_POOL2); i++)
+    double [DIM_POOL2*DIM_POOL2*NB_FILTERS2] res;
+    for (int i = 0; i < [DIM_POOL2*DIM_POOL2*NB_FILTERS2]; i++)
     {
-        *weights= RAND_DOUBLE;
+        res[i]= RAND_DOUBLE;
     }
             
 
-    return weights;
+    return res;
         
 }
 
 
 
 
-double FullyConnectedLayer(double[] *res,double[] *weights)
+double FullyConnectedLayer1(double[] *res,double[] *weights)
 {
     double sum=0;
     double wei=weights;
