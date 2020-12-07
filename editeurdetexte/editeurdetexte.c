@@ -19,6 +19,7 @@ int main (int argc, char **argv)
 
   /* Creation de la fenetre principale de notre application */
   p_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_fullscreen(GTK_WINDOW (p_window));
   gtk_window_maximize (GTK_WINDOW (p_window));
   gtk_window_set_title (GTK_WINDOW (p_window), "Editeur de texte en GTK+");
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
