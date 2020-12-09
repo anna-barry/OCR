@@ -56,22 +56,23 @@ marine thunet
     //principle
     //if there is a black pixel-> it is a separation
     //the column becomes black
-    
     for (int x=0; x<w_size ;x++)
     {
         y=0;
-        while ((y<h_size) && (M.matrix[y*w_size + x]=!1))
+        while ((y<h_size) && (M.matrix[y*w_size + x]==0))
         {
             y++;
         }
-        if (y!=h_size)
+        if (y<h_size)
         {
-            for (int i=0; i<h_size; i++)
-            {
-                M.matrix[i*w_size + x]=1;
-            }
+        while (y>=0)
+        {
+            M.matrix[y*w_size + x]=1;
+            y--;
+        }
         }
     }
+    matToImg(M,"OULALA");
     return M;
 }
 
@@ -97,10 +98,14 @@ void _trycut(Matrix M, int line, Tree *T)
     marine thunet
 
     */
-    
     //copying the og matrix
+    if (M.width==0)
+    {
+        return;
+    }
+    printf("isitthere?\n");
     Matrix reel = copyMatrix(M);
-
+    printf("isitthere?\n");
     //int y = 0;
     int h_size = M.height;
     int w_size = M.width;
@@ -112,8 +117,7 @@ void _trycut(Matrix M, int line, Tree *T)
     
     //either lines or word, so vertical exam
     //for now we assume their isn't any defaults left
-    
-    M=vertical(M);
+    printf("isitthere?\n");
     //black blocks matrix
     //now choose if it's cuting line or words
     //it's not made the same way
@@ -128,7 +132,7 @@ void _trycut(Matrix M, int line, Tree *T)
     //booléens pour se repérer dans les fonctions
     int begin=0; //1 if the word has started
     int end=0;   //1 if it is the last pixel of the line
-    
+
     Matrix createseg;
     
     int totalspace=0;//number of white pixel/separation
@@ -136,41 +140,54 @@ void _trycut(Matrix M, int line, Tree *T)
     //_______LINEAR CUT______________________________________________
     if (line==1)
     {
+        M=vertical(M);
         int nbspace=-1;  //number of white pixel suite
                         //begins at -1 because it counts one more
         
+        int trans=0;
+        int max=0;
         /*_______Detect spaces &  average of spaces_____________*/
         for (int c=0; c<w_size; c++)
         {
-            
             if (M.matrix[c] == 0)
             {
                 totalspace++;
+                trans++;
             }
             else
             {
                 if (previous==0)
                 {
                     nbspace++;
+                    if (trans>max)
+                    {
+                        max=trans;
+                    }
+                    trans=0;
                 }
-                previous=1;
             }
+            previous=M.matrix[c];
         }
-        
-        int average= totalspace/nbspace;
+        //debug
+        if (nbspace<=0)
+        {
+            return;
+        }
+        int average= ((totalspace/nbspace)+max)/2;
         //average space between word and char
-        
         //reinitialisation
         totalspace=0;
         previous=0;
-        
-        for (int ix=0; ix<w_size; ix++)
+        printf("ODHHHHHHHHHHHHHHHHH");
+
+        for(int ix=0; ix<w_size; ix++)
         {
+
             if (ix+1==w_size)
             {
                 end=1;
             }
-            
+
             if (M.matrix[ix]==1 || end==1)
             {
                 if (begin == 0 && end == 0) //word starts
@@ -180,21 +197,21 @@ void _trycut(Matrix M, int line, Tree *T)
                 }
                 else
                 {
-                    
-                    if (totalspace>average || end == 1 )
+                    if (begin == 1 && (totalspace>=average || end == 1 ))
                     {
+
                         //matrix of the word that was found
-                        createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
-                        
-                        //printf("last letters\n");
+                        createseg=cutMatrix(reel,0,x,h_size,ix-x);
+                        printf("last letters\n");
                         //print_Matrix(createseg);
                         matToImg(createseg,"testAgtgYU");
-                        
+
                         Tree *Child = newTree(-1);
                         AddChild(T, Child);
                         _trycut(createseg,0,Child);
                         
                         freeMatrix(createseg);
+                        x=0;
                         begin=0;
                     }
                 }
@@ -212,10 +229,11 @@ void _trycut(Matrix M, int line, Tree *T)
     
     else
     {
-        //int letter=0;//the code og the letter to put in the tree then
+        
+        M=vertical(M);
+                //int letter=0;//the code og the letter to put in the tree then
         for (int ix=0; ix<w_size; ix++)
         {
-            
             if (ix+1==w_size)
             {
                 end=1;
@@ -231,14 +249,12 @@ void _trycut(Matrix M, int line, Tree *T)
                 }
                 else
                 {
-                //xlen+= totalspace;
-                
-                    if ( begin==1 && end == 1 )
+                //xlen+= totalspace;                    if ( begin==1 && end == 1 )
                     {
-                        
+                        printf("word??\n");
                         //creating a matrix for the caracter that was found
-                        createseg=cutMatrix(reel,x,0,ix-totalspace,h_size);
-                        
+                        createseg=cutMatrix(reel,0,x,h_size,ix-x);
+
                         //createseg=resizeMatrix(createseg,16);
                         //for the test
                         //printf("last letters\n");
@@ -260,14 +276,8 @@ void _trycut(Matrix M, int line, Tree *T)
                         begin=0;
                     }
                 }
-                totalspace=0;
             }
         
-        else
-            {
-                //number of space adds up
-                totalspace++;
-            }
         }
     }
     
@@ -277,9 +287,9 @@ void _trycut(Matrix M, int line, Tree *T)
 
 
 //__________________CUTTING HORIZONTAL BLANKS______________________________
-void verticalcut(Tree *T,Matrix M,Matrix og, int line);
+void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted);
 
-void horizontalcut(Tree *T,Matrix M,Matrix og,int line)
+void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
 {
     /*
     description :
@@ -300,7 +310,6 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line)
     marine thunet
 
     */
-    
     int width= M.width;
     int lenght= M.height;
     int y=0;
@@ -314,87 +323,109 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line)
     
     while(y<lenght)
         {
-            
             x=0;
             //parcours ligne tant que pas de pixel noir
             while(x<width && M.matrix[y*width+x]==0)
             {
-                //printf("1\n");
                 x++;
             }
-            if (y==lenght && x==width && ybeg==0 && started==1)
+            
+            if (y==lenght-1 && ybeg==0 && started==1)
             {
+                cutted++;
                 if (line==1)
                 {
                     matToImg(og,"testAB");
+
                     Tree *Child = newTree(-2);
                     AddChild(T, Child);
                     _trycut(og,1,Child);
-                    
+                    //freeMatrix(og);
                 }
-                
                 else
                 {
-                    matToImg(og,"testAC");
-                    Tree *Child = newTree(-3);
-                    AddChild(T, Child);
-                    horizontalcut(Child,rlsa(og,200,4),og,1);
+                    if (cutted>=2)
+                    {
+                        matToImg(og,"testAC");
+                        Tree *Child = newTree(-3);
+                        AddChild(T, Child);
+                        Matrix s = rlsa(og,250,40);
+                        Matrix m = rlsa(s,400,200);
+                        horizontalcut(Child,m,og,1,0);
+                        freeMatrix(m);
+                        freeMatrix(s);
+                    }
+                
+                    else
+                    {
+                        matToImg(M,"testACHG");
+                        verticalcut(T,M,og,line,1);
+                    }
                 }
+                
             }
             //si on n'a pas deja commencé, mais que l'on trouve un pixel noir
             if (started==0 && x<width && M.matrix[y*width+x]==1)
             {
-                //printf("3\n");
+                printf("3\n");
                 ybeg=y;
                 x=0;
                 started=1;
             }
-            //si on a deja comméncé mais qu'on trouve un pixel noir
+            //si on a deja comméncé et qu'on trouve un pixel noir
             else if (x<width && M.matrix[y*width+x]==1)
             {
-                //printf("2\n");
+                printf("2\n");
                 x=0;
             }
             //si on a parcouru une ligne blanche sans pixel noir et que l'on avait avant
-            else if (x==width && started==1)
+            if ((x==width || y==lenght-1) && started==1)
             {
-                //si pas a la fin de la matrice, on continue horizontale pour le reste
-                if (y!=lenght)
-                {
-                    //printf("5\n");
-                    rest=cutMatrix(M,0,y,lenght-y,width);
-                    //printf("heyyyy?");
-                    og1=cutMatrix(og,0,y,lenght-y,width);
-                    horizontalcut(T,rest,og1,line);
-                }
+                //ensuite on va traiter le paragraphe deja découpé
                 //si on etait a l'étape de découpe de paragraphes
                 if (line==0)
                 {
-                tocut=cutMatrix(M,0,ybeg,y-ybeg,width);
-                og2=cutMatrix(og,0,ybeg,y-ybeg,width);
-                verticalcut(T,tocut,og2,0);
-                    
-                y=lenght;//end of the loop
+                    tocut=cutMatrix(M,ybeg,0,y-ybeg,width);
+                    og2=cutMatrix(og,ybeg,0,y-ybeg,width);
+                    matToImg(og2,"OMGSTE\n");
+                    verticalcut(T,tocut,og2,0,0);
+                    freeMatrix(M);
+                    freeMatrix(og);
                 }
                 //si on etait à l'étape de decoupe des lignes
                 if (line==1)
                 {
-                og2=cutMatrix(og,0,ybeg,y-ybeg,width);
-                Tree *Child = newTree(-2);
-                AddChild(T, Child);
-                _trycut(og2,1,Child);
+                    og2=cutMatrix(og,ybeg,0,y-ybeg,width);
+                    matToImg(og2,"OMGSTPCAMARCHE");
+                    Tree *Child = newTree(-2);
+                    AddChild(T, Child);
+                    _trycut(og2,1,Child);
+                    freeMatrix(og2);
                 }
+                
+                //si pas a la fin de la matrice, on continue horizontale pour le reste
+                if (y!=lenght)
+                {
+                    printf("5\n");
+                    rest=cutMatrix(M,y,0,lenght-y,width);
+                    og1=cutMatrix(og,y,0,lenght-y,width);
+                    horizontalcut(T,rest,og1,line,0);
+                    freeMatrix(rest);
+                    freeMatrix(og1);
+                    matToImg(og1,"MARCHE\n");
+                }
+                return;
             }
             //si ligne blanche on passe à l'autre
             y++;
         }
-    printf("end\n");
+        printf("end\n");
 }
 
 
 //__________________CUTTING VERTICAL BLANKS______________________________
 
-void verticalcut(Tree *T,Matrix M,Matrix og, int line)
+void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
 {
     /*
     description :
@@ -416,7 +447,6 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line)
     marine thunet
 
     */
-    printf("ici?");
     int width= M.width;
     int lenght= M.height;
     int y=0;
@@ -437,22 +467,25 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line)
             {
                 y++;
             }
-            if (y==lenght && x==width && xbeg==0 && started==1)
+            
+            if (x==width-1 && xbeg==0 && started==1)
             {
-                
-                if (line==1)
+                if (cutted>=1)
                 {
-                    matToImg(og,"testOUUOOUUUOOU");
-                    Tree *Child = newTree(-2);
-                    AddChild(T, Child);
-                    _trycut(og,1,Child);
+                    printf("test2\n");
+                matToImg(og,"testA");
+                Tree *Child = newTree(-3);
+                AddChild(T, Child);
+                Matrix s = rlsa(og,250,40);
+                Matrix m = rlsa(s,400,200);
+                matToImg(m,"testA000");
+                horizontalcut(Child,m,og,1,0);
+                freeMatrix(s);
+                freeMatrix(m);
                 }
                 else
                 {
-                    matToImg(og,"testA");
-                    Tree *Child = newTree(-3);
-                    AddChild(T, Child);
-                    horizontalcut(Child,rlsa(og,4,4),og,1);
+                    horizontalcut(T,M,og,0,1);
                 }
             }
             
@@ -469,22 +502,29 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line)
             
             else if (y==lenght && started==1)
             {
-                
                 if (x!=width)
                 {
-                    rest=cutMatrix(M,xbeg,0,lenght,width-x);
-                    og1=cutMatrix(og,xbeg,0,lenght,width-x);
-                    horizontalcut(T,rest,og1,line);
+                    rest=cutMatrix(M,0,x,lenght,width-x);
+                    og1=cutMatrix(og,0,x,lenght,width-x);
+                    printf("%i\n",x);
+                    matToImg(og1,"testA000");
+                    verticalcut(T,rest,og1,line,0);
+                    freeMatrix(rest);
+                    freeMatrix(og1);
                 }
-                tocut=cutMatrix(M,x,0,lenght,x-xbeg);
-                og2=cutMatrix(og,x,0,lenght,x-xbeg);
-                verticalcut(T,tocut,og2,line);
+                
+                tocut=cutMatrix(M,0,xbeg,lenght,x-xbeg);
+                og2=cutMatrix(og,0,xbeg,lenght,x-xbeg);
+                matToImg(og2,"testA012");
+                horizontalcut(T,tocut,og2,line,0);
+                freeMatrix(tocut);
+                freeMatrix(og2);
+
                 x=width;
             }
             x++;
             
-        }
-        //return T;
+        }        //return T;
 }
 
 
@@ -510,12 +550,11 @@ Tree *beginSeg(Matrix M)
     */
     //printf("begin");
     Tree *txt = newTree(-4);
-    printf("try\n");
-    Matrix og= copyMatrix(M);
-    printf("ok??\n");
-    M = rlsa(M,200,1000);
-    printf("dac\n");
-    horizontalcut(txt,M,og,0);
+    Matrix p = rlsa(M,250,1200);
+    Matrix q = rlsa(p,400,1300);
+    horizontalcut(txt,q,M,0,0);
+    freeMatrix(p);
+    freeMatrix(q);
     
     return txt;
 

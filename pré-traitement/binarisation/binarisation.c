@@ -4,6 +4,7 @@
 #include "../../Tools/pixel_operations.h"
 #include "../../Tools/image_operations.h"
 #include "../../Tools/matrix.h"
+#include "binarisation.h"
 
 // by marie maturana and geoffroy du mesnil du buisson
 //  15/10 -> 24/10

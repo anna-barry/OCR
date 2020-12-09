@@ -5,7 +5,7 @@
 #include "../../Tools/pixel_operations.h"
 #include "../../Tools/help4display.h"
 #include "traitement.h"
-#include "../binaristion/binarisation.h"
+#include "../binarisation/binarisation.h"
 
 int main()
 {
@@ -17,16 +17,13 @@ int main()
     image_surface = load_image("loremipsum.bmp");
     screen_surface = display_image(image_surface);
     Matrix m= surface_to_matrix_grayscale(image_surface);
-  
-    wait_for_keypressed();
-    screen_surface = smooth(m);
+    
+    matToImg(smooth(m),"smooth");
     update_surface(screen_surface, image_surface);
     
-    wait_for_keypressed();
-    screen_surface = contrast(m);
+    matToImg(contrast(m),"contrast");
     update_surface(screen_surface, image_surface);
     
-    wait_for_keypressed();
     SDL_FreeSurface(image_surface);
     SDL_FreeSurface(screen_surface);
 

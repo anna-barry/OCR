@@ -7,15 +7,15 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: traitement
 
-traitement: ../../Tools/matrix.o ../../Tools/pixel_operations.o ../../Tools/help4display.o traitement.o ../binarisation/binarisation.o
+traitement: testtraitement.o ../../Tools/matrix.o ../../Tools/pixel_operations.o ../../Tools/help4display.o traitement.o ../binarisation/binarisation.o
 
-traitement/.o: matrix.h pixel_operations.h help4display.h traitement.h binarisation.h
-
+traitement/.o: testtreaitement.h matrix.h pixel_operations.h help4display.h traitement.h binarisation.h testtreaitement.h 
 clean:
 	${RM} *.o
 	${RM} *.d
 	${RM} traitement
 	${RM} ../../Tools/*.o
 	${RM} ../../Tools/*.d
+	${RM} ../binarisation/*.o
 
 # END

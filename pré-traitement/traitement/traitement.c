@@ -6,7 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../Tools/matrix.h"
-#include "../../Tools/help4display.c"
+#include "../../Tools/help4display.h"
+#include "traitement.h"
 
 
 //_______Begin___________________________
@@ -40,6 +41,9 @@ int summul(Matrix m1, Matrix m2)
             sum=0;
         }
     }
+    if (total<0)    {
+        total=-total;
+    }
     return total;
 }
 
@@ -62,7 +66,6 @@ Matrix smooth(Matrix m)
     marine thunet
 
     */
-    
     int width=m.width;
     int height=m.height;
     double sum=0;
@@ -191,9 +194,9 @@ Matrix contrast(Matrix m)
     int b=0;
     int d=0;
     
-    for (int y=0; y<width; y++)
+    for (int y=1; y<width-1; y++)
     {
-        for (int x=0; x<height; x++)
+        for (int x=1; x<height-1; x++)
         {
             center= m.matrix[x+y*width];
             array.matrix[4]=center;

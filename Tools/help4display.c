@@ -1,6 +1,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
-# include <err.h>
+#include <err.h>
+#include "help4display.h"
 
 void init_sdl()
 {

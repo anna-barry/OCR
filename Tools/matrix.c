@@ -150,9 +150,9 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
         cut.width = width;
         cut.matrix = malloc(height*width*sizeof(double));
 
-        for (int i = x ; i < x+cut.height ; i++)
+        for (int i = 0 ; i < height ; i++)
     {
-        for (int j = y ; j < y+cut.width ; j++) cut.matrix[(i-x)*cut.width+(j-y)] = M.matrix[i*M.width+j];
+        for (int j = 0 ; j < width ; j++) cut.matrix[(i)*width+(j)] = M.matrix[(i+x)*M.width+(j+y)];
 
     }
 
