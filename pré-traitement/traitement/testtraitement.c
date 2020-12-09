@@ -9,23 +9,23 @@
 
 int main()
 {
-    SDL_Surface* image_surface;
-    SDL_Surface* screen_surface = NULL;
 
     init_sdl();
+    
+    SDL_Surface* img = load_image("loremipsum.bmp");
+    
+    Matrix m= surface_to_matrix_grayscale(img);
+    
+    int seuil = otsu(img);
 
-    image_surface = load_image("loremipsum.bmp");
-    screen_surface = display_image(image_surface);
-    Matrix m= surface_to_matrix_grayscale(image_surface);
+    Matrix matricef =  matrix_grayscale_to_binar(m, seuil) ;
+
     
-    matToImg(smooth(m),"smooth");
-    update_surface(screen_surface, image_surface);
+    matToImg(matricef,"original");
     
-    matToImg(contrast(m),"contrast");
-    update_surface(screen_surface, image_surface);
+    matToImg(smooth(matricef),"smooth");
     
-    SDL_FreeSurface(image_surface);
-    SDL_FreeSurface(screen_surface);
+    matToImg(contrast(matricef),"contrast");
 
     return 0;
 
