@@ -7,28 +7,67 @@
 #include "traitement.h"
 #include "../binarisation/binarisation.h"
 
+int matToImgGRAY(Matrix M, char *str)
+{
+
+  SDL_Surface* img;
+
+  Uint32 pixel;
+
+  init_sdl();
+    int pix=0;
+
+  img = SDL_CreateRGBSurface(0, M.width, M.height, 32, 0, 0, 0, 0);
+
+  for (int h=0; h<M.height; h++){
+    for (int w=0; w<M.width; w++){
+
+        pix= M.matrix[h*M.width+w];
+    
+        pixel = SDL_MapRGB(img->format, pix, pix, pix);
+      
+        put_pixel(img,w ,h, pixel);
+    }
+  }
+
+  SDL_SaveBMP(img, str);
+
+  SDL_FreeSurface(img);
+
+  return 0;
+}
+
+
 int main()
 {
 
     init_sdl();
     
-    SDL_Surface* img = load_image("loremipsum.bmp");
+    SDL_Surface* img = load_image("lorem.bmp");
     
-    Matrix m= surface_to_matrix_grayscale(img);
+    Matrix f= surface_to_matrix_grayscale(img);
     
-    int seuil = otsu(img);
+    //int seuil = otsu(img);
 
-    Matrix matricef =  matrix_grayscale_to_binar(m, seuil) ;
+    //Matrix f =  matrix_grayscale_to_binar(m, seuil) ;
 
     
-    matToImg(matricef,"original");
+    matToImgGRAY(f,"original");
     
-    matToImg(smooth(matricef),"smooth");
+    Matrix c=contrast(f);
+    matToImgGRAY(c,"contrast");
     
-    matToImg(contrast(matricef),"contrast");
+    Matrix s=smooth(f);
+    matToImgGRAY(s,"smooth");
+    
+    
+    /*Matrix c=contrast(matricef);
+    matToImg(c,"contrast");*/
 
     return 0;
 
 
 }
+
+
 

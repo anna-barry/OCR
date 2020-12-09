@@ -1,4 +1,5 @@
-../binarisation/binarisation.o: ../binarisation/binarisation.c \
+../../pré-traitement/binarisation/binarisation.o: \
+  ../../pré-traitement/binarisation/binarisation.c \
   /usr/local/include/SDL/SDL.h /usr/local/include/SDL/SDL_main.h \
   /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
@@ -19,6 +20,7 @@
   /usr/local/include/SDL/SDL_timer.h \
   /usr/local/include/SDL/SDL_version.h \
   /usr/local/include/SDL/SDL_image.h \
-  ../binarisation/../../Tools/pixel_operations.h \
-  ../binarisation/../../Tools/image_operations.h \
-  ../binarisation/../../Tools/matrix.h ../binarisation/binarisation.h
+  ../../pré-traitement/binarisation/../../Tools/pixel_operations.h \
+  ../../pré-traitement/binarisation/../../Tools/image_operations.h \
+  ../../pré-traitement/binarisation/../../Tools/matrix.h \
+  ../../pré-traitement/binarisation/binarisation.h

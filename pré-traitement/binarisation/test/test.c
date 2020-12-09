@@ -18,7 +18,7 @@ int main()
 
     init_sdl();
     
-    SDL_Surface* img = load_image("lorem.bmp");
+    SDL_Surface* img = load_image("loremipsum.bmp");
   
     Matrix matrice1 = surface_to_matrix_grayscale(img); 
 
