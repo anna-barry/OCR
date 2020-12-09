@@ -54,7 +54,7 @@ int main (int argc, char **argv)
     //insert image
     {
       GtkWidget *p_image = NULL;
-      p_image = gtk_image_new_from_file("intro.png");
+      p_image = gtk_image_new_from_file("images/intro.png");
       gtk_table_attach(GTK_TABLE(p_table), p_image,  1, 2, 0, 1, GTK_EXPAND, GTK_EXPAND, 10, 10);
     }
     
