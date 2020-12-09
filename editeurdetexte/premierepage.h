@@ -6,6 +6,9 @@
 #include "error.h"
 #include "callback.h"
 #include <stdlib.h>
+#include "pageOCR.h"
+#include "pageReWrite.h"
+#include "pageWrite.h"
 
 
 
