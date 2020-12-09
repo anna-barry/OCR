@@ -7,9 +7,9 @@ LDLIBS = `pkg-config --libs gtk+-3.0`
 all: editeurdetexte
 
 
-editeurdetexte: callback.o error.o
+editeurdetexte: callback.o error.o premierepage.o
 
-editeurdetexte/.o: callback.h error.h 
+editeurdetexte/.o: callback.h error.h premierepage.h
 
 clean:
 	${RM} *.o

@@ -18,4 +18,4 @@ typedef struct
 
 extern docs_t docs;
 
-#endif /* not H_DOCUMENT */
+#endif 
