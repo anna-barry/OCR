@@ -500,7 +500,7 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
 
   //create the widget object 
   
-  GtkWidget *d_window = NULL;
+  GtkWidget *p_window = NULL;
   GtkWidget *p_table= NULL;
   GtkWidget *d_button_box = NULL;
   GtkWidget *d_text_view = NULL;
@@ -508,16 +508,16 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   GtkWidget *Label = NULL;
 
   // create the new page 
-  d_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_fullscreen(GTK_WINDOW (d_window));
-  gtk_window_maximize (GTK_WINDOW (d_window));
-  gtk_window_set_title (GTK_WINDOW (d_window), "MENU");
-  g_signal_connect (G_OBJECT (d_window), "destroy", G_CALLBACK (cb_quit), NULL);
+  p_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_fullscreen(GTK_WINDOW (p_window));
+  gtk_window_maximize (GTK_WINDOW (p_window));
+  gtk_window_set_title (GTK_WINDOW (p_window), "MENU");
+  g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
 
   //create the button box
   p_table = gtk_table_new(2, 4, FALSE);
   //gtk_table_set_col_spacing (p_table, 1, 4); 
-  gtk_container_add (GTK_CONTAINER(d_window), p_table);
+  gtk_container_add (GTK_CONTAINER(p_window), p_table);
     
       
   //insert image
@@ -544,7 +544,7 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
     GtkWidget *d_button = NULL;
 
     d_button = gtk_button_new_with_label("MAKE OCR");
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageReWrite), d_text_view);
+    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageOCR), d_text_view);
     gtk_widget_set_size_request(d_button, 150, 100);
     gtk_table_attach(GTK_TABLE(p_table), d_button, 1, 2, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
   }
@@ -571,7 +571,7 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   }
 
   //display new window
-  gtk_widget_show_all (d_window);
+  gtk_widget_show_all (p_window);
 
 
   // Unused Parametres 
