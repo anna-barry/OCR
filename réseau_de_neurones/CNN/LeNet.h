@@ -35,36 +35,38 @@ struct TM
  };
 // Filters for C1
 struct ALLFilters1{
-    Matrix Mall[NB_FILTERS1];
+    Matrix *m;
+    struct ALLFilters1 *next;
 };
 
 //Feature Maps for C1
 struct ALLFM1{
-    Matrix fm1[NB_FILTERS1];
-
+    Matrix *m;
+    struct ALLFM1 *next;
 };
 
 //New Matrixes for Pooling for C1
 struct PoolC1{
-    Matrix pool1[NB_FILTERS1];
+    Matrix *m;
+    struct PoolC1 *next;
 };
 
 //Filters for C2
 struct ALLFilters2{
-    Matrix Mall2[NB_FILTERS2];
-
+    Matrix *m;
+    struct ALLFilters2 *next;
 };
 
 //Feature Maps for C2
 struct ALLFM2{
-  Matrix fm2[NB_FILTERS2];
-
+    Matrix *m;
+    struct ALLFM2 *next;
 };
 
 //New Matrixes for Pooling for C2
 struct PoolC2{
-    Matrix pool2[NB_FILTERS2];
-
+    Matrix *m;
+    struct PoolC2 *next;
 };
 // Neuron Structure
 struct Neuron{
@@ -75,14 +77,15 @@ struct Neuron{
 
 //Flatterning Layer with neuron implementation -> Fully connected layer
 struct FL{
-    struct Neuron flayer[DIM_POOL2*DIM_POOL2*NB_FILTERS2];
-
+    struct Neuron *n;
+    struct FL *next;
 };
 
 
 //Fully Connected Layer for output
 struct CL_out{
-    struct Neuron outP[NB_Char];
+    struct Neuron *n;
+    struct CL_out *next;
 };
 
 struct resultsfromoutput{
@@ -92,7 +95,8 @@ struct resultsfromoutput{
     double bias;
 };
 
-
+int returnRandom();
+void RandomFilter(Matrix *m, int range);
 void getFilter1(struct ALLFilters1 *A1);
 void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input);
 void ReluActiv1(struct ALLFM1 *cfm1);

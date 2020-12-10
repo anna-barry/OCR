@@ -55,7 +55,7 @@ struct TM
 #define NB_FILTERS2 12
 #define DIM_C2 10
 #define DIM_POOL2 5
-#define NB_Char 35
+#define NB_Char 60
 
 //__________________________________________________________________________________
 //
@@ -63,37 +63,63 @@ struct TM
 //
 //__________________________________________________________________________________
 
+/*struct ALLFilters1 *init_ALLF1()
+{
+    struct ALLFilters1 *my_ALL = malloc(sizeof(struct ALLFilters1));
+    struct Matrix *m1 = malloc(sizeof(struct Matrix));
+    m1.width = 
+    m1.height = 
+    m1->matrix = 
+    my_ALL->matrix = m1;
+    struct ALLFilters1 *second = ma;loc
+    struct ALLFilters1 *tmp = my_ALL;
+    while (tmp && tmp->next)
+        free(tmp->matrix->matrix)
+
+        tmp = tmp->next;
+}*/
+
 // Filters for C1
 struct ALLFilters1{
-    Matrix Mall[NB_FILTERS1];
+    Matrix *m;
+    struct ALLFilters1 *next;
 };
 
 //Feature Maps for C1
 struct ALLFM1{
-    Matrix fm1[NB_FILTERS1];
+    Matrix *m;
+    struct ALLFM1 *next;
 
 };
 
 //New Matrixes for Pooling for C1
 struct PoolC1{
-    Matrix pool1[NB_FILTERS1];
+    //NB_FILTERS1
+    Matrix *m;
+    struct PoolC1 *next;
 };
 
 //Filters for C2
 struct ALLFilters2{
-    Matrix Mall2[NB_FILTERS2];
+    //NB_FILTERS2
+    Matrix *m;
+    struct ALLFilters2 *next;
 
 };
 
 //Feature Maps for C2
 struct ALLFM2{
-  Matrix fm2[NB_FILTERS2]; 
+    //NB_FILTERS2
+  Matrix *m;
+  struct ALLFM2 *next;
 
 };
 
 //New Matrixes for Pooling for C2
 struct PoolC2{
-    Matrix pool2[NB_FILTERS2];
+    //NB_FILTERS2
+    Matrix *m;
+    struct PoolC2 *next;
 
 };
 
@@ -106,64 +132,56 @@ struct Neuron{
 
 //Flatterning Layer with neuron implementation -> Fully connected layer
 struct FL{
-    struct Neuron flayer[DIM_POOL2*DIM_POOL2*NB_FILTERS2];
+    //DIM_POOL2*DIM_POOL2*NB_FILTERS2
+    struct Neuron *n;
+    struct FL *next;
 
 };
 
 
 //Fully Connected Layer for output
 struct CL_out{
-    struct Neuron outP[NB_Char];
+    //NB_Char
+    struct Neuron *n;
+    struct CL_out *next;
 };
 
 
 //______ Function for filters C1 _________________________________________________________
 
-// "They’re usually randomly initialised and then learned over the course of training."
-void getFilter1(struct ALLFilters1 *A1)
+int returnRandom()
 {
-    double L[16]={0.01,0.02,0.03,0.04,0.05,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,0};
-
-
-    int index=RANDOM_RANGE(15);
-    double here=L[index];
-printf("first new= %f \n",here);
-    
-    for (int i=0; i<NB_FILTERS1; i++)
-    {
-        for(int y=0; y<DIM_FILTER; y++)
-        {
-            for(int x=0; x<DIM_FILTER;x++)
-            {
-                index=RANDOM_RANGE(13);
-                here=L[index];
-                /*double num = RAND_DOUBLE;
-                //double res= (float)(round(num * 10)/10);
-                //double res2=0;
-                //res2+=res;
-                //printf("before for filter n°%i, x=%i, y=%i for num=%f and res2=%f \n",i,x,y,num,res2);
-                //printf("0 in double is %f",(double)0);
-                if (res2==0)
-                {
-                    A1->Mall[i].matrix[y*DIM_FILTER+x]=0;
-                }
-                else
-                {
-                A1->Mall[i].matrix[y*DIM_FILTER+x]=res2;
-                }
-                //printf("after \n");*/
-                A1->Mall[i].matrix[y*DIM_FILTER+x]=here;
-                printf("after %f for x=%d and y=%d for filter n°%d \n",here,x,y,i);
-            }
-        }
-    }
+    return RANDOM_RANGE(97);
 }
+
+//Initializing with random values
+void RandomFilter(Matrix *m, int range)
+{
+    double L[98]={0.01,0.02,0.03,0.04,0.05,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5,0.51,0.52,0.53,0.54,0.55,0.56,0.57,0.58,0.59,0.6,0.61,0.62,0.63,0.64,0.65,0.66,0.67,0.68,0.69,0.7,0.71,0.72,0.73,0.74,0.75,0.76,0.77,0.78,0.79,0.8,0.81,0.82,0.83,0.84,0.85,0.86,0.87,0.88,0.89,0.9,0.91,0.92,0.93,0.94,0.95,0.96,0.97,0.98,0.99,1,0};
+
+    double *indexx= NULL;
+    indexx=&(m);
+    printf("before for \n");
+    for (int k = 0 ; k < range ; k++){
+         int index=0;
+         index=returnRandom();
+         double here=L[index];
+         *indexx= here;
+          indexx+=1;
+          printf("in for %d \n",k);
+      }
+
+    printf("after applied filter in random \n");
+}
+
+// "They’re usually randomly initialised and then learned over the course of training."
 
 //________________________________________________________________________________________
 
 //______ Function for Convolution C1 _____________________________________________________
 void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input)
 {
+    /*
     for(int i=0; i<NB_FILTERS1; i++)
     {
         for(int i2=0; i2<DIM_FILTER; i2++)
@@ -177,6 +195,30 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
             }
         }
         }
+    }*/
+
+    int i=0;
+    while(i<NB_FILTERS1)
+    {
+        double *indexConv= NULL;
+        indexConv=&(cfm1->m);
+
+        double *indexFilter=NULL;
+        indexFilter=&(A1->m);
+
+        for(int k=0; k<DIM_INPUT;k++)
+        {
+            for(int l=0; l<DIM_INPUT; l++)
+            {
+                *(indexConv+(k*DIM_C1+l))= input.matrix[k*DIM_INPUT+l]* (*(indexFilter+(k*DIM_FILTER+l)));
+
+            }
+        }
+        
+        cfm1=cfm1->next;
+        A1=A1->next;
+        i+=1;
+
     }
 }
 
@@ -185,6 +227,7 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
 // 3) Relu activation after C1 ________________________________________________________
 void ReluActiv1(struct ALLFM1 *cfm1)
 {
+    /*
     for(int i=0;i<NB_FILTERS1; i++)
     {
         for(int y=0; y<DIM_C1; y++)
@@ -194,6 +237,18 @@ void ReluActiv1(struct ALLFM1 *cfm1)
                 cfm1->fm1[i].matrix[y*DIM_C1+x]=max(0, cfm1->fm1[i].matrix[y*DIM_C1+x]);
             }
         }
+    }*/
+
+    for(int i=0;i<NB_FILTERS1;i++)
+    {
+        double *indexConv= NULL;
+        indexConv=&(cfm1->m);
+
+        for(int y=0; y<DIM_C1*DIM_C1; y++)
+        {
+            *(indexConv+y)=max(0, *(indexConv+y));
+        }
+        cfm1=cfm1->next;
     }
 }
 //_____________________________________________________________________________________
@@ -202,6 +257,55 @@ void ReluActiv1(struct ALLFM1 *cfm1)
 // 4) Pooling after C1's activation
 void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
 {
+    for(int i=0;i<NB_FILTERS1;i++)
+    {
+        double *indexConv= NULL;
+        indexConv=(cfm1->m);
+
+        double *indexPool=NULL;
+        indexPool=(pc1->m);
+
+         for(int k=0; k<DIM_C1; k+=2)
+        {
+            for(int l=0;l<DIM_C1;l+=2)
+            {
+
+            double maxi=max(*(indexConv+(k*DIM_C1+l)),*(indexConv+(k*DIM_C1+l+1)));
+            maxi=max(maxi,max(*(indexConv+(k*DIM_C1+l+1)),*(indexConv+(k+1*DIM_C1+l+1))));
+
+            maxi=max(maxi,(max(*(indexConv+(k+1*DIM_C1+l+1)),*(indexConv+(k+1*DIM_C1+l)))));
+
+            maxi=max(maxi,(max(*indexConv+(k*DIM_C1+l),*(indexConv+(k+1*DIM_C1+l)))));
+
+            if(k==0 && l==0)
+            {
+            *(indexPool+(k*DIM_POOL1+l))=maxi;
+                }
+            else
+            {
+                if(k==0)
+                {
+                    *(indexPool+(k*DIM_POOL1+(l-1)))=maxi;
+                }
+                else
+                {
+                if(l==0)
+                {
+                    *(indexPool+((k-1)*DIM_POOL1+l))=maxi;
+                }
+                else
+                {
+                    *(indexPool+((k-1)*DIM_POOL1+(l-1)))=maxi;
+                }
+                }
+            }
+        }
+    }
+         cfm1=cfm1->next;
+         pc1=pc1->next;
+
+    }
+    /*
     for(int j=0; j< NB_FILTERS1; j++)
     {
 
@@ -241,7 +345,7 @@ void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
             }
         }
     }
-    }
+    }*/
 }
 
 //_____________________________________________________________________________________
@@ -249,7 +353,7 @@ void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
 //______ Function for filters C2  ______________________________________________________
 
 void getFilter2(struct ALLFilters2 *A2)
-{   
+{   /*
     for (int i=0; i<DIM_C2; i++)
     {   
         for(int y=0; y<DIM_FILTER; y++)
@@ -259,7 +363,7 @@ void getFilter2(struct ALLFilters2 *A2)
                A2->Mall2[i].matrix[y*DIM_FILTER+x]=RAND_DOUBLE;
             }
         }
-    }
+    }*/
 
 }
 
@@ -268,6 +372,7 @@ void getFilter2(struct ALLFilters2 *A2)
 //______ Function for Convolution C2  _____________________________________________________
 void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 *cfm2)
 {
+    /*
     for(int i0=0; i0<NB_FILTERS1;i0++)
     {
     for(int i=0; i<NB_FILTERS2; i++)
@@ -284,7 +389,7 @@ void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 
         }
         }
     }
-    }
+    }*/
 }
 
 //_____________________________________________________________________________________
@@ -292,6 +397,7 @@ void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 
 // 3) Relu activation after C2 ________________________________________________________
 void ReluActiv2(struct ALLFM2 *cfm2)
 {
+    /*
     for(int i=0;i<NB_FILTERS2; i++)
     {
         for(int y=0; y<DIM_C2; y++)
@@ -301,14 +407,14 @@ void ReluActiv2(struct ALLFM2 *cfm2)
                 cfm2->fm2[i].matrix[y*DIM_C2+x]=max(0,  cfm2->fm2[i].matrix[y*DIM_C2+x]);
             }
         }
-    }
+    }*/
 }
 //_____________________________________________________________________________________
 
 // 4) Pooling after C2's activation
 void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 {
-    for(int j=0; j< NB_FILTERS2; j++)
+    /*for(int j=0; j< NB_FILTERS2; j++)
     {
 
         for(int k=0; k<DIM_C2; k+=2)
@@ -343,7 +449,7 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
             }
         }
     }
-}
+}*/
 } //last
 
 //____________________________________________________________________________________
@@ -351,7 +457,7 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 
 void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 {
-
+    /*
     int count=0;
     for(int i=0; i<NB_FILTERS2; i++)
     {
@@ -365,7 +471,7 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
             count+=1;
         }
     }
-    }
+    }*/
 }
 
 //____________________________________________________________________________________
@@ -374,7 +480,7 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 double GetInputFromFC(struct FL *flatterned)
 {
     double res=0;
-    for(int i=0; i<NB_FILTERS2*DIM_POOL2*DIM_POOL2; i++)
+    /*for(int i=0; i<NB_FILTERS2*DIM_POOL2*DIM_POOL2; i++)
     {
         //Dropout -> not all features are seen for better performance
         double drop=RAND_DOUBLE;
@@ -382,7 +488,7 @@ double GetInputFromFC(struct FL *flatterned)
         {
             res+=(flatterned->flayer[i].input*flatterned->flayer[i].weight) + flatterned->flayer[i].bias;
         }
-    }
+    }*/
 
     return res;
 }
@@ -390,11 +496,11 @@ double GetInputFromFC(struct FL *flatterned)
 
 void FullyConnectedLayer1(struct FL *flatterned, struct CL_out *outin)
 {
-    for(int i=0; i<NB_Char;i++)
+    /*for(int i=0; i<NB_Char;i++)
     {
         double getres=GetInputFromFC(flatterned);
         outin->outP[i].input= getres;
-    }
+    }*/
 }
 
 //10) Get output with softmax -> OutPut Layer
@@ -406,7 +512,7 @@ struct resultsfromoutput{
 };
 struct resultsfromoutput GetOutPut(struct CL_out *outin)
 {
-    double sum= 0;
+    /*double sum= 0;
     for (int i=0;i<(NB_Char);i++)
     {
         sum=sum+exp((outin->outP[i].input*outin->outP[i].weight)+outin->outP[i].bias);
@@ -439,14 +545,15 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
       //  if(maxA<35)
       //  {
             maxA+=97;
-      /*  }
+        }
         else
         {
             //Capital letters
             maxA+=65;
-        }*/
+        }
     }
-    struct resultsfromoutput res={maxiO,maxA,maxW,maxB};
+    struct resultsfromoutput res={maxiO,maxA,maxW,maxB};*/
+    struct resultsfromoutput res={0,0,0,0};
     return res;
 }
 

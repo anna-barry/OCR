@@ -178,7 +178,7 @@ void print_Matrix(Matrix M){
 
                 for (int j = 0 ; j < M.width ; j++){
 
-                  printf("%i  ,", (int)M.matrix[i*M.width+j]);
+                  printf("%f  ,", M.matrix[i*M.width+j]);
                   n++;
                 }
                 printf("\n");
