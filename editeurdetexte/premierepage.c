@@ -1,5 +1,9 @@
 #include "premierepage.h"
+#include "pageOCR.h"
+#include "pageReWrite.h"
+#include "pageWrite.h"
 #include "document.h"
+#include "error.h"
 #include "callback.h"
 #include <stdlib.h>
 #include <gtk/gtk.h>
@@ -45,15 +49,6 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
 
   gtk_container_add(GTK_CONTAINER(d_main_box), Label); 
 
-  // create the texte zone
-  {
-    GtkTextBuffer *d_text_buffer = NULL;
-
-    d_text_view = gtk_text_view_new ();
-    d_text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (d_text_view));
-    g_signal_connect (G_OBJECT (d_text_buffer), "changed", G_CALLBACK (cb_modifie), NULL);
-    gtk_box_pack_start (GTK_BOX (d_main_box), d_text_view, TRUE, TRUE, 0);
-  }
   
   //Create the button box
   
@@ -65,8 +60,8 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   {
     GtkWidget *d_button = NULL;
 
-    d_button = gtk_button_new_with_label("OPEN");
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_open), d_text_view);
+    d_button = gtk_button_new_with_label("MODIFYING");
+    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_openpageReWrite), d_text_view);
     gtk_box_pack_start (GTK_BOX (d_button_box), d_button, FALSE, FALSE, 0);
   }
 
@@ -74,34 +69,26 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   {
     GtkWidget *d_button = NULL;
 
-    d_button = gtk_button_new_with_label("OCR");
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_open_ocr), d_text_view);
+    d_button = gtk_button_new_with_label("MAKE OCR");
+    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_openpageOCR), d_text_view);
     gtk_box_pack_start (GTK_BOX (d_button_box), d_button, FALSE, FALSE, 0);
   }
 
-  //create the save button
+  //create the new page button
   {
     GtkWidget *d_button = NULL;
 
-    d_button = gtk_button_new_with_label("SAVE");
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_save), NULL);
+    d_button = gtk_button_new_with_label("NEW PAGE");
+    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_openpageWrite), NULL);
     gtk_box_pack_start (GTK_BOX (d_button_box), d_button, FALSE, FALSE, 0);
   }
 
-  //create the save as button
-  {
-    GtkWidget *d_button = NULL;
-
-    d_button = gtk_button_new_with_label("SAVE AS");
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_saveas), NULL);
-    gtk_box_pack_start (GTK_BOX (d_button_box), d_button, FALSE, FALSE, 0);
-  }
 
   //create the quit button
   {
     GtkWidget *d_button = NULL;
 
-    d_button = gtk_button_new_from_stock (GTK_STOCK_QUIT);
+    d_button = gtk_button_new_with_label("QUIT");
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_quit), NULL);
     gtk_box_pack_start (GTK_BOX (d_button_box), d_button, FALSE, FALSE, 0);
   }

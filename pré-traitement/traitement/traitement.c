@@ -41,9 +41,9 @@ int summul(Matrix m1, Matrix m2)
             sum=0;
         }
     }
-    if (total<0)    {
+    /*if (total<0)    {
         total=-total;
-    }
+    }*/
     return total;
 }
 
@@ -66,9 +66,15 @@ Matrix smooth(Matrix m)
     marine thunet
 
     */
+    
     int width=m.width;
     int height=m.height;
     double sum=0;
+    Matrix new;
+    new.height=height;
+    new.width=width;
+    new.matrix= malloc(width*height*sizeof(double));
+    
     Matrix array;
     array.height=3;
     array.width=3;
@@ -114,11 +120,15 @@ Matrix smooth(Matrix m)
             array.matrix[2]=m.matrix[(x+1)+(y-1)*width];
             
             sum=summul(array,mult);
-            m.matrix[x+y*width]=sum/16; //16 being the coefficent's sum
+
+            new.matrix[x+y*width]=sum/16; //16 being the coefficent's sum
             
         }
     }
-    
+    freeMatrix(mult);
+    freeMatrix(array);
+    m=new;
+    freeMatrix(new);
     return m;
 }
 
@@ -161,11 +171,16 @@ Matrix contrast(Matrix m)
     int width=m.width;
     int height=m.height;
     
-    Matrix new;
+    Matrix new2;
+    new2.height=height;
+    new2.width=width;
+    new2.matrix= malloc(height*width*sizeof(double));
     
+    Matrix new;
     new.width=3;
     new.height=3;
     new.matrix= malloc(9*sizeof(double));
+    
     
     Matrix array;
     array.width=3;
@@ -187,36 +202,43 @@ Matrix contrast(Matrix m)
     mult.matrix[7]=-1;
     mult.matrix[8]=0;
     
-    //variables a definir: di pour diagonale, h pour haut,b pour bas, g pour gauche, d pour droit
+    /*//variables a definir: di pour diagonale, h pour haut,b pour bas, g pour gauche, d pour droit
     int center=0;
     int g=0;
     int h=0;
     int b=0;
-    int d=0;
+    int d=0;*/
     
-    for (int y=1; y<width-1; y++)
+    for (int y=1; y<height-1; y++)
     {
-        for (int x=1; x<height-1; x++)
+        for (int x=1; x<width-1; x++)
         {
-            center= m.matrix[x+y*width];
-            array.matrix[4]=center;
+            array.matrix[4]= m.matrix[x+y*width];
             //assimilation des valeurs pour chaque pixel
-            g= m.matrix[(x-1)+y*width];
-            array.matrix[3]=g;
+            array.matrix[3]=m.matrix[(x-1)+y*width];
             
-            d= m.matrix[(x+1)+y*width];
-            array.matrix[5]=d;
+            array.matrix[5]=m.matrix[(x+1)+y*width];
             
-            h=m.matrix[x+(y-1)*width];
-            array.matrix[1]=h;
+            array.matrix[1]=m.matrix[x+(y-1)*width];
             
-            b=m.matrix[x+(y+1)*width];
-            array.matrix[7]=b;
+            array.matrix[7]=m.matrix[x+(y+1)*width];
+            
+            array.matrix[0]=m.matrix[(x-1)+(y-1)*width];
+            
+            array.matrix[8]=m.matrix[(x+1)+(y+1)*width];
+            
+            array.matrix[6]=m.matrix[(x-1)+(y+1)*width];
+            
+            array.matrix[2]=m.matrix[(x+1)+(y-1)*width];
             
             
-            m.matrix[x+y*width]=mul(array,mult,new);
+            
+            new2.matrix[x+y*width]=mul(array,mult,new);
         }
     }
-    
+    freeMatrix(new);
+    freeMatrix(mult);
+    m=new2;
+    freeMatrix(new2);
     return m;
 }
