@@ -95,8 +95,6 @@ struct resultsfromoutput{
     double bias;
 };
 
-int returnRandom();
-void RandomFilter(Matrix *m, int range);
 void getFilter1(struct ALLFilters1 *A1);
 void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input);
 void ReluActiv1(struct ALLFM1 *cfm1);

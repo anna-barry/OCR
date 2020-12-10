@@ -1,6 +1,7 @@
-traitement.o: traitement.c ../../Tools/matrix.h \
-  ../../Tools/help4display.h /usr/local/include/SDL/SDL.h \
-  /usr/local/include/SDL/SDL_main.h /usr/local/include/SDL/SDL_stdinc.h \
+../../pré-traitement/binarisation/binarisation.o: \
+  ../../pré-traitement/binarisation/binarisation.c \
+  /usr/local/include/SDL/SDL.h /usr/local/include/SDL/SDL_main.h \
+  /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
   /usr/local/include/SDL/SDL_platform.h \
   /usr/local/include/SDL/begin_code.h \
@@ -18,4 +19,8 @@ traitement.o: traitement.c ../../Tools/matrix.h \
   /usr/local/include/SDL/SDL_quit.h /usr/local/include/SDL/SDL_loadso.h \
   /usr/local/include/SDL/SDL_timer.h \
   /usr/local/include/SDL/SDL_version.h \
-  /usr/local/include/SDL/SDL_image.h traitement.h
+  /usr/local/include/SDL/SDL_image.h \
+  ../../pré-traitement/binarisation/../../Tools/pixel_operations.h \
+  ../../pré-traitement/binarisation/../../Tools/image_operations.h \
+  ../../pré-traitement/binarisation/../../Tools/matrix.h \
+  ../../pré-traitement/binarisation/binarisation.h
