@@ -27,6 +27,26 @@ marine thunet
     return T;
 }
 
+/*void freeTree(Tree T){
+
+  description :
+  unallocate the memory that have been allocate for a tree
+
+  parameters :
+  Tree T : the matrix that we want to supress because we
+  dont need it anymore
+
+  dates/authors :
+  10/12
+  marine thunet
+
+
+  free(T);
+  T.key = 0;
+  T.sibling = NULL;
+    T.child=NULL;
+}*/
+
 void AddSibling(Tree *T, Tree *Sibling)
 {
 
