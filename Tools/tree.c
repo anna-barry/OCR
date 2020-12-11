@@ -45,21 +45,6 @@ void freeTree(Tree *T){
     {
         return;
     }
-    //added to test
-    /*if (T->child)
-    {
-        printf("childexists\n");
-        free(T->child);
-        T->child=NULL;
-    }
-    
-    if (T->sibling)
-    {
-        printf("siblingexists\n");
-        free(T->sibling);
-        T->sibling=NULL;
-    }*/
-    //real version
     free(T);
     T=NULL;
 }
@@ -82,13 +67,6 @@ dates/authors :
 marine thunet
 
 */
-    /*while (T->sibling)
-    {
-        printf("andthere\n");
-        T = T->sibling;
-        printf("enteredthere\n");
-    }*/
-    printf("enteredthere\n");
     T->sibling= malloc(sizeof(Tree));
     T->sibling = Sibling;
 }
@@ -110,18 +88,13 @@ dates/authors :
 marine thunet
 
     */
-    printf("Addchild begins\n");
     if (!(T->child))
     {
-        printf("enters because has not a sibling\n");
         T->child= malloc (sizeof(Tree));
         T->child= Child;
-        printf("not sibling\n");
     }
     else
     {
-        printf("enters because has a sibling\n");
         AddSibling(T->child,Child);
-        printf("sibling\n");
     }
 }
