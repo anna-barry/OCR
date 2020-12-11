@@ -1,11 +1,11 @@
 //_____________________XY-cut_________________________________//
 
 //_____________________include________________________________//
-#include "../Tools/matrix.h"
-#include "../Tools/tree.h"
-#include "../pré-traitement/binarisation/binarisation.h"
-#include "rlsa.h"
-#include "resizeMatrix.h"
+#include "../../Tools/matrix.h"
+#include "../../Tools/tree.h"
+#include "../../pré-traitement/binarisation/binarisation.h"
+#include "../rlsa.h"
+#include "../resizeMatrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -190,6 +190,9 @@ void _trycut(Matrix M, int line, Tree *T)
 
                         //matrix of the word that was found
                         createseg=cutMatrix(reel,0,x,h_size,ix-x);
+                        
+                        //place for the tests
+                        matToImg(createseg,"last word");
 
                         Tree *Child = newTree(0);
                         AddChild(T, Child);
@@ -246,13 +249,9 @@ void _trycut(Matrix M, int line, Tree *T)
                         //creating a matrix for the caracter that was found
                         createseg=cutMatrix(reel,0,x,h_size,ix-x+1);
 
-                        //createseg=resizeMatrix(createseg,16);
-                        
-                        //for the test
-                        if (h_size>0)
-                        {
-                        matToImg(createseg,"letter");
-                        }
+                                        
+                        //place for the tests
+                        matToImg(createseg,"last letter");
                         
                         //____FINAL___________
                         //intergrate the fonction when the
@@ -336,7 +335,9 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                 cutted++;
                 if (line==1)
                 {
-                    matToImg(og,"testAB");
+                    //place for the tests
+                    matToImg(og,"last line");
+                    
                     Tree *Child = newTree(-2);
                     AddChild(T, Child);
                     _trycut(og,1,Child);
@@ -345,6 +346,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                 {
                     if (cutted>=2)
                     {
+                        
                         Tree *Child = newTree(-3);
                         AddChild(T, Child);
                         Matrix s = rlsa(og,250,40);
@@ -396,6 +398,8 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                     
                     Tree *Child = newTree(-2);
                     AddChild(T, Child);
+                    //place for the tests
+                    matToImg(og2,"last line");
                     
                     _trycut(og2,1,Child);
                     
@@ -487,6 +491,8 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
                 AddChild(T, Child);
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
+                    //place for the tests
+                matToImg(og,"lastparagraph");
                 horizontalcut(Child,m,og,1,0);
                 freeMatrix(s);
                 freeMatrix(m);
