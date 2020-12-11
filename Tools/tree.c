@@ -19,17 +19,18 @@ dates/authors :
 marine thunet
 
 */
+    
     Tree *T = malloc(sizeof(Tree));
     T->key=Key;
-    T->sibling=NULL;
-    T->child=NULL;
+    T->sibling=malloc(sizeof(Tree)); //previous was NULL
+    T->child=malloc(sizeof(Tree));
 
     return T;
 }
 
-/*void freeTree(Tree T){
+void freeTree(Tree *T){
 
-  description :
+  /*description :
   unallocate the memory that have been allocate for a tree
 
   parameters :
@@ -38,14 +39,15 @@ marine thunet
 
   dates/authors :
   10/12
-  marine thunet
-
-
-  free(T);
-  T.key = 0;
-  T.sibling = NULL;
-    T.child=NULL;
-}*/
+  marine thunet*/
+  
+    if (!T)
+    {
+        return;
+    }
+    free(T);
+    T=NULL;
+}
 
 void AddSibling(Tree *T, Tree *Sibling)
 {
@@ -65,12 +67,8 @@ dates/authors :
 marine thunet
 
 */
-    while (T->sibling)
-    {
-        T = T->sibling;
-        T->sibling = Sibling;
-
-    }
+    T->sibling= malloc(sizeof(Tree));
+    T->sibling = Sibling;
 }
 
 void AddChild(Tree *T, Tree *Child)
@@ -90,12 +88,13 @@ dates/authors :
 marine thunet
 
     */
-    if (T->child)
+    if (!(T->child))
     {
-        AddSibling(T->child,Child);
+        T->child= malloc (sizeof(Tree));
+        T->child= Child;
     }
     else
     {
-        T->child=Child;
+        AddSibling(T->child,Child);
     }
 }

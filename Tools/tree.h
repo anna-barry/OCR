@@ -10,6 +10,7 @@ typedef struct Tree
 } Tree;
 
 Tree *newTree(int key);
+void freeTree(Tree *T);
 void AddSibling(Tree *T, Tree *Sibling);
 void AddChild(Tree *T, Tree *Child);
 
