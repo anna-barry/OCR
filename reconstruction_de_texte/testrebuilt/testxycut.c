@@ -29,11 +29,11 @@ int main()
     //matToImg(matricef, "new"); // transforme la matrice en image
     Tree *tree = beginSeg(matricef);
 
-    char *theMFTexte = textBuider(tree, "chicoungounia");
+    char *theMFTexte = textBuider(tree, "The final text is : ");
 
     printf("%s\n", theMFTexte);
 
-    //free(theMFTexte);
+    free(theMFTexte);
 
     free(tree);
 
