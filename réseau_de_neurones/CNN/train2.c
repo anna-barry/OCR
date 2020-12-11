@@ -1002,17 +1002,27 @@ struct ALLFM2 *convl45;
 
     //___________________________________________________________________________________
     //Getting input matrix
+    
+    
+    // STARTING THE TRAINING
     init_sdl();
-    SDL_Surface* img = load_image("Images/Arial Unicode.ttf/0_1.bmp");
+
+    for(int i=0; i<NB_ITERATION; i++)
+    {
+    struct sendback imp = GetRandomSet();
+    
+    SDL_Surface* img = load_image(imp.path);
 
     Matrix matrice1 = surface_to_matrix_grayscale(img);
 
     int seuil = otsu(img);
 
+    struct TM training;
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
+    training.M= input;
+    training.result= imp.ASCII;
 
-
-    printf("image to matrice [ok] \n" );
+    printf("image to matrice for path %s [ok] \n",imp.path );
 
 
     // Forward Propagate __________________________________________________________________________
@@ -1054,16 +1064,17 @@ struct ALLFM2 *convl45;
         // 9) Fully connected output layer
         struct resultsfromoutput output=GetOutPut( outin);
 
-        printf("The output is: %f \n",output.ASCII);
+        printf("The output is: %f and should be %d \n",output.ASCII, imp.ASCII);
 
+        free_Matrix2(input);
+        free_Matrix2(matrice1);
+
+        SDL_FreeSurface(img);
+        }
         //FREE ALL MEMORY
         //Free all of this
 
         //Input Matrix
-        free_Matrix2(input);
-        free_Matrix2(matrice1);
-        
-        SDL_FreeSurface(img);
 
         //Free 1 set of filters
         printf("until freed memory [ok] \n");

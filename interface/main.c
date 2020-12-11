@@ -9,7 +9,7 @@ int main (int argc, char **argv)
 {
   GtkWidget *p_window = NULL;
   GtkWidget *p_main_box = NULL;
-  GtkWidget *p_table = NULL;;
+  GtkWidget *p_button_box = NULL;
   GtkWidget *p_text_view = NULL;
   GtkWidget* Label = NULL;
   gchar* Texte = NULL;  
@@ -25,9 +25,11 @@ int main (int argc, char **argv)
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
 
   
-  //create the box for have numerous gtkwidget
-  p_main_box = gtk_vbox_new (FALSE, 0);
+  /* Creation du conteneur principal */
+  p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
+ 
+      
 
   //create the texte
 
@@ -42,21 +44,17 @@ int main (int argc, char **argv)
 
     gtk_container_add(GTK_CONTAINER(p_main_box), Label);  // On ajoute le label a l'interieur de 'Fenetre'
   
- 
-
-    //create the button box
-    p_table = gtk_table_new(2, 3, FALSE);
-    //gtk_table_set_col_spacing (p_table, 1, 4); 
-    gtk_container_add (GTK_CONTAINER(p_main_box), p_table);
-    
-      
     //insert image
-    {
-      GtkWidget *p_image = NULL;
-      p_image = gtk_image_new_from_file("images/intro.png");
-      gtk_table_attach(GTK_TABLE(p_table), p_image,  1, 2, 0, 1, GTK_EXPAND, GTK_EXPAND, 10, 10);
-    }
-    
+  {
+    GtkWidget *d_image = NULL;
+    d_image = gtk_image_new_from_file("images/intro.png");
+    gtk_box_pack_start (GTK_BOX (p_main_box), d_image, FALSE, FALSE, 0);
+  }
+  
+  /* Creation du conteneur pour les boutons */
+  p_button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+  gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
+      
     //create the start button
     {
       GtkWidget *p_button = NULL;
@@ -65,8 +63,7 @@ int main (int argc, char **argv)
       image = gtk_image_new_from_file("images/bouton2.png");
       gtk_container_add(GTK_CONTAINER(p_button), image); 
       g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_quit), p_text_view);
-      gtk_widget_set_size_request(p_button, 250, 200);
-      gtk_table_attach(GTK_TABLE(p_table), p_button, 0, 1, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+     gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
     }
 
     //create the start button
@@ -77,8 +74,8 @@ int main (int argc, char **argv)
       image = gtk_image_new_from_file("images/bouton1.png");
       gtk_container_add(GTK_CONTAINER(p_button), image); 
       g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_openpage2), p_text_view);
-      gtk_widget_set_size_request(p_button, 250, 200);
-      gtk_table_attach(GTK_TABLE(p_table), p_button, 1, 2, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+      gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
+      
     }
 
     /* Creation du bouton "Quitter" */
@@ -89,11 +86,9 @@ int main (int argc, char **argv)
       image = gtk_image_new_from_file("images/bouton.png");
       gtk_container_add(GTK_CONTAINER(p_button), image); 
       g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_quit), NULL);
-      gtk_widget_set_size_request(p_button, 250, 200);
-      gtk_table_attach(GTK_TABLE(p_table), p_button, 2, 3, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+      gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
+      
     }
-
-
   
   /* Affichage de la fenetre principale */
   gtk_widget_show_all (p_window);

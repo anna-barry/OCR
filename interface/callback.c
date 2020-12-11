@@ -23,17 +23,30 @@ static void on_open_image (GtkButton* button, gpointer user_data)
 	                             filter);
 
 	switch (gtk_dialog_run (GTK_DIALOG (dialog)))
-	{
-		case GTK_RESPONSE_ACCEPT:
+	  {
+	  case GTK_RESPONSE_ACCEPT:
+	    {
+	      gchar *filename =gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+	      gchar *extention = ".bmp";
+	      gchar *extentionn = ".BMP";
+	      size_t j = 0;
+	      size_t b = 0;
+	      for(size_t i = strlen(filename)-4; i < strlen(filename); i++)
 		{
-			gchar *filename =
-				gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-			gtk_image_set_from_file (GTK_IMAGE (image), filename);
-			break;
+		  if((extention[j] != filename[i])||(extentionn[j] != filename[i]))
+		    b += 1;
+		  j++;
 		}
-		default:
-			break;
-	}
+	      if(b  != 4)
+		{
+		  gtk_image_set_from_file (GTK_IMAGE (image), filename);
+		}
+			
+	      break;
+	    }
+	  default:
+	    break;
+	  }
 	gtk_widget_destroy (dialog);
 }
 
@@ -47,8 +60,6 @@ static void open_file_ocr (const gchar *, GtkTextView *);
 void cb_openOCR (GtkWidget *p_widget, gpointer user_data)
 {
   open_file_ocr (DEFAULT_FILE, GTK_TEXT_VIEW (user_data));
-
-  /* Parametre inutilise */
   (void)p_widget;
 }
 
@@ -102,8 +113,6 @@ void cb_open (GtkWidget *p_widget, gpointer user_data)
   }
   gtk_widget_destroy (p_dialog);
 
-  /* Parametre inutilise */
-  (void)p_widget;
 }
 //-----------------------------------------------------NEW FILE-------------------------------------------------------------------------------
 
@@ -182,9 +191,6 @@ void cb_save (GtkWidget *p_widget, gpointer user_data)
     print_warning ("Aucun document ouvert");
   }
 
-  /* Parametres inutilises */
-  (void)p_widget;
-  (void)user_data;
 }
 
 //-----------------------------------------------------------------SAVE AS------------------------------------------------------------------------------
@@ -216,9 +222,6 @@ void cb_quit (GtkWidget *p_widget, gpointer user_data)
 {
   gtk_main_quit();
 
-  /* Parametres inutilises */
-  (void)p_widget;
-  (void)user_data;
 }
 //-----------------------------------------------------------MODIFY----------------------------------------------------------------------------------
 
@@ -229,9 +232,6 @@ void cb_modifie (GtkWidget *p_widget, gpointer user_data)
     docs.actif->sauve = FALSE;
   }
 
-  /* Parametres inutilises */
-  (void)p_widget;
-  (void)user_data;
 }
 
 //-------------------------------------------------OPEN FILE PART 2--------------------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ void cb_pageWrite (GtkWidget *p_widget, gpointer user_data)
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
 
   /* Creation du conteneur principal */
-  p_main_box = gtk_vbox_new (FALSE, 0);
+  p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
 
   /* Creation de la zone de texte */
@@ -293,7 +293,7 @@ void cb_pageWrite (GtkWidget *p_widget, gpointer user_data)
   gtk_box_pack_start (GTK_BOX (p_main_box), p_text_view, TRUE, TRUE, 0);
 
   /* Creation du conteneur pour les boutons */
-  p_button_box = gtk_hbutton_box_new ();
+  p_button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
 
   /* Creation du bouton "Ouvrir" */
@@ -344,9 +344,6 @@ void cb_pageWrite (GtkWidget *p_widget, gpointer user_data)
   gtk_widget_show_all (p_window);
 
   
-  /* Parametres inutilises */
-  (void)p_widget;
-  (void)user_data;
 
 }
 
@@ -368,7 +365,7 @@ void cb_pageReWrite (GtkWidget *p_widget, gpointer user_data)
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
 
   /* Creation du conteneur principal */
-  p_main_box = gtk_vbox_new (FALSE, 0);
+  p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
 
   /* Creation de la zone de texte */
@@ -376,7 +373,7 @@ void cb_pageReWrite (GtkWidget *p_widget, gpointer user_data)
   gtk_box_pack_start (GTK_BOX (p_main_box), p_text_view, TRUE, TRUE, 0);
 
   /* Creation du conteneur pour les boutons */
-  p_button_box = gtk_hbutton_box_new ();
+  p_button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
 
   /* Creation du bouton "Ouvrir" */
@@ -437,10 +434,7 @@ void cb_pageReWrite (GtkWidget *p_widget, gpointer user_data)
   /* Affichage de la fenetre principale */
   gtk_widget_show_all (p_window);
 
-  
-  /* Parametres inutilises */
-  (void)p_widget;
-  (void)user_data;
+
 
 }
 
@@ -463,7 +457,7 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
 
   /* Creation du conteneur principal */
-  p_main_box = gtk_vbox_new (FALSE, 0);
+  p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
 
    /* Creation de la zone d' Image */
@@ -480,7 +474,7 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
 
 
   /* Creation du conteneur pour les boutons */
-  p_button_box = gtk_hbutton_box_new ();
+  p_button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
 
   /* Creation du bouton "Ouvrir Image" */
@@ -541,10 +535,7 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
   /* Affichage de la fenetre principale */
   gtk_widget_show_all (p_window);
 
-  
-  /* Parametres inutilises */
-  (void)p_widget;
-  (void)user_data;
+ 
 
 }
 
@@ -553,36 +544,35 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
 
 void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
 {
-
-
-  //create the widget object 
-  
   GtkWidget *p_window = NULL;
-  GtkWidget *p_table= NULL;
-  GtkWidget *d_text_view = NULL;
+  GtkWidget *p_main_box = NULL;
+  GtkWidget *p_button_box = NULL;
 
-  // create the new page 
+
+
+  /* Creation de la fenetre principale de notre application */
   p_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_fullscreen(GTK_WINDOW (p_window));
   gtk_window_maximize (GTK_WINDOW (p_window));
-  gtk_window_set_title (GTK_WINDOW (p_window), "MENU");
+  gtk_window_set_title (GTK_WINDOW (p_window), "Editeur de texte en GTK+");
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
 
-  //create the button box
-  p_table = gtk_table_new(2, 4, FALSE);
-  //gtk_table_set_col_spacing (p_table, 1, 4); 
-  gtk_container_add (GTK_CONTAINER(p_window), p_table);
-    
-      
+  /* Creation du conteneur principal */
+  p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+  gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
+ 
   //insert image
   {
     GtkWidget *d_image = NULL;
     d_image = gtk_image_new_from_file("images/menu.png");
-    gtk_table_attach(GTK_TABLE(p_table), d_image,  1, 3, 0, 1, GTK_EXPAND, GTK_EXPAND, 10, 10);
+    gtk_box_pack_start (GTK_BOX (p_main_box), d_image, FALSE, FALSE, 0);
   }
-    
-
   
+  /* Creation du conteneur pour les boutons */
+  p_button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+  gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
+      
+
   //create the open button
   {
     GtkWidget *d_button = NULL;
@@ -590,9 +580,8 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
     d_button = gtk_button_new();
     image = gtk_image_new_from_file("images/boutonModif.png");
     gtk_container_add(GTK_CONTAINER(d_button), image);
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageReWrite), d_text_view);
-    gtk_widget_set_size_request(d_button, 150, 100);
-    gtk_table_attach(GTK_TABLE(p_table), d_button, 0, 1, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageReWrite), NULL);
+    gtk_box_pack_start (GTK_BOX (p_button_box), d_button, FALSE, FALSE, 0);
   }
 
   //create the OCR button
@@ -602,9 +591,8 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
     d_button = gtk_button_new();
     image = gtk_image_new_from_file("images/boutonMakeOcr.png");
     gtk_container_add(GTK_CONTAINER(d_button), image);
-    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageOCR), d_text_view);
-    gtk_widget_set_size_request(d_button, 150, 100);
-    gtk_table_attach(GTK_TABLE(p_table), d_button, 1, 2, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+    g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageOCR), NULL);
+   gtk_box_pack_start (GTK_BOX (p_button_box), d_button, FALSE, FALSE, 0);
   }
 
   //create the new page button
@@ -615,8 +603,7 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
     image = gtk_image_new_from_file("images/boutonNew.png");
     gtk_container_add(GTK_CONTAINER(d_button), image);
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageWrite), NULL);
-    gtk_widget_set_size_request(d_button, 150, 100);
-    gtk_table_attach(GTK_TABLE(p_table), d_button, 2, 3, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+   gtk_box_pack_start (GTK_BOX (p_button_box), d_button, FALSE, FALSE, 0);
   }
 
 
@@ -628,17 +615,11 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
     image = gtk_image_new_from_file("images/boutonQUITM.png");
     gtk_container_add(GTK_CONTAINER(d_button), image);
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_quit), NULL);
-    gtk_widget_set_size_request(d_button, 150, 100);
-    gtk_table_attach(GTK_TABLE(p_table), d_button, 3, 4, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
+    gtk_box_pack_start (GTK_BOX (p_button_box), d_button, FALSE, FALSE, 0);
   }
 
   //display new window
   gtk_widget_show_all (p_window);
-
-
-  // Unused Parametres 
-  (void)p_widget;
-  (void)user_data;
 
   
 }
