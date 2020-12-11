@@ -244,6 +244,7 @@ void cb_pageWrite (GtkWidget *p_widget, gpointer user_data)
 
   /* Creation de la fenetre principale de notre application */
   p_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_fullscreen(GTK_WINDOW (p_window));
   gtk_window_maximize (GTK_WINDOW (p_window));
   gtk_window_set_title (GTK_WINDOW (p_window), "Editeur de texte en GTK+");
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
@@ -421,6 +422,7 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
 
   /* Creation de la fenetre principale de notre application */
   p_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_fullscreen(GTK_WINDOW (p_window));
   gtk_window_maximize (GTK_WINDOW (p_window));
   gtk_window_set_title (GTK_WINDOW (p_window), "Editeur de texte en GTK+");
   g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
@@ -532,8 +534,10 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   //create the open button
   {
     GtkWidget *d_button = NULL;
-
-    d_button = gtk_button_new_with_label("MODIFYING");
+    GtkWidget *image = NULL; 
+    d_button = gtk_button_new();
+    image = gtk_image_new_from_file("images/boutonModif.png");
+    gtk_container_add(GTK_CONTAINER(d_button), image);
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageReWrite), d_text_view);
     gtk_widget_set_size_request(d_button, 150, 100);
     gtk_table_attach(GTK_TABLE(p_table), d_button, 0, 1, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
@@ -542,8 +546,10 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   //create the OCR button
   {
     GtkWidget *d_button = NULL;
-
-    d_button = gtk_button_new_with_label("MAKE OCR");
+    GtkWidget *image = NULL; 
+    d_button = gtk_button_new();
+    image = gtk_image_new_from_file("images/boutonMakeOcr.png");
+    gtk_container_add(GTK_CONTAINER(d_button), image);
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageOCR), d_text_view);
     gtk_widget_set_size_request(d_button, 150, 100);
     gtk_table_attach(GTK_TABLE(p_table), d_button, 1, 2, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
@@ -552,8 +558,10 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   //create the new page button
   {
     GtkWidget *d_button = NULL;
-
-    d_button = gtk_button_new_with_label("NEW PAGE");
+    GtkWidget *image = NULL; 
+    d_button = gtk_button_new();
+    image = gtk_image_new_from_file("images/boutonNew.png");
+    gtk_container_add(GTK_CONTAINER(d_button), image);
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_pageWrite), NULL);
     gtk_widget_set_size_request(d_button, 150, 100);
     gtk_table_attach(GTK_TABLE(p_table), d_button, 2, 3, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
@@ -563,8 +571,10 @@ void cb_openpage2 (GtkWidget *p_widget, gpointer user_data)
   //create the quit button
   {
     GtkWidget *d_button = NULL;
-
-    d_button = gtk_button_new_with_label("QUIT");
+    GtkWidget *image = NULL; 
+    d_button = gtk_button_new();
+    image = gtk_image_new_from_file("images/boutonQUITM.png");
+    gtk_container_add(GTK_CONTAINER(d_button), image);
     g_signal_connect (G_OBJECT (d_button), "clicked", G_CALLBACK (cb_quit), NULL);
     gtk_widget_set_size_request(d_button, 150, 100);
     gtk_table_attach(GTK_TABLE(p_table), d_button, 3, 4, 1, 2, GTK_EXPAND, GTK_EXPAND, 10, 10);
