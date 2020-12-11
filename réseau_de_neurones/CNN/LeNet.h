@@ -25,14 +25,21 @@
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-
+#define NB_ITERATION 20
 
 //Struct
 struct TM
 {
-   Matrix *M;
+   Matrix M;
    int result;
  };
+
+struct sendback
+{
+    char path[50];
+    int ASCII;
+};
+
 // Filters for C1
 struct ALLFilters1{
     Matrix *m;
@@ -93,6 +100,7 @@ struct resultsfromoutput{
     double bias;
 };
 
+struct sendback GetRandomSet();
 void getFilter1(struct ALLFilters1 *A1);
 
 void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input);
