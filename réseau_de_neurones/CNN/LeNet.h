@@ -21,10 +21,10 @@
 #define DIM_FILTER 5
 #define DIM_POOL1 14
 #define FILTER_WP1 2
-#define NB_FILTERS2 12
+#define NB_FILTERS2 10
 #define DIM_C2 10
 #define DIM_POOL2 5
-#define NB_Char 35
+#define NB_Char 60
 
 
 //Struct
@@ -96,18 +96,34 @@ struct resultsfromoutput{
 };
 
 void getFilter1(struct ALLFilters1 *A1);
+
 void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input);
+
 void ReluActiv1(struct ALLFM1 *cfm1);
+
 void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1);
+
 void getFilter2(struct ALLFilters2 *A2);
+
 void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 *cfm2);
+
 void ReluActiv2(struct ALLFM2 *cfm2);
+
+struct PoolC2 *init_pool(size_t n);
+
 void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2);
+
 void FlatternLayer(struct PoolC2 *pc2,struct FL *res);
+
 double GetInputFromFC(struct FL *flatterned);
-void FullyConnectedLayer1(struct FL *flatterned, struct CL_out *outin);
+
+void FullyConnectedLayer1(struct FL *flatterned,  struct Neuron *CurNeu);
+
 struct resultsfromoutput GetOutPut(struct CL_out *outin);
 
+struct CL_out *init_out(size_t n);
+
+struct FL *init_fl(size_t n);
 
 
 
