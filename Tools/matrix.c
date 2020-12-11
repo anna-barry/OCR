@@ -104,9 +104,22 @@ Matrix copyMatrix(Matrix M){
     return mcopy;
 }
 
-
-void freeMatrix(Matrix M){
-  /*
+void freeMatrix(Matrix m)
+{
+    if (!m.matrix)
+    {
+        return;
+    }
+    if ( m.matrix)
+    {
+        free(m.matrix);
+        m.width=0;
+        m.height=0;
+        m.matrix=NULL;
+    }
+}
+/*void freeMatrix(Matrix M){
+  
   description :
   unallocate the memory that have been allocate for a matrix
 
@@ -118,11 +131,11 @@ void freeMatrix(Matrix M){
   12/10
   geoffroy du mesnil du buisson
 
-  */
+  
   free(M.matrix);
   M.width = 0;
   M.height = 0;
-}
+}*/
 
 
 // Return the cuted matrix (part of the original matrix)
