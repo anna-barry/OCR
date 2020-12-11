@@ -78,14 +78,12 @@ struct Neuron{
 //Flatterning Layer with neuron implementation -> Fully connected layer
 struct FL{
     struct Neuron *n;
-    struct FL *next;
 };
 
 
 //Fully Connected Layer for output
 struct CL_out{
     struct Neuron *n;
-    struct CL_out *next;
 };
 
 struct resultsfromoutput{
@@ -125,7 +123,25 @@ struct CL_out *init_out(size_t n);
 
 struct FL *init_fl(size_t n);
 
+void free_Matrix(Matrix *m);
 
+void free_FlatternedLayer(struct FL *flatterned1);
+
+void free_OutPutLayer(struct CL_out *out);
+
+void free_ALLFilters1(struct ALLFilters1 *p);
+
+void free_ALLFM1(struct ALLFM1 *p);
+
+void free_PoolC1(struct PoolC1 *p);
+
+void free_ALLFilters2(struct ALLFilters2 *p);
+
+void free_ALLMaps2(struct ALLFM2 *p);
+
+void free_PoolC2(struct PoolC2 *p);
+
+void free_Matrix2(Matrix m);
 
 #endif
 

@@ -10,7 +10,7 @@
  *                  _input is a 32x32 grayscale matrix
  *                  _output is an ASCII code representing output character
  *
- *                  version 0.0 4/12/2020
+ *                  version 1.2 11/12/2020
  *
  * MAIN FOR TRAINING
  *
@@ -988,11 +988,10 @@ struct ALLFM2 *convl45;
     //______________________________________________________________________________________
     // 8) Flattern Layer -> First Fully Connected Layer
     size_t all= NB_FILTERS2 * NB_FILTERS1 * DIM_POOL2 * DIM_POOL2;
-    printf("all = %zu \n",all);
     struct FL *flatterned1 = init_fl(all);
 
     printf("All flatterning [ok] \n" );
-    
+
 
     // 9) Final Connected Layer with char as neurons
     struct CL_out *outin = init_out(NB_Char);
@@ -1004,7 +1003,6 @@ struct ALLFM2 *convl45;
     //___________________________________________________________________________________
     //Getting input matrix
     init_sdl();
-
     SDL_Surface* img = load_image("Images/Arial Unicode.ttf/0_1.bmp");
 
     Matrix matrice1 = surface_to_matrix_grayscale(img);
@@ -1012,7 +1010,7 @@ struct ALLFM2 *convl45;
     int seuil = otsu(img);
 
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
-    SDL_FreeSurface(img);
+
 
     printf("image to matrice [ok] \n" );
 
@@ -1053,92 +1051,57 @@ struct ALLFM2 *convl45;
         FullyConnectedLayer1(flatterned1, outin->n);
 
         printf("Fully Connected Layer   [ok]   \n");
-        /*// 9) Fully connected output layer
+        // 9) Fully connected output layer
         struct resultsfromoutput output=GetOutPut( outin);
 
-        printf("The output is: %f",output.ASCII);
-*/
+        printf("The output is: %f \n",output.ASCII);
+
         //FREE ALL MEMORY
         //Free all of this
 
+        //Input Matrix
+        free_Matrix2(input);
+        free_Matrix2(matrice1);
+        
+        SDL_FreeSurface(img);
+
+        //Free 1 set of filters
         printf("until freed memory [ok] \n");
-        if(A1_1st != NULL){
-         while ( A1_1st && A1_1st->next)
-         {
-                free(A1_1st->m);
-                A1_1st=A1_1st->next;
-         }
-             free(A1_1st);
-            A1_1st= NULL;
-        }
+        //Free 1st layer of pooling
+        free_ALLFilters1(A1_1st);
 
-        if(convo1 != NULL){
-            while(convo1&& convo1->next)
-            {
-                free(convo1->m);
-                //free(convo1)
-                convo1=convo1->next;
-            }
-         free(convo1);
-         convo1 = NULL;
-        }
+        printf("free first filters [ok] \n");
+        //Free 1st layer of convolution
+        free_ALLFM1(convo1);
 
-        if(poolC1 != NULL){
-            while(poolC1 && poolC1->next)
-            {
-                free(poolC1->m);
-                poolC1=poolC1->next;
-            }
-         free(poolC1);
-         poolC1 = NULL;
-        }
+        printf("free first feature maps [ok] \n");
+        //Free 1st layer of pooling
+        free_PoolC1(poolC1);
 
-        if(A2_1st != NULL){
-            while(A2_1st && A2_1st-> next)
-            {
-                free(A2_1st->m);
-                A2_1st=A2_1st->next;
-            }
-         free(A2_1st);
-         A2_1st = NULL;
-        }
+        printf("free first pooling layers [ok] \n");
 
-        if(convl1 != NULL){
+        //Free 2nd set of filters
+        free_ALLFilters2(A2_1st);
 
-            while(convl1 && convl1->next)
-            {
-                free(convl1->m);
-                convl1=convl1->next;
-            }
+        printf("free second filters [ok] \n");
+        //Free 2nd layer of convolution
+        free_ALLMaps2(convl1);
 
-         free(convl1);
-         convl1 = NULL;
+        printf("free second feature maps [ok] \n");
 
-        }
+        //Free 2nd layer of Pooling
+        free_PoolC2(poolC2_1);
 
-        if(poolC2_1 != NULL){
-            while(poolC2_1 && poolC2_1->next)
-            {
-                free(poolC2_1->m);
-                poolC2_1=poolC2_1->next;
-            }
+        printf("free second pooling [ok] \n");
 
-         free(poolC2_1);
-         poolC2_1 = NULL;
-        }
+        //Free Flatterned Layer
+        free_FlatternedLayer(flatterned1);
 
-        if(flatterned1 != NULL){
-                free(flatterned1->n);
-         free(flatterned1);
-         flatterned1 = NULL;
-        }
+        printf("free flattern layer [ok] \n");
+        //Free output layer
+        free_OutPutLayer(outin);
 
-        if(outin != NULL){
-                free(outin->n);
-                free(outin);
-                outin = NULL;
-        }
-
+        printf("free output layer [ok] \n");
         printf("all free [ok] \n");
 
         return 0;

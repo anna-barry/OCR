@@ -134,7 +134,6 @@ struct Neuron{
 struct FL{
     //DIM_POOL2*DIM_POOL2*NB_FILTERS2
     struct Neuron *n;
-    struct FL *next;
 };
 
 
@@ -142,7 +141,6 @@ struct FL{
 struct CL_out{
     //NB_Char
     struct Neuron *n;
-    struct CL_out *next;
 };
 
 
@@ -438,42 +436,17 @@ struct FL *init_fl(size_t n)
     struct FL *new;
     new= malloc (sizeof(struct FL));
     struct Neuron *newN; 
-    newN = malloc (sizeof(struct Neuron)); 
-    double random1=RAND_DOUBLE;
-    double random2=RAND_DOUBLE;
-    newN->input=0;
-    newN->weight=random1;
-    newN->bias=random2;
+    newN = calloc(n,sizeof(double)); 
+    for(int i=0;i<(int)n;i++)
+    {
+        double random1=RAND_DOUBLE;
+        double random2=RAND_DOUBLE;
+        newN[i].input=0;
+        newN[i].weight=random1;
+        newN[i].bias=random2;
+    }
     new->n = newN;
-    new->next=NULL;
     
-    size_t i = 0;
-      
-    while (i < n)
-    {   
-        struct FL *tmp = new;
-        
-        printf("before while i=%zu \n",i);
-        while (tmp && tmp->next)
-        {   
-            tmp=tmp->next;
-         
-        }
-        printf("after while i=%zu \n",i);
-        struct FL *tmp2;
-        tmp2= malloc (sizeof(struct FL));
-        struct Neuron *tempN; 
-        tempN = malloc (sizeof(struct Neuron)); 
-        double random3=RAND_DOUBLE;
-        double random4=RAND_DOUBLE;
-        newN->input=0;
-        newN->weight=random3;
-        newN->bias=random4;
-        tmp2->n = tempN;
-        tmp->next=tmp2;
-        
-        i++;
-    } 
     return new;
    
 }
@@ -496,11 +469,18 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
             for(int k=0; k< DIM_POOL2;k++ )
             {
                 CurNeu[i].input= indexPool[j*DIM_POOL2+k];
+               // printf("Current input %f \n",CurNeu[i].input);
                 
             }
         }
         currPool=currPool->next;
     }
+
+   /* for(int w=0;w<NB_FILTERS2 * NB_FILTERS1;w++)
+    {
+        printf("value n°%d is %f \n",w,CurNeu[w].input);
+    }*/
+    
 }
 
 //____________________________________________________________________________________
@@ -526,47 +506,25 @@ double GetInputFromFC(struct FL *flatterned)
 }
 //Init Fully Connected Layer
 struct CL_out *init_out(size_t n)
-{   
-    struct CL_out *new;
-    new= malloc (sizeof(struct CL_out));
-    struct Neuron *newN;
-    newN = malloc (sizeof(struct Neuron));
-    double random1=RAND_DOUBLE;
-    double random2=RAND_DOUBLE;
-    newN->input=0;
-    newN->weight=random1;
-    newN->bias=random2;
-    new->n = newN;
-    new->next=NULL;
-    
-    size_t i = 0;
-      
-    while (i < n)
-    {   
-        struct CL_out *tmp = new;
-        
-        while (tmp && tmp->next)
-        {   
-            tmp=tmp->next;
-            
-        }   
-        
-        struct CL_out *tmp2;
-        tmp2= malloc (sizeof(struct CL_out));
-        struct Neuron *tempN; 
-        tempN = malloc (sizeof(struct Neuron));
-        double random3=RAND_DOUBLE;
-        double random4=RAND_DOUBLE;
-        newN->input=0;
-        newN->weight=random3;
-        newN->bias=random4;
-        tmp2->n = tempN;
-        tmp->next=tmp2;
+{  
 
-        i++;
+    struct CL_out *new;
+    new= malloc (sizeof(struct FL));
+    struct Neuron *newN;
+    newN = calloc(n,sizeof(double));
+    for(int i=0;i<(int)n;i++)
+    {   
+        double random1=RAND_DOUBLE;
+        double random2=RAND_DOUBLE;
+        newN[i].input=0;
+        newN[i].weight=random1;
+        newN[i].bias=random2;
     }
+    new->n = newN;
+
     return new;
 }
+
 
 void FullyConnectedLayer1(struct FL *flatterned, struct Neuron *CurNeu)
 {
@@ -637,7 +595,170 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
             maxA+=65;
         }
     }
-    struct resultsfromoutput res={maxiO,maxA,maxW,maxB};
+    printf("maxA is %f \n",maxA);
+    struct resultsfromoutput res={maxA,maxiO,maxW,maxB};
     return res;
 }
 
+//________________________________________________________________________
+//Free functions
+void free_Matrix(Matrix *m)
+{
+        if (!m)
+            return;
+        if (m->matrix)
+        {
+            free(m->matrix);
+            m->matrix = NULL;
+        }
+        free(m);
+        m = NULL;
+}
+
+void free_Matrix2(Matrix m)
+{
+    if(!m.matrix)
+        return;
+    if(m.matrix)
+    {   
+        free(m.matrix);
+        m.width=0;
+        m.height=0;
+        m.matrix=NULL;
+        
+    }
+
+}
+void free_FlatternedLayer(struct FL *flatterned1)
+{
+    if(!flatterned1)
+    {
+        return;
+    }
+    if(flatterned1->n)
+    {
+        free(flatterned1->n);
+        flatterned1->n=NULL;
+    }
+    free(flatterned1);
+    flatterned1= NULL;
+}
+
+void free_OutPutLayer(struct CL_out *out)
+{
+    if(!out)
+        return;
+    if(out->n)
+    {
+        free(out->n);
+        out->n=NULL;
+    }
+    free(out);
+    out=NULL;
+}
+
+void free_ALLFilters1(struct ALLFilters1 *p)
+{
+    if (!p)
+            return;
+    if (p->m)
+    {
+        free_Matrix(p->m);
+        p->m = NULL;
+    }
+    if (p->next)
+    {
+        free_ALLFilters1(p->next);
+        p->next = NULL;
+    }
+    free(p);
+    p = NULL;
+}
+
+void free_ALLFM1(struct ALLFM1 *p)
+{
+    if (!p)
+            return;
+    if (p->m)
+    {
+        free_Matrix(p->m);
+        p->m = NULL;
+    }
+    if (p->next)
+    {
+        free_ALLFM1(p->next);
+        p->next = NULL;
+    }
+    free(p);
+    p = NULL;
+}
+void free_PoolC1(struct PoolC1 *p)
+{
+    if (!p)
+            return;
+    if (p->m)
+    {
+        free_Matrix(p->m);
+        p->m = NULL;
+    }
+    if (p->next)
+    {
+        free_PoolC1(p->next);
+        p->next = NULL;
+    }
+    free(p);
+    p = NULL;
+}
+
+void free_ALLFilters2(struct ALLFilters2 *p)
+{
+    if (!p)
+            return;
+    if (p->m)
+    {
+        free_Matrix(p->m);
+        p->m = NULL;
+    }
+    if (p->next)
+    {
+        free_ALLFilters2(p->next);
+        p->next = NULL;
+    }
+    free(p);
+    p = NULL;
+}
+
+void free_ALLMaps2(struct ALLFM2 *p)
+{
+    if (!p)
+            return;
+    if (p->m)
+    {
+        free_Matrix(p->m);
+        p->m = NULL;
+    }
+    if (p->next)
+    {
+        free_ALLMaps2(p->next);
+        p->next = NULL;
+    }
+    free(p);
+    p = NULL;
+}
+void free_PoolC2(struct PoolC2 *p)
+{
+    if (!p)
+            return;
+    if (p->m)
+    {
+        free_Matrix(p->m);
+        p->m = NULL;
+    }
+    if (p->next)
+    {   
+        free_PoolC2(p->next);
+        p->next = NULL;
+    }
+    free(p);
+    p = NULL;
+}
