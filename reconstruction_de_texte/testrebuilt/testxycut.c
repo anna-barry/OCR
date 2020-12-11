@@ -29,11 +29,15 @@ int main()
     //matToImg(matricef, "new"); // transforme la matrice en image
     Tree *tree = beginSeg(matricef);
 
-    char *theMFTexte = textBuider(tree, "The final text is : ");
+    dfs_printer(tree);
 
-    printf("%s\n", theMFTexte);
-
-    free(theMFTexte);
+    // printf("ca marche et j'ai le seum.\n");
+    //
+    // char *theMFTexte = textBuider(tree, "The final text is : ");
+    //
+    // printf("%s\n", theMFTexte);
+    //
+    // free(theMFTexte);
 
     free(tree);
 

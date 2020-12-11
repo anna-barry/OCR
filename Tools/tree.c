@@ -19,7 +19,7 @@ dates/authors :
 marine thunet
 
 */
-    
+
     Tree *T = malloc(sizeof(Tree));
     T->key=Key;
     T->sibling=malloc(sizeof(Tree)); //previous was NULL
@@ -40,7 +40,7 @@ void freeTree(Tree *T){
   dates/authors :
   10/12
   marine thunet*/
-  
+
     if (!T)
     {
         return;
@@ -97,4 +97,15 @@ marine thunet
     {
         AddSibling(T->child,Child);
     }
+}
+
+void dfs_printer(Tree *tree){
+  if (tree->key){
+    printf("%i\n", tree->key);
+    Tree *child = tree->child;
+    while (child!=NULL){
+      dfs_printer(child);
+      child = child->sibling;
+    }
+  }
 }
