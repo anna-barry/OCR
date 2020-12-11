@@ -338,7 +338,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                     //place for the tests
                     matToImg(og,"last line");
                     
-                    Tree *Child = newTree(-2);
+                    Tree *Child = newTree(-1);
                     AddChild(T, Child);
                     _trycut(og,1,Child);
                 }
@@ -347,7 +347,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                     if (cutted>=2)
                     {
                         
-                        Tree *Child = newTree(-3);
+                        Tree *Child = newTree(-2);
                         AddChild(T, Child);
                         Matrix s = rlsa(og,250,40);
                         Matrix m = rlsa(s,400,200);
@@ -396,7 +396,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                 {
                     og2=cutMatrix(og,ybeg,0,y-ybeg,width);
                     
-                    Tree *Child = newTree(-2);
+                    Tree *Child = newTree(-1);
                     AddChild(T, Child);
                     //place for the tests
                     matToImg(og2,"last line");
@@ -487,7 +487,7 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
                 {
                     /*printf("test2\n");
                 matToImg(og,"testA");*/
-                Tree *Child = newTree(-3);
+                Tree *Child = newTree(-2);
                 AddChild(T, Child);
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
@@ -562,6 +562,8 @@ Tree *beginSeg(Matrix M)
     */
     //printf("begin");
     Tree *txt = newTree(-4);
+    Tree *child = newTree(-3);
+    AddChild(txt,child);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
     horizontalcut(txt,q,M,0,0);
