@@ -95,6 +95,7 @@ struct CL_out{
 
 struct resultsfromoutput{
     double ASCII;
+    double i;
     double output;
     double weight;
     double bias;
@@ -151,6 +152,17 @@ void free_PoolC2(struct PoolC2 *p);
 
 void free_Matrix2(Matrix m);
 
+double SoftLayerBack(struct CL_out *clout, int BinIndicaor, int i);
+
+void BackforOutput(struct CL_out *clout, int BinIndicaor);
+
+void GradientsFromPoolingLast(struct PoolC2 *pool2, struct ALLFM2 *feat2);
+
+void BackForFiltersLast(struct ALLFilters2 *filers2, struct ALLFM2 *feat2,struct PoolC1 *pool1);
+
+void GradientsFromPooling(struct PoolC1 *pool1, struct ALLFM1 *feat1);
+
+void BackForFilters(struct ALLFilters1 *filter1, struct ALLFM1 *feat1, Matrix input);
+
+
 #endif
-
-

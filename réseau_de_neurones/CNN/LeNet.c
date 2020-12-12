@@ -545,6 +545,7 @@ void FullyConnectedLayer1(struct FL *flatterned, struct Neuron *CurNeu)
 //10) Get output with softmax -> OutPut Layer
 struct resultsfromoutput{
     double ASCII;
+    double i;
     double output;
     double weight;
     double bias;
@@ -570,6 +571,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
 
     double maxiO=exp((outN2[0].input*outN2[0].weight)+outN2[0].bias)/sum;
     double maxA=0;
+    double maxI=0;
     double maxW=outN2[0].weight;
     double maxB=outN2[0].bias;
     for(int i=1; i<NB_Char; i++)
@@ -579,6 +581,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
         {
             maxiO=curexp;
             maxA=i;
+            maxI=i;
             maxW=outN2[i].weight;
             maxB=outN2[i].bias;
         }
@@ -603,7 +606,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
         }
     }
     printf("maxA is %f \n",maxA);
-    struct resultsfromoutput res={maxA,maxiO,maxW,maxB};
+    struct resultsfromoutput res={maxA,maxI,maxiO,maxW,maxB};
     return res;
 }
 
@@ -1004,4 +1007,272 @@ struct sendback GetRandomSet()
     res.ASCII=Llabels[random];
     printf("path is %s and ASCII is %d \n",res.path,res.ASCII);
     return res;
+}
+
+
+
+//____________________________________ Back Propagation _______________________________
+/*double CrossEntropy(CL_out *clout, int BinIndicaor)
+{
+    struct CL_out *IndexOut=NULL;
+    IndexOut=outin;
+
+    struct Neuron *outN=NULL;
+    outN=IndexOut->n;
+
+    return -(log(exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias)));
+
+}*/
+
+//Chain Rule derivation for output layers
+double SoftLayerBack(struct CL_out *clout, int BinIndicaor, int i)
+{
+  struct CL_out *IndexOut=NULL;
+  IndexOut=clout;
+
+  struct Neuron *outN=NULL;
+  outN=IndexOut->n;
+
+  if(BinIndicaor==i)
+  {
+    return -1/(exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias));
+  }
+  else
+  {
+    return 0;
+  }
+
+}
+
+// Backpropagation for the output layer
+void BackforOutput(struct CL_out *clout, int BinIndicaor)
+{
+  struct CL_out *IndexOut=NULL;
+  IndexOut=clout;
+
+  struct Neuron *outN=NULL;
+  outN=IndexOut->n;
+
+  int sum=0;
+  for (int i=0;i<(NB_Char);i++)
+  {
+
+      sum=sum+exp((outN[i].input * outN[i].weight) + outN[i].bias);
+  }
+
+  for(int i=0; i<NB_Char; i++)
+  {
+    double rout=0;
+    if (i==BinIndicaor) {
+      rout= exp((outN[i].input * outN[i].weight) + outN[i].bias)*(sum-exp((outN[i].input * outN[i].weight) + outN[i].bias))/(sum*sum);
+    }
+    else
+    {
+      rout= -exp((outN[i].input * outN[i].weight) + outN[i].bias)*exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias/(sum*sum));
+    }
+
+    outN[i].input=SoftLayerBack(clout, BinIndicaor, i)*rout*outN[i].weight;
+    outN[i].weight=SoftLayerBack(clout, BinIndicaor, i)*rout*outN[i].input;
+    outN[i].bias=SoftLayerBack(clout, BinIndicaor, i)*rout;
+
+  }
+}
+
+void GradientsFromPoolingLast(struct PoolC2 *pool2, struct ALLFM2 *feat2)
+{
+  struct ALLFM2 *currFeatureMap2=NULL;
+  currFeatureMap2=feat2;
+
+  struct PoolC2 *currPool=NULL;
+  currPool= pool2;
+
+  for(int i=0;i<NB_FILTERS1*NB_FILTERS2;i++)
+  {
+      double *indexConv2= NULL;
+      indexConv2=(currFeatureMap2->m->matrix);
+
+      double *indexPool2=NULL;
+      indexPool2=(currPool->m->matrix);
+
+      int i4pool=0;
+       for(int k=0; k<DIM_C2; k+=2)
+      {
+          for(int l=0;l<DIM_C2;l+=2)
+          {
+            double maxi=  indexPool2[i4pool];
+
+            if(indexConv2[k*DIM_C2+l]!=maxi)
+            {
+              indexConv2[k*DIM_C2+l]=0;
+            }
+            if(indexConv2[k*DIM_C2+(l+1)]!=maxi)
+            {
+              indexConv2[k*DIM_C2+(l+1)]=0;
+            }
+            if(indexConv2[(k+1)*DIM_C2+l]!=maxi)
+            {
+              indexConv2[(k+1)*DIM_C2+l]=0;
+            }
+            if(indexConv2[k*DIM_C2+(l+1)]!=maxi)
+            {
+              indexConv2[k*DIM_C2+(l+1)]=0;
+            }
+
+            i4pool+=1;
+
+            }
+      }
+          currFeatureMap2=currFeatureMap2->next;
+          currPool=currPool->next;
+  }
+
+
+}
+
+void BackForFiltersLast(struct ALLFilters2 *filers2, struct ALLFM2 *feat2,struct PoolC1 *pool1)
+{
+  struct ALLFM2 *currFeatureMap2=NULL;
+  currFeatureMap2=feat2;
+
+  struct ALLFilters2 *currFilter2=NULL;
+  currFilter2= filers2;
+
+  struct PoolC1 *currPool=NULL;
+  currPool= pool1;
+
+  for(int n=0; n<NB_FILTERS1; n++)
+  {
+    double *indexPool2=NULL;
+    indexPool2=(currPool->m->matrix);
+
+    currFilter2= filers2;
+
+    for(int nb=0;nb<NB_FILTERS2;nb++)
+    {
+      double *indexConv2= NULL;
+      indexConv2=(currFeatureMap2->m->matrix);
+
+      double *indexFilter2=NULL;
+      //PB here
+      indexFilter2=(currFilter2->m->matrix);
+
+      for(int y=0; y<DIM_FILTER; y++)
+     {
+         for(int x=0; x<DIM_FILTER;x++)
+         {
+              //Find Gradient
+              double gradient=0;
+              for (int j = 0; j < DIM_C2; j++) {
+                for (int i = 0; i < DIM_C2; i++) {
+
+                      gradient+=indexConv2[j*DIM_C2+i]*indexPool2[(j+y)*DIM_POOL1+(i+x)];
+                    }
+
+                  }
+
+                  indexFilter2[y*DIM_FILTER+x]=gradient;
+
+         }
+       }
+       currFeatureMap2=currFeatureMap2->next;
+       currFilter2=currFilter2->next;
+    }
+    currPool=currPool->next;
+  }
+
+
+}
+
+// Gradient from Max Pooling
+void GradientsFromPooling(struct PoolC1 *pool1, struct ALLFM1 *feat1)
+{
+  struct ALLFM1 *currFeatureMap=NULL;
+  currFeatureMap=feat1;
+
+  struct PoolC1 *currPool=NULL;
+  currPool= pool1;
+
+  for(int i=0;i<NB_FILTERS1;i++)
+  {
+      double *indexConv= NULL;
+      indexConv=(currFeatureMap->m->matrix);
+
+      double *indexPool=NULL;
+      indexPool=(currPool->m->matrix);
+
+      int i4pool=0;
+       for(int k=0; k<DIM_C1; k+=2)
+      {
+          for(int l=0;l<DIM_C1;l+=2)
+          {
+
+            double maxi=  indexPool[i4pool];
+
+            if(indexConv[k*DIM_C1+l]!=maxi)
+            {
+              indexConv[k*DIM_C1+l]=0;
+            }
+            if(indexConv[k*DIM_C1+(l+1)]!=maxi)
+            {
+              indexConv[k*DIM_C1+(l+1)]=0;
+            }
+            if(indexConv[(k+1)*DIM_C1+l]!=maxi)
+            {
+              indexConv[(k+1)*DIM_C1+l]=0;
+            }
+            if(indexConv[k*DIM_C1+(l+1)]!=maxi)
+            {
+              indexConv[k*DIM_C1+(l+1)]=0;
+            }
+
+            i4pool+=1;
+
+            }
+      }
+          currFeatureMap=currFeatureMap->next;
+          currPool=currPool->next;
+  }
+
+
+}
+//Step 5 Backprop for Conv
+void BackForFilters(struct ALLFilters1 *filter1, struct ALLFM1 *feat1, Matrix input)
+{
+
+  struct ALLFM1 *currFeatureMap=NULL;
+  currFeatureMap=feat1;
+
+  struct ALLFilters1 *currFilter=NULL;
+  currFilter= filter1;
+
+  for(int nb=0;nb<NB_FILTERS1;nb++)
+  {
+    double *indexConv1= NULL;
+    indexConv1=(currFeatureMap->m->matrix);
+
+    double *indexFilter1=NULL;
+    indexFilter1=(currFilter->m->matrix);
+
+    for(int y=0; y<DIM_FILTER; y++)
+   {
+       for(int x=0; x<DIM_FILTER;x++)
+       {
+         //Find Gradient
+            double gradient=0;
+            for (int j = 0; j < DIM_C1; j++) {
+              for (int i = 0; i < DIM_C1; i++) {
+
+                    gradient+=indexConv1[j*DIM_C1+i]*input.matrix[(j+y)*DIM_INPUT+(i+x)];
+                  }
+
+                }
+
+                indexFilter1[y*DIM_FILTER+x]=gradient;
+       }
+     }
+     currFeatureMap=currFeatureMap->next;
+     currFilter=currFilter->next;
+
+  }
+
 }

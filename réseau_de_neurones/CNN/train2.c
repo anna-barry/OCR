@@ -1002,22 +1002,22 @@ struct ALLFM2 *convl45;
 
     //___________________________________________________________________________________
     //Getting input matrix
-    
-    
+
+
     // STARTING THE TRAINING
     init_sdl();
 
     for(int i=0; i<NB_ITERATION; i++)
     {
     struct sendback imp = GetRandomSet();
-    
+
     SDL_Surface* img = load_image(imp.path);
 
     Matrix matrice1 = surface_to_matrix_grayscale(img);
 
     int seuil = otsu(img);
 
-    
+
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
 
     printf("image to matrice for path %s [ok] \n",imp.path );
@@ -1063,6 +1063,41 @@ struct ALLFM2 *convl45;
         struct resultsfromoutput output=GetOutPut( outin);
 
         printf("The output is: %f and should be %d \n",output.ASCII, imp.ASCII);
+
+        //_____________________________________________________________________________
+        // BackPropagation
+        //1) OutPut
+        int BinIndicaor= imp.ASCII;
+        if(imp.ASCII<58)
+        {
+          BinIndicaor-=48;
+        }
+        else
+        {
+          if (imp.ASCII<91) {
+            BinIndicaor-=65;
+          } else {
+            BinIndicaor-=97;
+          }
+        }
+        BackforOutput(outin, BinIndicaor);
+        printf("Back For output [ok] \n" );
+
+        //2) Last Pooling (C2)
+        GradientsFromPoolingLast(poolC2_1, convl1);
+        printf(" Back for gradient pool C2 [ok] \n" );
+
+        // 3) C2 Filters
+        BackForFiltersLast(A2_1st, convl1,poolC1);
+        printf("Back for filters C2 [ok] \n" );
+
+        // 4) Pool layer C1
+        GradientsFromPooling(poolC1, convo1);
+        printf("Back for pool layers 1 [ok] \n" );
+
+        // 5) C1 FIlters
+        BackForFilters(A1_1st, convo1, input);
+        printf("Back for filters C1 [ok] \n" );
 
         free_Matrix2(input);
         free_Matrix2(matrice1);
