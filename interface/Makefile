@@ -13,8 +13,6 @@ main/.o: callback.h error.h
 clean:
 	${RM} *.o
 	${RM} *.d
-	${RM} ../assemblage/*.o
-	${RM} ../assemblage/*.d
 	${RM} main
 
 
