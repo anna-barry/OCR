@@ -3,11 +3,14 @@
 
 #include <gtk/gtk.h>
 
+
+//struct for use a file and have informations about it
+
 typedef struct
 {
   gchar *chemin;
   gboolean sauve;
-  GtkTextView *p_text_view;
+  GtkTextView *text_view;
 } document_t;
 
 typedef struct
