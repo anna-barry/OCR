@@ -12,6 +12,7 @@ void cb_quit (GtkWidget *p_widget, gpointer user_data);
 void cb_modifie (GtkWidget *p_widget, gpointer user_data);
 void cb_pageWrite (GtkWidget *p_widget, gpointer user_data);
 void cb_pageReWrite (GtkWidget *p_widget, gpointer user_data);
+void cd_Errorpage(GtkWidget *p_widget, gpointer user_data);
 void cb_pageOCR (GtkWidget *p_widget, gpointer user_data);
 void cb_openpage2 (GtkWidget *p_widget, gpointer user_data);
 

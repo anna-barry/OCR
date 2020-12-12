@@ -1,12 +1,15 @@
 #include "callback.h"
 #include "document.h"
+#include "string.h"
 #include "error.h"
+
 
 #define DEFAULT_FILE "texteOCR"
 
 //---------------------------------------------------------OPEN IMAGE-------------------------------------------------------------------------
 
-static void on_open_image (GtkButton* button, gpointer user_data)
+
+void on_open_image (GtkWidget* widget, gpointer user_data)
 {
 	GtkWidget *image = GTK_WIDGET (user_data);
 	GtkWidget *toplevel = gtk_widget_get_toplevel (image);
@@ -23,33 +26,37 @@ static void on_open_image (GtkButton* button, gpointer user_data)
 	                             filter);
 
 	switch (gtk_dialog_run (GTK_DIALOG (dialog)))
-	  {
-	  case GTK_RESPONSE_ACCEPT:
-	    {
-	      gchar *filename =gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-	      gchar *extention = ".bmp";
-	      gchar *extentionn = ".BMP";
-	      size_t j = 0;
-	      size_t b = 0;
-	      for(size_t i = strlen(filename)-4; i < strlen(filename); i++)
+	{
+		case GTK_RESPONSE_ACCEPT:
 		{
-		  if((extention[j] != filename[i])||(extentionn[j] != filename[i]))
-		    b += 1;
-		  j++;
-		}
-	      if(b  != 4)
-		{
-		  gtk_image_set_from_file (GTK_IMAGE (image), filename);
-		}
+		  gchar *filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		  char *extention = ".bmp";
+		  char *extentionn = ".BMP";
+		  unsigned long j = 0;
+		  unsigned res = 0;
+  
+		  for(unsigned long i = strlen(filename)-4; i < strlen(filename); i++)
+		    {
+		      if((extention[j] == filename[i])||(extentionn[j] == filename[i]))
+			res += 1;
+		      j++;
+		    }
+		  if(res == 4)
+		    {
+		      gtk_image_set_from_file (GTK_IMAGE (image), filename);
+		    }
+		  else
+		    {
+		      cd_Errorpage(widget, user_data); 
+		    }
 			
-	      break;
-	    }
-	  default:
-	    break;
-	  }
+			break;
+		}
+		default:
+			break;
+	}
 	gtk_widget_destroy (dialog);
 }
-
 
 
 //-------------------------------------------------------OPEN OCR FILE------------------------------------------------------------------------
@@ -438,6 +445,62 @@ void cb_pageReWrite (GtkWidget *p_widget, gpointer user_data)
 
 }
 
+//-------------------------------------------------------------------------ERROR PAGE--------------------------------------------------------------------------------------------------
+
+void cd_Errorpage(GtkWidget *p_widget, gpointer user_data)
+{
+  GtkWidget *p_window = NULL;
+  GtkWidget *p_main_box = NULL;
+
+
+  /* Creation de la fenetre principale de notre application */
+  p_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_maximize (GTK_WINDOW (p_window));
+  gtk_window_set_title (GTK_WINDOW (p_window), "Error");
+  g_signal_connect (G_OBJECT (p_window), "destroy", G_CALLBACK (cb_quit), NULL);
+
+  /* Creation du conteneur principal */
+  p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+  gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
+
+  //create the label for the image choosing
+  GtkWidget *Label;
+  
+  gchar* Texte = NULL;
+  
+  Texte = g_locale_to_utf8("<span face=\"Times New Roman\" foreground=\"#7A81FF\" size=\"xx-large\" style=\"italic\"><b>ERROR = Choose a BMP image !!</b></span>\n", -1, NULL, NULL, NULL);
+   
+  Label=gtk_label_new(Texte); // Application de la convertion à notre label
+    
+  g_free(Texte); // Libération de la mémoire
+
+  gtk_label_set_use_markup(GTK_LABEL(Label), TRUE); // On dit que l'on utilise les balises pango
+
+  gtk_label_set_justify(GTK_LABEL(Label), GTK_JUSTIFY_CENTER); // On centre notre texte
+
+  gtk_container_add(GTK_CONTAINER(p_main_box), Label);  // On ajoute le label a l'interieur de 'Fenetre'
+
+   /* Creation du bouton "Return" */
+  {
+    GtkWidget *p_button = NULL;
+    GtkWidget *image = NULL; 
+    p_button = gtk_button_new();
+    image = gtk_image_new_from_file("images/boutonReturn.png");
+    gtk_container_add(GTK_CONTAINER(p_button), image); 
+    g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_pageOCR), NULL);
+    gtk_box_pack_start (GTK_BOX (p_main_box), p_button, FALSE, FALSE, 0);
+  }
+  
+  /* Affichage de la fenetre principale */
+  gtk_widget_show_all (p_window);
+
+  (void)p_widget;
+  (void)user_data; 
+ 
+
+}
+  
+
 //--------------------------------------------------------------------------OPEN PAGE OCR-----------------------------------------------------------------------------------------------
 
 void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
@@ -460,14 +523,29 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
   p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
 
-   /* Creation de la zone d' Image */
+  //create the label for the image choosing
+  GtkWidget *Label;
+  gchar* Texte = NULL; 
+  Texte = g_locale_to_utf8("<span face=\"Times New Roman\" foreground=\"#7A81FF\" size=\"xx-large\" style=\"italic\"><b>Choose a BMP image</b></span>\n", -1, NULL, NULL, NULL);
+   
+  Label=gtk_label_new(Texte); // Application de la convertion à notre label
+    
+  g_free(Texte); // Libération de la mémoire
+
+  gtk_label_set_use_markup(GTK_LABEL(Label), TRUE); // On dit que l'on utilise les balises pango
+
+  gtk_label_set_justify(GTK_LABEL(Label), GTK_JUSTIFY_CENTER); // On centre notre texte
+
+  gtk_container_add(GTK_CONTAINER(p_main_box), Label);  // On ajoute le label a l'interieur de 'Fenetre'
+
+  /* Creation de la zone d' Image */
   GtkWidget *imageF;
   imageF = gtk_image_new ();
   GtkWidget *box;
   box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
   gtk_box_pack_start (GTK_BOX (box), imageF, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (p_main_box), box, TRUE, TRUE, 0);
-
+  
   /* Creation de la zone de texte */
   p_text_view = gtk_text_view_new ();
   gtk_box_pack_start (GTK_BOX (p_main_box), p_text_view, TRUE, TRUE, 0);
@@ -484,7 +562,7 @@ void cb_pageOCR (GtkWidget *p_widget, gpointer user_data)
     p_button = gtk_button_new();
     image = gtk_image_new_from_file("images/boutonImg.png");
     gtk_container_add(GTK_CONTAINER(p_button), image); 
-    g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (on_open_image), imageF);
+    g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (on_open_image), imageF );
     gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
   }
   

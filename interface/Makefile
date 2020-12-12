@@ -6,13 +6,15 @@ LDLIBS = `pkg-config --libs gtk+-3.0`
 
 all: main
 
-main: callback.o error.o
+main: callback.o error.o 
 
-main/.o: callback.h error.h 
+main/.o: callback.h error.h
 
 clean:
 	${RM} *.o
 	${RM} *.d
+	${RM} ../assemblage/*.o
+	${RM} ../assemblage/*.d
 	${RM} main
 
 
