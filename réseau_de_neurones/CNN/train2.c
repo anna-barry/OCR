@@ -1017,10 +1017,8 @@ struct ALLFM2 *convl45;
 
     int seuil = otsu(img);
 
-    struct TM training;
+    
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
-    training.M= input;
-    training.result= imp.ASCII;
 
     printf("image to matrice for path %s [ok] \n",imp.path );
 
