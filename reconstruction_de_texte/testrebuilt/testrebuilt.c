@@ -12,20 +12,29 @@
 
 int main()
 {
-    SDL_Surface* img;
-    init_sdl();
+    // SDL_Surface* img;
+    // init_sdl();
+    //
+    // //load image in bmp
+    // img = SDL_LoadBMP("lorem.bmp");
+    //
+    // Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
+    //
+    // int seuil = otsu(img); // calcul du seuil
+    //
+    // Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; //matrice binaire finale
+    //
+    // Tree *tree = beginSeg(matricef);
+    //
+    int arr[] = {-3,-2,-1,97};
 
-    //load image in bmp
-    img = SDL_LoadBMP("lorem.bmp");
+    Tree *tree = createAtree(arr, 4);
 
-    Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
+    dfs_printer(tree);//to make sure the tree is corectly done.
 
-    int seuil = otsu(img); // calcul du seuil
+    char *theTexte = textBuider(tree, "Your text is : ");
 
-    Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; //matrice binaire finale
-
-    Tree *tree = beginSeg(matricef);
-
+<<<<<<< HEAD
     // int arr[] = {-3,-2,-1,97};
     //
     // Tree *tree = createAtree(arr, 4);
@@ -39,8 +48,17 @@ int main()
     // free(theTexte);
     freeTree(tree);
     //freeTree(tree);
+=======
+    printf("%s\n", theTexte);
 
-    SDL_FreeSurface(img);
+    free(theTexte);
+
+    //free(tree);
+
+    freeTree(tree);
+>>>>>>> 43de73acf41499a353a8c9b40d4558452ac92e58
+
+    //SDL_FreeSurface(img);
 
 
 return 0;
