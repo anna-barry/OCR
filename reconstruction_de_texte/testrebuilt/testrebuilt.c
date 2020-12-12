@@ -29,7 +29,7 @@ int main()
     // int arr[] = {-3,-2,-1,97};
     //
     // Tree *tree = createAtree(arr, 4);
-
+    
     dfs_printer(tree);//to make sure the tree is corectly done.
 
     // char *theTexte = textBuider(tree, "Your text is : ");
@@ -37,8 +37,8 @@ int main()
     // printf("%s\n", theTexte);
     //
     // free(theTexte);
-
-    free(tree);
+    freeTree(tree);
+    //freeTree(tree);
 
     SDL_FreeSurface(img);
 

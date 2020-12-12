@@ -29,6 +29,75 @@
 
 ///________________________CUTTING WORDS AND LINES____________________
 ///__________________________XY-CUT_____________________________________
+void textToFile(char text[], char *str)
+{
+  FILE* fichier = NULL;
+  fichier = fopen(str, "w");
+
+  if (fichier != NULL)
+    {
+        fputs(text, fichier);
+        fclose(fichier);
+    }
+}
+
+char* mycat(char *s1, char *s2){
+  char *result = malloc(strlen(s1)+strlen(s2)+1);
+  strcpy(result, s1);
+  strcat(result, s2);
+  return result;
+}
+
+char* char2string(char c){
+  char *str=malloc(2*sizeof(char));
+  if(str==NULL)
+    return NULL;
+  str[0]=c;
+  str[1]='\0';
+  return str;
+}
+
+char *textBuider(int code, char *text){
+  /*
+  description :
+  CREATE A STRING THAT CONTAIN THE TEXT
+
+  parameters :
+  Tree tree : the tree that we want to print with classic dfs.
+  char *text the string that will contain the text.
+
+  dates/authors :
+  04/12
+  geoffroy du mesnil du buisson
+
+  */
+    
+    if (code==-4){//racine
+        text = "";
+      }
+    
+    if (code==-3)
+    {
+        text = mycat(text,"\n\n");
+    }
+        
+    if (code==-2){//paragra or line "\n"
+      text = mycat(text,"\n");
+    }
+    
+    if (code==-2){
+      text = mycat(text," ");
+    }
+    
+    if (code>0&&code<127){//char ascii number
+      text = mycat(text,char2string((char)code));
+    }
+    else {//in case the value in the tree key is corupt
+      text = mycat(text,"/!\\");
+    }
+  
+  return text;
+}
 
 //column reading to cut in vertical//
 Matrix vertical(Matrix M)
@@ -73,7 +142,7 @@ marine thunet
 }
 
 
-void _trycut(Matrix M, int line, Tree *T)
+void _trycut(Matrix M, int line, char *name)
 {
     /*
     description :
@@ -92,7 +161,7 @@ void _trycut(Matrix M, int line, Tree *T)
     //copying the og matrix
     if (M.width<=0 || M.height<=0)
     {
-        return;
+        return ;
     }
     Matrix reel = copyMatrix(M);
     //int y = 0;
@@ -193,16 +262,20 @@ void _trycut(Matrix M, int line, Tree *T)
                         
                         //place for the tests
                         matToImg(createseg,"last word");
+                        textToFile(" ",name);
+                        //T=textBuider(-1,T);
+                        printf(" ");
 
-                        Tree *Child = newTree(0);
-                        AddChild(T, Child);
-                        _trycut(createseg,0,Child);
+                        //Tree *Child = newTree(0);
+                        //AddChild(T, Child);
+                        _trycut(createseg,0,name);
                         
                         /*creating new sibling*/
-                        Tree *S= newTree(-1);
-                        AddSibling(T,S);
-                        *T = *S;
-                        freeTree(S);
+                        //Tree *S= newTree(-1);
+                        //AddSibling(T,S);
+                        //*T = *S;
+                        //freeTree(S);
+                        //S=NULL;
                         /*new sibling creeated and erased from stockage*/
                         
                         freeMatrix(createseg);
@@ -252,6 +325,9 @@ void _trycut(Matrix M, int line, Tree *T)
                                         
                         //place for the tests
                         matToImg(createseg,"last letter");
+                        textToFile("a",name);
+                        //T=textBuider(97,T);
+                        printf("a");
                         
                         //____FINAL___________
                         //intergrate the fonction when the
@@ -261,15 +337,16 @@ void _trycut(Matrix M, int line, Tree *T)
                         //we'll have to send the ascii code of the char
                         //letter=ascii code;
                     
-                        T->key=97;
+                        //T->key=97;
                         //Tree *Child = newTree(97);
                         //AddChild(T, Child); //will be the value of the char
                         
                         
-                        Tree *S= newTree(0);
-                        AddSibling(T,S);;
-                        *T = *S;
-                        freeTree(S);
+                        //Tree *S= newTree(0);
+                        //AddSibling(T,S);;
+                        //*T = *S;
+                        //freeTree(S);
+                       // S=NULL;
                         //reinitialisation
                         x=ix;
                         freeMatrix(createseg);
@@ -288,9 +365,9 @@ void _trycut(Matrix M, int line, Tree *T)
 
 
 //__________________CUTTING HORIZONTAL BLANKS______________________________
-void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted);
+void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted);
 
-void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
+void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
 {
     /*
     description :
@@ -337,28 +414,31 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                 {
                     //place for the tests
                     matToImg(og,"last line");
+                    textToFile("\n",name);
+                    //T=textBuider(-2,T);
+                    printf("\n");
                     
-                    Tree *Child = newTree(-1);
-                    AddChild(T, Child);
-                    _trycut(og,1,Child);
+                    //Tree *Child = newTree(-1);
+                    //AddChild(T, Child);
+                    _trycut(og,1,name);
                 }
                 else
                 {
                     if (cutted>=2)
                     {
                         
-                        Tree *Child = newTree(-2);
-                        AddChild(T, Child);
+                        //Tree *Child = newTree(-2);
+                        //AddChild(T, Child);
                         Matrix s = rlsa(og,250,40);
                         Matrix m = rlsa(s,400,200);
-                        horizontalcut(Child,m,og,1,0);
+                        horizontalcut(name,m,og,1,0);
                         freeMatrix(m);
                         freeMatrix(s);
                     }
                 
                     else
                     {
-                        verticalcut(T,M,og,0,1);
+                        verticalcut(name,M,og,0,1);
                     }
                 }
                 return;
@@ -386,7 +466,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                     tocut=cutMatrix(M,ybeg,0,y-ybeg,width);
                     og2=cutMatrix(og,ybeg,0,y-ybeg,width);
                     
-                    verticalcut(T,tocut,og2,0,0);
+                    verticalcut(name,tocut,og2,0,0);
                     
                     freeMatrix(tocut);
                     freeMatrix(og2);
@@ -396,12 +476,15 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                 {
                     og2=cutMatrix(og,ybeg,0,y-ybeg,width);
                     
-                    Tree *Child = newTree(-1);
-                    AddChild(T, Child);
+                    //Tree *Child = newTree(-1);
+                    //AddChild(T, Child);
                     //place for the tests
                     matToImg(og2,"last line");
+                    textToFile("\n",name);
+                    printf("\n");
+                    //T=textBuider(-2,T);
                     
-                    _trycut(og2,1,Child);
+                    _trycut(og2,1,name);
                     
                     freeMatrix(og2);
                 }
@@ -413,32 +496,34 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                         og1=cutMatrix(og,y,0,lenght-y,width);
                     
                     /*creating new sibling*/
-                    Tree *S = newTree(-3);
-                    if (line==1)
-                    {
-                        S = newTree(-2);
-                    }
-                    AddSibling(T,S);
+                    //Tree *S = newTree(-3);
+                    //if (line==1)
+                    //{
+                     //   S = newTree(-2);
+                    //}
+                    //AddSibling(T,S);
                     /*sibling added*/
                     
-                    horizontalcut(T,rest,og1,line,0);
+                    horizontalcut(name,rest,og1,line,0);
                     
                     //freing space
-                    freeTree(S);
+                    //freeTree(S);
+                    //S=NULL;
                     freeMatrix(rest);
                     freeMatrix(og1);
                 }
-                return;
+                return ;
             }
             //if white ligne, goes to new one
             y++;
         }
+    return;
 }
 
 
 //__________________CUTTING VERTICAL BLANKS______________________________
 
-void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
+void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
 {
     /*
     description :
@@ -487,19 +572,22 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
                 {
                     /*printf("test2\n");
                 matToImg(og,"testA");*/
-                Tree *Child = newTree(-2);
-                AddChild(T, Child);
+                //Tree *Child = newTree(-2);
+                //AddChild(T, Child);
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
                     //place for the tests
                 matToImg(og,"lastparagraph");
-                horizontalcut(Child,m,og,1,0);
+                horizontalcut(name,m,og,1,0);
+                textToFile("\n\n",name);
+                //T=textBuider(-3,T);
                 freeMatrix(s);
                 freeMatrix(m);
+                printf("\n\n");
                 }
                 else
                 {
-                    horizontalcut(T,M,og,line,1);
+                    horizontalcut(name,M,og,line,1);
                 }
                 return;
             }
@@ -519,7 +607,7 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
             {
                 tocut=cutMatrix(M,0,xbeg,lenght,x-xbeg);
                 og2=cutMatrix(og,0,xbeg,lenght,x-xbeg);
-                horizontalcut(T,tocut,og2,line,0);
+                horizontalcut(name,tocut,og2,line,0);
                 freeMatrix(tocut);
                 freeMatrix(og2);
                 
@@ -528,11 +616,15 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
                     rest=cutMatrix(M,0,x,lenght,width-x);
                     og1=cutMatrix(og,0,x,lenght,width-x);
                     /*adding sibling*/
-                    Tree *Sibling = newTree(-3);
-                    AddSibling(T,Sibling);
-                    verticalcut(T,rest,og1,line,0);
+                    //Tree *Sibling = newTree(-3);
+                    //AddSibling(T,Sibling);
+                    verticalcut(name,rest,og1,line,0);
+                    textToFile("\n\n",name);
+                    //T=textBuider(-3,T);
+                    printf("\n\n");
                     //freeing space
-                    freeTree(Sibling);
+                    //freeTree(Sibling);
+                    //Sibling=NULL;
                     freeMatrix(rest);
                     freeMatrix(og1);
                 }
@@ -542,13 +634,31 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
             x++;
             
         }
+    return;
 }
 
 
 //________________begining_________________________//
+void print_str_as_array(char *s, size_t len)
+{
+    for (size_t i = 0; i < len; i++)
+        printf("0x%02x ", s[i]);
+
+    printf("\n");
+}
+size_t mystrlen(char *s)
+{
+    size_t len =0;
+    while (*s != '\0')
+    {
+        len++;
+        s++;
+    }
+    return len;
+}
 
 
-Tree *beginSeg(Matrix M)
+void beginSeg(Matrix M)
 {
     /*
     description :
@@ -560,16 +670,21 @@ Tree *beginSeg(Matrix M)
     24/10
     marine thunet
     */
-    //printf("begin");
-    Tree *txt = newTree(-4);
-    Tree *child = newTree(-3);
-    AddChild(txt,child);
+    
+    char *txt = "Your text is";
+    //Tree *child = newTree(-3);
+    //AddChild(txt,child);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
     horizontalcut(txt,q,M,0,0);
+    printf("\n");
+    
+    //textToFile(txt, "new");
+    //freeTree(child);
+    //size_t len=mystrlen(txt);
+    //printf("%zu\n",len);
+    //print_str_as_array(txt,len);
     freeMatrix(p);
     freeMatrix(q);
-    
-    return txt;
 
 }

@@ -195,14 +195,13 @@ void _trycut(Matrix M, int line, Tree *T)
                         Tree *Child = newTree(0);
                         AddChild(T, Child);
                         _trycut(createseg,0,Child);
-
+                        
                         /*creating new sibling, new word in the line*/
                         Tree *S= newTree(-1);
                         AddSibling(T,S);
                         *T = *S; //the tree is now the sibling
-                        freeTree(S);
+                        //freeTree(S);
                         /*new sibling creeated and erased from stockage*/
-                        
                         freeMatrix(createseg);
                         x=0;
                         begin=0;
@@ -266,7 +265,7 @@ void _trycut(Matrix M, int line, Tree *T)
                         Tree *S= newTree(0);
                         AddSibling(T,S);;
                         *T = *S;
-                        freeTree(S);
+                        //freeTree(S);
                         //reinitialisation
                         x=ix;
                         freeMatrix(createseg);
@@ -345,6 +344,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                         Matrix s = rlsa(og,250,40);
                         Matrix m = rlsa(s,400,200);
                         horizontalcut(Child,m,og,1,0);
+                        //freeTree(Child);
                         freeMatrix(m);
                         freeMatrix(s);
                     }
@@ -391,9 +391,9 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
 
                     Tree *Child = newTree(-1);
                     AddChild(T, Child);
-
                     _trycut(og2,1,Child);
-
+                    
+                    freeTree(Child);
                     freeMatrix(og2);
                 }
 
@@ -415,7 +415,7 @@ void horizontalcut(Tree *T,Matrix M,Matrix og,int line, int cutted)
                     horizontalcut(T,rest,og1,line,0);
 
                     //freing space
-                    freeTree(S);
+                    //freeTree(S);
                     freeMatrix(rest);
                     freeMatrix(og1);
                 }
@@ -483,6 +483,7 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
                 horizontalcut(Child,m,og,1,0);
+                //freeTree(Child);
                 freeMatrix(s);
                 freeMatrix(m);
                 }
@@ -521,7 +522,7 @@ void verticalcut(Tree *T,Matrix M,Matrix og, int line, int cutted)
                     AddSibling(T,Sibling);
                     verticalcut(T,rest,og1,line,0);
                     //freeing space
-                    freeTree(Sibling);
+                    //freeTree(Sibling);
                     freeMatrix(rest);
                     freeMatrix(og1);
                 }
@@ -556,6 +557,8 @@ Tree *beginSeg(Matrix M)
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
     horizontalcut(child,q,M,0,0);
+    
+    //freeTree(child);
     freeMatrix(p);
     freeMatrix(q);
 
