@@ -19,7 +19,7 @@ dates/authors :
 marine thunet
 
 */
-    
+
     Tree *T = malloc(sizeof(Tree));
     T->key=Key;
     T->sibling=malloc(sizeof(Tree)); //previous was NULL
@@ -40,7 +40,7 @@ void freeTree(Tree *T){
   dates/authors :
   10/12
   marine thunet*/
-  
+
     if (!T)
     {
         return;
@@ -88,13 +88,59 @@ dates/authors :
 marine thunet
 
     */
-    if (!(T->child))
-    {
+    // if (!(T->child))
+    // {
         T->child= malloc (sizeof(Tree));
         T->child= Child;
-    }
-    else
+    // }
+    // else
+    // {
+    //     AddSibling(T->child,Child);
+    // }
+}
+
+void dfs_printer(Tree *tree)
+{
+  //printf("on rentre\n");
+    if (tree->key)
     {
-        AddSibling(T->child,Child);
+        printf("tree key = %i\n", tree->key);
+        Tree *thesibling = tree->sibling;
+        printf("the sibling of %i is %i\n", tree->key, thesibling->key);
+        if (tree->child){
+          Tree *child = tree->child;
+          printf("the child of %i is %i\n", tree->key, child->key);
+          while (child->key)
+          {
+              dfs_printer(child);
+              Tree *curentNode = child;
+              if(child->sibling)
+              {
+                child = child->sibling;
+                //printf("marine?\n");
+                printf("the sibling of %i is %i\n", curentNode->key, child->key);
+                //printf("geoffroy?\n");
+              }
+          }
+          //printf("ok?\n");
+        }
     }
+    else{
+      printf("pas de sibling\n");
+    }
+}
+
+void rec_createAtree(Tree *tree, int arr[], int i, int size){
+  Tree *theChild = newTree(arr[i]);
+  while (i<size) {
+    AddChild(tree, theChild);
+    i++;
+    rec_createAtree(theChild, arr, i, size);
+  }
+}
+
+Tree *createAtree(int arr[], int size){
+  Tree *theTree = newTree(-4);
+  rec_createAtree(theTree,arr,0, size);
+  return theTree;
 }

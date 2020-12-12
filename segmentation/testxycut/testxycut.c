@@ -7,7 +7,7 @@
 #include "../../Tools/tree.h"
 #include "../../pré-traitement/binarisation/binarisation.h"
 #include "../rlsa.h"
-#include "../segmentationXY.h"
+#include "segmentationXYtest.h"
 
 int main()
 {

@@ -31,35 +31,47 @@ char *textBuider(Tree *tree, char *text){
 
   */
   if (tree->key){
+    printf("1\n");
     if (tree->key==-4){//racine
-      Tree *child = tree->child;
-      while (child!=NULL) {
-        text = mycat("",textBuider(child, text));
-        child = child->sibling;
+      if (tree->child) {
+        Tree *child = tree->child;
+        while (child->key) {
+          text = mycat("",textBuider(child, text));
+          if (child->sibling) {
+            child = child->sibling;
+          }
+        }
       }
-      printf("racine\n");
     }
     if (tree->key==-3||tree->key==-2){//paragra or line "\n"
-      Tree *child = tree->child;
-      while (child!=NULL) {
-        text = mycat("",textBuider(child, text));
-        child = child->sibling;
+      if (tree->child) {
+        Tree *child = tree->child;
+        while (child->key) {
+          text = mycat("",textBuider(child, text));
+          if (child->sibling) {
+            child = child->sibling;
+          }
+        }
       }
-       printf("paragraph ou ligne\n");
       text = mycat(text,"\n");
     }
     if (tree->key==-1){//word " "
-      Tree *child = tree->child;
-      while (child!=NULL) {
-        text = mycat("",textBuider(child, text));
-        child = child->sibling;
+      if (tree->child) {
+        Tree *child = tree->child;
+        while (child->key) {
+          text = mycat("",textBuider(child, text));
+          if (child->sibling) {
+            child = child->sibling;
+          }
+        }
       }
-      printf("mots\n");
       text = mycat(text," ");
     }
-    if (tree->key>0&&tree->key<127){//char ascii number
-      printf("lettre\n");
+    if (tree->key>0&&tree->key<=127){//char ascii number
       text = mycat(text,char2string((char)tree->key));
+    }
+    else {//in case the value in the tree key is corupt
+      text = mycat(text,"/!\\");
     }
   }
   return text;

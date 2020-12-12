@@ -1,15 +1,4 @@
-#include "../Tools/matrix.h"
-#include "../Tools/minifunc.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
-
-struct Tuple{
-  int top;
-  int bottom;
-};
-//initialize the Tuple struct to save two values in a one value
+#include "resizeMatrix.h"
 
 Matrix bilinearInterpolation(Matrix M, int top, int bot, int size){
   /*
@@ -133,14 +122,14 @@ struct Tuple getCornerMatrix(Matrix M){
   tuple.bottom =-1;
 
   for (int i = 0; (tuple.top == -1 || tuple.bottom == -1) && i < M.height; i++) { //the loops continue while the both index have not been
-    for (size_t j = 0; (tuple.top == -1 || tuple.bottom == -1) && j < M.width; j++) {//founded or we arrive at the end of the matrix
+    for (int j = 0; (tuple.top == -1 || tuple.bottom == -1) && j < M.width; j++) {//founded or we arrive at the end of the matrix
 
-      if ((M.matrix[i*M.width+j] == 1)&&(tuple.top == -1)){
+      if ((M.matrix[i*M.width+j] == 0)&&(tuple.top == -1)){
 
           tuple.top = i; //if the angle had not been finded top take the index of the angle
       }
 
-      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(tuple.bottom == -1)) {
+      if ((M.matrix[(M.height-1-i)*M.width+j] == 0)&&(tuple.bottom == -1)) {
 
           tuple.bottom = M.height-1-i; //if the angle had not been finded bottom take the index of the angle
       }
@@ -170,6 +159,10 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
   */
 
+  printf("the original matrix\n");
+
+  print_Matrix(matrixChar);
+
   Matrix resized = newMatrix(size,size); //initialize a matrix in the good size
 
   struct Tuple tuple;
@@ -187,12 +180,20 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
     Matrix sizeMat = bilinearInterpolation(matrixChar,top, bot, size);
 
+    printf("the bil matrix\n");
+
+    print_Matrix(sizeMat);
+
     for (int i = 0; i < sizeMat.height; i++) {
-      for (size_t j = 0; j < sizeMat.width; j++) {
+      for (int j = 0; j < sizeMat.width; j++) {
 
         resized.matrix[i*resized.width+j] = sizeMat.matrix[i*sizeMat.width+j];
       }
     }
+
+    printf("the final matrix\n");
+
+    print_Matrix(resized);
 
     freeMatrix(sizeMat);
     return resized; //return the good sized matrix
