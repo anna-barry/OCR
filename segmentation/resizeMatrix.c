@@ -159,9 +159,9 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
   */
 
-  printf("the original matrix\n");
+  //printf("the original matrix\n");
 
-  print_gMatrix(matrixChar);
+  //print_gMatrix(matrixChar);
 
   Matrix resized = newMatrix(size,size); //initialize a matrix in the good size
 
@@ -180,9 +180,9 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
     Matrix sizeMat = bilinearInterpolation(matrixChar,top, bot, size);
 
-    printf("the bil matrix\n");
+    //printf("the bil matrix\n");
 
-    print_gMatrix(sizeMat);
+    //print_gMatrix(sizeMat);
 
     for (int i = 0; i < sizeMat.height; i++) {
       for (int j = 0; j < sizeMat.width; j++) {
@@ -191,9 +191,9 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
       }
     }
 
-    printf("the final matrix\n");
+    //printf("the final matrix\n");
 
-    print_gMatrix(resized);
+    //print_gMatrix(resized);
 
     freeMatrix(sizeMat);
     return resized; //return the good sized matrix
