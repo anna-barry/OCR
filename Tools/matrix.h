@@ -25,4 +25,6 @@ void freeMatrix(Matrix M);
 
 void print_Matrix(Matrix M);
 
+void print_gMatrix(Matrix M);
+
 #endif

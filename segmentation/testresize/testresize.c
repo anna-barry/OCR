@@ -16,17 +16,21 @@ int main()
 
     //load image in bmp
 
-    SDL_Surface* img = load_image("lorem.bmp");
+    SDL_Surface* img = load_image("../testresize/Img/theImageForResize.bmp");
 
     Matrix matrice1 = surface_to_matrix_grayscale(img);
 
     int seuil = otsu(img);
 
-    Matrix matricechar =  matrix_grayscale_to_binar(matrice1, seuil) ;
+    Matrix matimage =  matrix_grayscale_to_binar(matrice1, seuil) ;
 
-    //Matrix theResizeMatrix = resizeMatrix(matricechar, 32);
+    Matrix shrunk = cutMatrix(matimage,0,0,20,20);
 
-    matToImg(matricechar, "oh boy");
+    matToImg(shrunk, "the original mat.bmp");
+
+    Matrix theResizeMatrix = resizeMatrix(shrunk, 10);
+
+    matToImg(theResizeMatrix, "The new one.bmp");
 
     SDL_FreeSurface(img);
 

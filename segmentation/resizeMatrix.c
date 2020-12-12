@@ -129,7 +129,7 @@ struct Tuple getCornerMatrix(Matrix M){
           tuple.top = i; //if the angle had not been finded top take the index of the angle
       }
 
-      if ((M.matrix[(M.height-1-i)*M.width+j] == 0)&&(tuple.bottom == -1)) {
+      if ((M.matrix[(M.height-1-i)*M.width+j] == 1)&&(tuple.bottom == -1)) {
 
           tuple.bottom = M.height-1-i; //if the angle had not been finded bottom take the index of the angle
       }
@@ -161,7 +161,7 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
   printf("the original matrix\n");
 
-  print_Matrix(matrixChar);
+  print_gMatrix(matrixChar);
 
   Matrix resized = newMatrix(size,size); //initialize a matrix in the good size
 
@@ -182,7 +182,7 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
     printf("the bil matrix\n");
 
-    print_Matrix(sizeMat);
+    print_gMatrix(sizeMat);
 
     for (int i = 0; i < sizeMat.height; i++) {
       for (int j = 0; j < sizeMat.width; j++) {
@@ -193,7 +193,7 @@ Matrix resizeMatrix(Matrix matrixChar, int size){
 
     printf("the final matrix\n");
 
-    print_Matrix(resized);
+    print_gMatrix(resized);
 
     freeMatrix(sizeMat);
     return resized; //return the good sized matrix
