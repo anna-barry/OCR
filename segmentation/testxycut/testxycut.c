@@ -28,6 +28,8 @@ int main()
     //matToImg(matricef, "new"); // transforme la matrice en image
     beginSeg(matricef);
     
+    //freeTree(t);
+    
     //matToImg(m, "test_soutenance");
 
     SDL_FreeSurface(img);

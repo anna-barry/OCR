@@ -7,9 +7,9 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: testxycut
 
-testxycut: ../../Tools/help4display.o ../../Tools/pixel_operations.o testxycut.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o ../segmentationXY.o
+testxycut:../../Tools/minifunc.o ../resizeMatrix.o ../../Tools/help4display.o ../../Tools/pixel_operations.o testxycut.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../rlsa.o segmentationXYtest.o
 
-testxycut/.o:help4display.h pixel_operations.h textxycut.h matrix.h tree.h binarisation.h rlsa.h ../segmentationXY.h
+testxycut/.o:minifunc.h resizeMatrix.h help4display.h pixel_operations.h textxycut.h matrix.h tree.h binarisation.h rlsa.h segmentationXYtest.h
 
 clean:
 	${RM} *.o
@@ -21,3 +21,5 @@ clean:
 	${RM} ../../pré-traitement/binarisation/*.o
 	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} testxycut
+	${RM} last*
+	${RM} textOCR

@@ -41,7 +41,6 @@ int main()
     //free(tree);
 
     freeTree(tree);
-
     //SDL_FreeSurface(img);
 
 

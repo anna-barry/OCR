@@ -119,7 +119,7 @@ void freeMatrix(Matrix m)
     }
 }
 /*void freeMatrix(Matrix M){
-  
+
   description :
   unallocate the memory that have been allocate for a matrix
 
@@ -131,7 +131,7 @@ void freeMatrix(Matrix m)
   12/10
   geoffroy du mesnil du buisson
 
-  
+
   free(M.matrix);
   M.width = 0;
   M.height = 0;
@@ -172,6 +172,29 @@ Matrix cutMatrix(Matrix M, int x, int y, int height, int width)    // Return the
         return cut;
 }
 
+void print_gMatrix(Matrix M){
+  /*
+  description :
+  print a matrix and the nuber of element in the matrix
+  parameters :
+  Matrix M : the matrix that we want to print
+  dates/authors :
+  25/10
+  geoffroy du mesnil du buisson
+  */
+  int n = 0;
+    for (int i = 0 ; i < M.height ; i++){
+
+                for (int j = 0 ; j < M.width ; j++){
+
+                  printf("%i  ,", (int)M.matrix[i*M.width+j]);
+                  n++;
+                }
+                printf("\n");
+    }
+    printf("\n");
+    printf("%i\n", n);
+}
 
 void print_Matrix(Matrix M){
   /*
@@ -183,7 +206,7 @@ void print_Matrix(Matrix M){
 
   dates/authors :
   25/10
-  geoffroy du mesnil du buisson
+  Anna Barry
 
   */
   int n = 0;

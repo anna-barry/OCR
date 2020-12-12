@@ -5,7 +5,13 @@
 #include "../../Tools/tree.h"
 #include "../../pré-traitement/binarisation/binarisation.h"
 
-Tree *beginSeg(Matrix M);
+char* mycat(char *s1, char *s2);
+
+char* char2string(char c);
+
+void textBuider(int code, char *text);
+
+void beginSeg(Matrix M);
 
 void segmentation(Matrix M);
 

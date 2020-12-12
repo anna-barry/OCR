@@ -130,9 +130,10 @@ void dfs_printer(Tree *tree)
     }
 }
 
-void rec_createAtree(Tree *tree, int arr[], int i, int size){
-  Tree *theChild = newTree(arr[i]);
-  while (i<size) {
+void rec_createAtree(Tree *tree, int arr[], int i, int size)
+{
+    Tree *theChild = newTree(arr[i]);
+    while (i<size) {
     AddChild(tree, theChild);
     i++;
     rec_createAtree(theChild, arr, i, size);
