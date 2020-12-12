@@ -33,47 +33,34 @@ char *textBuider(Tree *tree, char *text){
   if (tree->key){
     printf("1\n");
     if (tree->key==-4){//racine
-      printf("roof\n");
       Tree *child = tree->child;
       while (child!=NULL) {
-        text = textBuider(child, text);
-        //mycat("",textBuider(child, text));
+        text = mycat("",textBuider(child, text));
         child = child->sibling;
       }
-      printf("racine\n");
     }
     if (tree->key==-3||tree->key==-2){//paragra or line "\n"
-    printf("para\n");
       Tree *child = tree->child;
       while (child!=NULL) {
-        text = textBuider(child, text);
-        //mycat("",textBuider(child, text));
+        text = mycat("",textBuider(child, text));
         child = child->sibling;
       }
-       printf("paragraph ou ligne\n");
-      //text = mycat(text,"\n");
+      text = mycat(text,"\n");
     }
     if (tree->key==-1){//word " "
-    printf("word\n");
       Tree *child = tree->child;
       while (child!=NULL) {
-        text = textBuider(child, text);
-        //mycat("",textBuider(child, text));
+        text = mycat("",textBuider(child, text));
         child = child->sibling;
       }
-      printf("mots\n");
-      //text = mycat(text," ");
+      text = mycat(text," ");
     }
     if (tree->key>0&&tree->key<127){//char ascii number
-      printf("lettre\n");
-      //text = mycat(text,char2string((char)tree->key));
+      text = mycat(text,char2string((char)tree->key));
     }
-    else {
-      printf("Mauvaise valeur dans la clef de l'arbre\n");
+    else {//in case the value in the tree key is corupt
+      text = mycat(text,"/!\\");
     }
-  }
-  else {
-    printf("il n'y a pas de clef\n");
   }
   return text;
 }

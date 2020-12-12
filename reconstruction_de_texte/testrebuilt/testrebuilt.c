@@ -15,8 +15,6 @@ int main()
     SDL_Surface* img;
     init_sdl();
 
-
-
 //load image in bmp
     img = SDL_LoadBMP("lorem.bmp");
 
@@ -26,22 +24,17 @@ int main()
 
     Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; //matrice binaire finale
 
-    //matToImg(matricef, "new"); // transforme la matrice en image
     Tree *tree = beginSeg(matricef);
 
-    dfs_printer(tree);
+    dfs_printer(tree);//to make sure the tree is corectly done.
 
-    // printf("ca marche et j'ai le seum.\n");
-    //
-    // char *theMFTexte = textBuider(tree, "The final text is : ");
-    //
-    // printf("%s\n", theMFTexte);
-    //
-    // free(theMFTexte);
+    char *theTexte = textBuider(tree, "Your text is : ");
+
+    printf("%s\n", theTexte);
+
+    free(theTexte);
 
     free(tree);
-
-    //matToImg(m, "test_soutenance");
 
     SDL_FreeSurface(img);
 

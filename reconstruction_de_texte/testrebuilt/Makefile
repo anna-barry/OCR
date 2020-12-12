@@ -5,11 +5,11 @@ CFLAGS=-g -Wall -Wextra -Werror -std=c99 -O3
 LDFLAGS=
 LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
-all: testxycut
+all: testrebuilt
 
-testxycut: ../../Tools/help4display.o ../../Tools/pixel_operations.o testxycut.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../../segmentation/rlsa.o ../../segmentation/segmentationXY.o ../rebuilt.o
+testrebuilt: ../../Tools/help4display.o ../../Tools/pixel_operations.o testrebuilt.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../../segmentation/rlsa.o ../../segmentation/segmentationXY.o ../rebuilt.o
 
-testxycut/.o:help4display.h pixel_operations.h textxycut.h matrix.h tree.h binarisation.h rlsa.h segmentationXY.h rebuilt.h
+testrebuilt/.o:help4display.h pixel_operations.h matrix.h binarisation.h rlsa.h segmentationXY.h rebuilt.h
 
 clean:
 	${RM} *.o
@@ -22,4 +22,4 @@ clean:
 	${RM} ../../segmentation/*.d
 	${RM} ../../pré-traitement/binarisation/*.o
 	${RM} ../../pré-traitement/binarisation/*.d
-	${RM} testxycut
+	${RM} testrebuilt
