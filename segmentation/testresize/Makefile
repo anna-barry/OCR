@@ -8,9 +8,9 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: testresize
 
-testresize: ../../Tools/pixel_operations.o testresize.o ../../Tools/matrix.o ../../pré-traitement/binarisation/binarisation.o ../resizeMatrix.o ../../Tools/image_operations.o
+testresize: ../../Tools/pixel_operations.o testresize.o ../../Tools/matrix.o ../../pré-traitement/binarisation/binarisation.o ../../Tools/minifunc.o ../resizeMatrix.o ../../Tools/image_operations.o
 
-testrlsa/.o: pixel_operations.h matrix.h binarisation.h resizeMatrix.h image_operations.h
+testresize/.o: pixel_operations.h matrix.h binarisation.h resizeMatrix.h image_operations.h minifunc.h
 
 clean:
 	${RM} *.o
@@ -22,5 +22,3 @@ clean:
 	${RM} ../../pré-traitement/binarisation/*.o
 	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} testresize
-	${RM} line
-	${RM} para

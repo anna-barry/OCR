@@ -15,7 +15,7 @@ int main()
     SDL_Surface* img;
     init_sdl();
 
-//load image in bmp
+    //load image in bmp
     img = SDL_LoadBMP("lorem.bmp");
 
     Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
@@ -26,13 +26,17 @@ int main()
 
     Tree *tree = beginSeg(matricef);
 
+    // int arr[] = {-3,-2,-1,97};
+    //
+    // Tree *tree = createAtree(arr, 4);
+
     dfs_printer(tree);//to make sure the tree is corectly done.
 
-    char *theTexte = textBuider(tree, "Your text is : ");
-
-    printf("%s\n", theTexte);
-
-    free(theTexte);
+    // char *theTexte = textBuider(tree, "Your text is : ");
+    //
+    // printf("%s\n", theTexte);
+    //
+    // free(theTexte);
 
     free(tree);
 

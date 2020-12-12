@@ -1,4 +1,3 @@
-#include <err.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "../../Tools/pixel_operations.h"
@@ -23,19 +22,11 @@ int main()
 
     int seuil = otsu(img);
 
-    Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ;
+    Matrix matricechar =  matrix_grayscale_to_binar(matrice1, seuil) ;
 
-    // Matrix s = rlsa(matricef,250,1200);
-    //
-    // Matrix m = rlsa(s,400,200);
-    //
-    // matToImg(m, "line");
-    //
-    // Matrix p = rlsa(matricef,250,1200);
-    //
-    // Matrix q = rlsa(p,400,1300);
+    //Matrix theResizeMatrix = resizeMatrix(matricechar, 32);
 
-    matToImg(q, "para");
+    matToImg(matricechar, "oh boy");
 
     SDL_FreeSurface(img);
 
