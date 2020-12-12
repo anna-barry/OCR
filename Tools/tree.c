@@ -99,13 +99,26 @@ marine thunet
     }
 }
 
-void dfs_printer(Tree *tree){
-  if (tree->key){
-    printf("%i\n", tree->key);
-    Tree *child = tree->child;
-    while (child!=NULL){
-      dfs_printer(child);
-      child = child->sibling;
+void dfs_printer(Tree *tree)
+{
+  //printf("on rentre\n");
+    if (tree->key)
+    {
+        printf("tree key = %i\n", tree->key);
+        Tree *child = tree->child;
+        printf("the child of %i is %i\n", tree->key, child->key);
+        while (child!=NULL)
+        {
+            dfs_printer(child);
+            Tree *curentNode = child;
+            child = child->sibling;
+            //printf("marine?\n");
+            printf("the sibling of %i is %i\n", curentNode->key, child->key);
+            //printf("geoffroy?\n");
+        }
+        //printf("ok?\n");
     }
-  }
+    else{
+      printf("pas de sibling\n");
+    }
 }
