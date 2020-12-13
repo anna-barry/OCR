@@ -64,7 +64,7 @@ struct sendback
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 1
+#define NB_ITERATION 1200
 
 //__________________________________________________________________________________
 //
@@ -531,7 +531,7 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
         double *indexPool= NULL;
         indexPool=(currPool->m->matrix);
 
-        print_Matrix(*(currPool->m));
+        //print_Matrix(*(currPool->m));
 
         //printf("in for i Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
         for(int j=0; j< DIM_POOL2; j++)
@@ -547,6 +547,22 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
             }
         }
         currPool=currPool->next;
+    }
+
+    indexForFlat=0;
+    double sum=0;
+    for (int i = 0; i < (NB_FILTERS2 * NB_FILTERS1*DIM_POOL2*DIM_POOL2) ; i++)
+    {
+        sum=sum+exp(CurNeu[indexForFlat].input);
+        indexForFlat+=1;
+    }
+
+    indexForFlat=0;
+
+    for (int i = 0; i < (NB_FILTERS2 * NB_FILTERS1*DIM_POOL2*DIM_POOL2) ; i++)
+    {
+        CurNeu[indexForFlat].input= exp(CurNeu[indexForFlat].input)/sum;
+        indexForFlat+=1;
     }
 
    /* for(int w=0;w<NB_FILTERS2 * NB_FILTERS1;w++)
@@ -601,7 +617,7 @@ void FullyConnectedLayer1(struct FL *flatterned, struct CL_out *outin)
     {
         double getres=GetInputFromFC(flatterned);
         CurNeu[i].input= getres;
-        //printf("input for fully connected layer after getInputFromFC %f \n", getres);
+        //printf("input from flattern to fully connected layer after getInputFromFC %f \n", getres);
     }
 }
 
@@ -627,7 +643,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
     for (int i=0;i<(NB_Char);i++)
     {
         //printf("the input is %f for n°%d \n",outN[i].input,i );
-        printf("exp of all this is %f with weight=%f anf bias=%f \n", exp(outN[i].input * outN[i].weight + outN[i].bias), outN[i].weight, outN[i].bias);
+        //printf("exp of all this is %f with weight=%f and bias=%f for %i \n", exp(outN[i].input * outN[i].weight + outN[i].bias), outN[i].weight, outN[i].bias,i);
         sum=sum+exp(max(0,outN[i].input * outN[i].weight + outN[i].bias));
     }
 
