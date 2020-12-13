@@ -124,7 +124,7 @@ int main()
     A1_5th->next=A1_6th;
     A1_6th->next=NULL;
 
-    printf("All filters1 loaded [ok] \n" );
+    //printf("All filters1 loaded [ok] \n" );
 
     //______________________________________________________________________________________
     //Convolution Layer1
@@ -190,7 +190,7 @@ int main()
 
 
 
-    printf("All convolution1 init [ok] \n" );
+    //printf("All convolution1 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer1
@@ -255,7 +255,7 @@ int main()
     poolC6->next=NULL;
 
 
-    printf("All pooling init1 [ok] \n" );
+    //printf("All pooling init1 [ok] \n" );
 
     //______________________________________________________________________________________
     //Filters and Convolution Layer2
@@ -371,7 +371,7 @@ int main()
     A2_9th->next=A2_10th;
     A2_10th->next=NULL;
 
-    printf("All filters2 loaded [ok] \n" );
+   // printf("All filters2 loaded [ok] \n" );
 
 
     //______________________________________________________________________________________
@@ -976,11 +976,609 @@ struct ALLFM2 *convl45;
     convl59->next=convl60;
     convl60->next=NULL;
 
-    printf("All convolution2 init [ok] \n" );
+    //printf("All convolution2 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer2
-    struct PoolC2 *poolC2_1= init_pool(60);
+    //struct PoolC2 *poolC2_1= init_pool(60);
+    struct PoolC2 *poolC2_1;
+    poolC2_1 = malloc (sizeof(struct PoolC2));
+    Matrix *newM1;
+    newM1=malloc (sizeof(Matrix));
+    newM1->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM1->width= DIM_POOL2;
+    newM1->height=DIM_POOL2;
+    poolC2_1->m=newM1;
+
+    struct PoolC2 *poolC2_2;
+    poolC2_2 = malloc (sizeof(struct PoolC2));
+    Matrix *newM2;
+    newM2=malloc (sizeof(Matrix));
+    newM2->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM2->width= DIM_POOL2;
+    newM2->height=DIM_POOL2;
+    poolC2_2->m=newM2;
+    poolC2_1->next=poolC2_2;
+
+    struct PoolC2 *poolC2_3;
+    poolC2_3 = malloc (sizeof(struct PoolC2));
+    Matrix *newM3;
+    newM3=malloc (sizeof(Matrix));
+    newM3->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM3->width= DIM_POOL2;
+    newM3->height=DIM_POOL2;
+    poolC2_3->m=newM3;
+    poolC2_2->next=poolC2_3;
+
+    struct PoolC2 *poolC2_4;
+    poolC2_4 = malloc (sizeof(struct PoolC2));
+    Matrix *newM4;
+    newM4=malloc (sizeof(Matrix));
+    newM4->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM4->width= DIM_POOL2;
+    newM4->height=DIM_POOL2;
+    poolC2_4->m=newM4;
+    poolC2_3->next=poolC2_4;
+
+    struct PoolC2 *poolC2_5;
+    poolC2_5 = malloc (sizeof(struct PoolC2));
+    Matrix *newM5;
+    newM5=malloc (sizeof(Matrix));
+    newM5->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM5->width= DIM_POOL2;
+    newM5->height=DIM_POOL2;
+    poolC2_5->m=newM5;
+    poolC2_4->next=poolC2_5;
+
+    struct PoolC2 *poolC2_6;
+    poolC2_6 = malloc (sizeof(struct PoolC2));
+    Matrix *newM6;
+    newM6=malloc (sizeof(Matrix));
+    newM6->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM6->width= DIM_POOL2;
+    newM6->height=DIM_POOL2;
+    poolC2_6->m=newM6;
+    poolC2_5->next=poolC2_6;
+
+    struct PoolC2 *poolC2_7;
+    poolC2_7 = malloc (sizeof(struct PoolC2));
+    Matrix *newM7;
+    newM7=malloc (sizeof(Matrix));
+    newM7->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM7->width= DIM_POOL2;
+    newM7->height=DIM_POOL2;
+    poolC2_7->m=newM7;
+    poolC2_6->next=poolC2_7;
+
+    struct PoolC2 *poolC2_8;
+    poolC2_8 = malloc (sizeof(struct PoolC2));
+    Matrix *newM8;
+    newM8=malloc (sizeof(Matrix));
+    newM8->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM8->width= DIM_POOL2;
+    newM8->height=DIM_POOL2;
+    poolC2_8->m=newM8;
+    poolC2_7->next=poolC2_8;
+
+    struct PoolC2 *poolC2_9;
+    poolC2_9 = malloc (sizeof(struct PoolC2));
+    Matrix *newM9;
+    newM9=malloc (sizeof(Matrix));
+    newM9->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM9->width= DIM_POOL2;
+    newM9->height=DIM_POOL2;
+    poolC2_9->m=newM9;
+    poolC2_8->next=poolC2_9;
+
+    struct PoolC2 *poolC2_10;
+    poolC2_10 = malloc (sizeof(struct PoolC2));
+    Matrix *newM10;
+    newM10=malloc (sizeof(Matrix));
+    newM10->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM10->width= DIM_POOL2;
+    newM10->height=DIM_POOL2;
+    poolC2_10->m=newM10;
+    poolC2_9->next=poolC2_10;
+
+    struct PoolC2 *poolC2_11;
+    poolC2_11 = malloc (sizeof(struct PoolC2));
+    Matrix *newM11;
+    newM11=malloc (sizeof(Matrix));
+    newM11->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM11->width= DIM_POOL2;
+    newM11->height=DIM_POOL2;
+    poolC2_11->m=newM11;
+    poolC2_10->next=poolC2_11;
+
+    struct PoolC2 *poolC2_12;
+    poolC2_12 = malloc (sizeof(struct PoolC2));
+    Matrix *newM12;
+    newM12=malloc (sizeof(Matrix));
+    newM12->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM12->width= DIM_POOL2;
+    newM12->height=DIM_POOL2;
+    poolC2_12->m=newM12;
+    poolC2_11->next=poolC2_12;
+
+    struct PoolC2 *poolC2_13;
+    poolC2_13 = malloc (sizeof(struct PoolC2));
+    Matrix *newM13;
+    newM13=malloc (sizeof(Matrix));
+    newM13->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM13->width= DIM_POOL2;
+    newM13->height=DIM_POOL2;
+    poolC2_13->m=newM13;
+    poolC2_12->next=poolC2_13;
+
+    struct PoolC2 *poolC2_14;
+    poolC2_14 = malloc (sizeof(struct PoolC2));
+    Matrix *newM14;
+    newM14=malloc (sizeof(Matrix));
+    newM14->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM14->width= DIM_POOL2;
+    newM14->height=DIM_POOL2;
+    poolC2_14->m=newM14;
+    poolC2_13->next=poolC2_14;
+
+    struct PoolC2 *poolC2_15;
+    poolC2_15 = malloc (sizeof(struct PoolC2));
+    Matrix *newM15;
+    newM15=malloc (sizeof(Matrix));
+    newM15->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM15->width= DIM_POOL2;
+    newM15->height=DIM_POOL2;
+    poolC2_15->m=newM15;
+    poolC2_14->next=poolC2_15;
+
+    struct PoolC2 *poolC2_16;
+    poolC2_16 = malloc (sizeof(struct PoolC2));
+    Matrix *newM16;
+    newM16=malloc (sizeof(Matrix));
+    newM16->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM16->width= DIM_POOL2;
+    newM16->height=DIM_POOL2;
+    poolC2_16->m=newM16;
+    poolC2_15->next=poolC2_16;
+
+    struct PoolC2 *poolC2_17;
+    poolC2_17 = malloc (sizeof(struct PoolC2));
+    Matrix *newM17;
+    newM17=malloc (sizeof(Matrix));
+    newM17->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM17->width= DIM_POOL2;
+    newM17->height=DIM_POOL2;
+    poolC2_17->m=newM17;
+    poolC2_16->next=poolC2_17;
+
+    struct PoolC2 *poolC2_18;
+    poolC2_18 = malloc (sizeof(struct PoolC2));
+    Matrix *newM18;
+    newM18=malloc (sizeof(Matrix));
+    newM18->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM18->width= DIM_POOL2;
+    newM18->height=DIM_POOL2;
+    poolC2_18->m=newM18;
+    poolC2_17->next=poolC2_18;
+
+    struct PoolC2 *poolC2_19;
+    poolC2_19 = malloc (sizeof(struct PoolC2));
+    Matrix *newM19;
+    newM19=malloc (sizeof(Matrix));
+    newM19->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM19->width= DIM_POOL2;
+    newM19->height=DIM_POOL2;
+    poolC2_19->m=newM19;
+    poolC2_18->next=poolC2_19;
+
+    struct PoolC2 *poolC2_20;
+    poolC2_20 = malloc (sizeof(struct PoolC2));
+    Matrix *newM20;
+    newM20=malloc (sizeof(Matrix));
+    newM20->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM20->width= DIM_POOL2;
+    newM20->height=DIM_POOL2;
+    poolC2_20->m=newM20;
+    poolC2_19->next=poolC2_20;
+
+    struct PoolC2 *poolC2_21;
+    poolC2_21 = malloc (sizeof(struct PoolC2));
+    Matrix *newM21;
+    newM21=malloc (sizeof(Matrix));
+    newM21->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM21->width= DIM_POOL2;
+    newM21->height=DIM_POOL2;
+    poolC2_21->m=newM21;
+    poolC2_20->next=poolC2_21;
+
+    struct PoolC2 *poolC2_22;
+    poolC2_22 = malloc (sizeof(struct PoolC2));
+    Matrix *newM22;
+    newM22=malloc (sizeof(Matrix));
+    newM22->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM22->width= DIM_POOL2;
+    newM22->height=DIM_POOL2;
+    poolC2_22->m=newM22;
+    poolC2_21->next=poolC2_22;
+
+    struct PoolC2 *poolC2_23;
+    poolC2_23 = malloc (sizeof(struct PoolC2));
+    Matrix *newM23;
+    newM23=malloc (sizeof(Matrix));
+    newM23->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM23->width= DIM_POOL2;
+    newM23->height=DIM_POOL2;
+    poolC2_23->m=newM23;
+    poolC2_22->next=poolC2_23;
+
+    struct PoolC2 *poolC2_24;
+    poolC2_24 = malloc (sizeof(struct PoolC2));
+    Matrix *newM24;
+    newM24=malloc (sizeof(Matrix));
+    newM24->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM24->width= DIM_POOL2;
+    newM24->height=DIM_POOL2;
+    poolC2_24->m=newM24;
+    poolC2_23->next=poolC2_24;
+
+struct PoolC2 *poolC2_25;
+    poolC2_25 = malloc (sizeof(struct PoolC2));
+    Matrix *newM25;
+    newM25=malloc (sizeof(Matrix));
+    newM25->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM25->width= DIM_POOL2;
+    newM25->height=DIM_POOL2;
+    poolC2_25->m=newM25;
+    poolC2_24->next=poolC2_25;
+
+    struct PoolC2 *poolC2_26;
+    poolC2_26 = malloc (sizeof(struct PoolC2));
+    Matrix *newM26;
+    newM26=malloc (sizeof(Matrix));
+    newM26->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM26->width= DIM_POOL2;
+    newM26->height=DIM_POOL2;
+    poolC2_26->m=newM26;
+    poolC2_25->next=poolC2_26;
+
+    struct PoolC2 *poolC2_27;
+    poolC2_27 = malloc (sizeof(struct PoolC2));
+    Matrix *newM27;
+    newM27=malloc (sizeof(Matrix));
+    newM27->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM27->width= DIM_POOL2;
+    newM27->height=DIM_POOL2;
+    poolC2_27->m=newM27;
+    poolC2_26->next=poolC2_27;
+
+    struct PoolC2 *poolC2_28;
+    poolC2_28 = malloc (sizeof(struct PoolC2));
+    Matrix *newM28;
+    newM28=malloc (sizeof(Matrix));
+    newM28->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM28->width= DIM_POOL2;
+    newM28->height=DIM_POOL2;
+    poolC2_28->m=newM28;
+    poolC2_27->next=poolC2_28;
+
+    struct PoolC2 *poolC2_29;
+    poolC2_29 = malloc (sizeof(struct PoolC2));
+    Matrix *newM29;
+    newM29=malloc (sizeof(Matrix));
+    newM29->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM29->width= DIM_POOL2;
+    newM29->height=DIM_POOL2;
+    poolC2_29->m=newM29;
+    poolC2_28->next=poolC2_29;
+
+    struct PoolC2 *poolC2_30;
+    poolC2_30 = malloc (sizeof(struct PoolC2));
+    Matrix *newM30;
+    newM30=malloc (sizeof(Matrix));
+    newM30->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM30->width= DIM_POOL2;
+    newM30->height=DIM_POOL2;
+    poolC2_30->m=newM30;
+    poolC2_29->next=poolC2_30;
+
+    struct PoolC2 *poolC2_31;
+    poolC2_31 = malloc (sizeof(struct PoolC2));
+    Matrix *newM31;
+    newM31=malloc (sizeof(Matrix));
+    newM31->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM31->width= DIM_POOL2;
+    newM31->height=DIM_POOL2;
+    poolC2_31->m=newM31;
+    poolC2_30->next=poolC2_31;
+
+    struct PoolC2 *poolC2_32;
+    poolC2_32 = malloc (sizeof(struct PoolC2));
+    Matrix *newM32;
+    newM32=malloc (sizeof(Matrix));
+    newM32->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM32->width= DIM_POOL2;
+    newM32->height=DIM_POOL2;
+    poolC2_32->m=newM32;
+    poolC2_31->next=poolC2_32;
+
+    struct PoolC2 *poolC2_33;
+    poolC2_33 = malloc (sizeof(struct PoolC2));
+    Matrix *newM33;
+    newM33=malloc (sizeof(Matrix));
+    newM33->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM33->width= DIM_POOL2;
+    newM33->height=DIM_POOL2;
+    poolC2_33->m=newM33;
+    poolC2_32->next=poolC2_33;
+
+    struct PoolC2 *poolC2_34;
+    poolC2_34 = malloc (sizeof(struct PoolC2));
+    Matrix *newM34;
+    newM34=malloc (sizeof(Matrix));
+    newM34->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM34->width= DIM_POOL2;
+    newM34->height=DIM_POOL2;
+    poolC2_34->m=newM34;
+    poolC2_33->next=poolC2_34;
+
+    struct PoolC2 *poolC2_35;
+    poolC2_35 = malloc (sizeof(struct PoolC2));
+    Matrix *newM35;
+    newM35=malloc (sizeof(Matrix));
+    newM35->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM35->width= DIM_POOL2;
+    newM35->height=DIM_POOL2;
+    poolC2_35->m=newM35;
+    poolC2_34->next=poolC2_35;
+
+    struct PoolC2 *poolC2_36;
+    poolC2_36 = malloc (sizeof(struct PoolC2));
+    Matrix *newM36;
+    newM36=malloc (sizeof(Matrix));
+    newM36->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM36->width= DIM_POOL2;
+    newM36->height=DIM_POOL2;
+    poolC2_36->m=newM36;
+    poolC2_35->next=poolC2_36;
+
+    struct PoolC2 *poolC2_37;
+    poolC2_37 = malloc (sizeof(struct PoolC2));
+    Matrix *newM37;
+    newM37=malloc (sizeof(Matrix));
+    newM37->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM37->width= DIM_POOL2;
+    newM37->height=DIM_POOL2;
+    poolC2_37->m=newM37;
+    poolC2_36->next=poolC2_37;
+
+    struct PoolC2 *poolC2_38;
+    poolC2_38 = malloc (sizeof(struct PoolC2));
+    Matrix *newM38;
+    newM38=malloc (sizeof(Matrix));
+    newM38->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM38->width= DIM_POOL2;
+    newM38->height=DIM_POOL2;
+    poolC2_38->m=newM38;
+    poolC2_37->next=poolC2_38;
+
+    struct PoolC2 *poolC2_39;
+    poolC2_39 = malloc (sizeof(struct PoolC2));
+    Matrix *newM39;
+    newM39=malloc (sizeof(Matrix));
+    newM39->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM39->width= DIM_POOL2;
+    newM39->height=DIM_POOL2;
+    poolC2_39->m=newM39;
+    poolC2_38->next=poolC2_39;
+
+    struct PoolC2 *poolC2_40;
+    poolC2_40 = malloc (sizeof(struct PoolC2));
+    Matrix *newM40;
+    newM40=malloc (sizeof(Matrix));
+    newM40->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM40->width= DIM_POOL2;
+    newM40->height=DIM_POOL2;
+    poolC2_40->m=newM40;
+    poolC2_39->next=poolC2_40;
+
+
+    struct PoolC2 *poolC2_41;
+    poolC2_41 = malloc (sizeof(struct PoolC2));
+    Matrix *newM41;
+    newM41=malloc (sizeof(Matrix));
+    newM41->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM41->width= DIM_POOL2;
+    newM41->height=DIM_POOL2;
+    poolC2_41->m=newM41;
+    poolC2_40->next=poolC2_41;
+
+    struct PoolC2 *poolC2_42;
+    poolC2_42 = malloc (sizeof(struct PoolC2));
+    Matrix *newM42;
+    newM42=malloc (sizeof(Matrix));
+    newM42->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM42->width= DIM_POOL2;
+    newM42->height=DIM_POOL2;
+    poolC2_42->m=newM42;
+    poolC2_41->next=poolC2_42;
+
+    struct PoolC2 *poolC2_43;
+    poolC2_43 = malloc (sizeof(struct PoolC2));
+    Matrix *newM43;
+    newM43=malloc (sizeof(Matrix));
+    newM43->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM43->width= DIM_POOL2;
+    newM43->height=DIM_POOL2;
+    poolC2_43->m=newM43;
+    poolC2_42->next=poolC2_43;
+
+    struct PoolC2 *poolC2_44;
+    poolC2_44 = malloc (sizeof(struct PoolC2));
+    Matrix *newM44;
+    newM44=malloc (sizeof(Matrix));
+    newM44->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM44->width= DIM_POOL2;
+    newM44->height=DIM_POOL2;
+    poolC2_44->m=newM44;
+    poolC2_43->next=poolC2_44;
+
+struct PoolC2 *poolC2_45;
+    poolC2_45 = malloc (sizeof(struct PoolC2));
+    Matrix *newM45;
+    newM45=malloc (sizeof(Matrix));
+    newM45->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM45->width= DIM_POOL2;
+    newM45->height=DIM_POOL2;
+    poolC2_45->m=newM45;
+    poolC2_44->next=poolC2_45;
+
+    struct PoolC2 *poolC2_46;
+    poolC2_46 = malloc (sizeof(struct PoolC2));
+    Matrix *newM46;
+    newM46=malloc (sizeof(Matrix));
+    newM46->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM46->width= DIM_POOL2;
+    newM46->height=DIM_POOL2;
+    poolC2_46->m=newM46;
+    poolC2_45->next=poolC2_46;
+
+    struct PoolC2 *poolC2_47;
+    poolC2_47 = malloc (sizeof(struct PoolC2));
+    Matrix *newM47;
+    newM47=malloc (sizeof(Matrix));
+    newM47->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM47->width= DIM_POOL2;
+    newM47->height=DIM_POOL2;
+    poolC2_47->m=newM47;
+    poolC2_46->next=poolC2_47;
+
+    struct PoolC2 *poolC2_48;
+    poolC2_48 = malloc (sizeof(struct PoolC2));
+    Matrix *newM48;
+    newM48=malloc (sizeof(Matrix));
+    newM48->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM48->width= DIM_POOL2;
+    newM48->height=DIM_POOL2;
+    poolC2_48->m=newM48;
+    poolC2_47->next=poolC2_48;
+    struct PoolC2 *poolC2_49;
+    poolC2_49 = malloc (sizeof(struct PoolC2));
+    Matrix *newM49;
+    newM49=malloc (sizeof(Matrix));
+    newM49->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM49->width= DIM_POOL2;
+    newM49->height=DIM_POOL2;
+    poolC2_49->m=newM49;
+    poolC2_48->next=poolC2_49;
+
+    struct PoolC2 *poolC2_50;
+    poolC2_50 = malloc (sizeof(struct PoolC2));
+    Matrix *newM50;
+    newM50=malloc (sizeof(Matrix));
+    newM50->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM50->width= DIM_POOL2;
+    newM50->height=DIM_POOL2;
+    poolC2_50->m=newM50;
+    poolC2_49->next=poolC2_50;
+
+    struct PoolC2 *poolC2_51;
+    poolC2_51 = malloc (sizeof(struct PoolC2));
+    Matrix *newM51;
+    newM51=malloc (sizeof(Matrix));
+    newM51->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM51->width= DIM_POOL2;
+    newM51->height=DIM_POOL2;
+    poolC2_51->m=newM51;
+    poolC2_50->next=poolC2_51;
+    struct PoolC2 *poolC2_52;
+    poolC2_52 = malloc (sizeof(struct PoolC2));
+    Matrix *newM52;
+    newM52=malloc (sizeof(Matrix));
+    newM52->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM52->width= DIM_POOL2;
+    newM52->height=DIM_POOL2;
+    poolC2_52->m=newM52;
+    poolC2_51->next=poolC2_52;
+
+    struct PoolC2 *poolC2_53;
+    poolC2_53 = malloc (sizeof(struct PoolC2));
+    Matrix *newM53;
+    newM53=malloc (sizeof(Matrix));
+    newM53->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM53->width= DIM_POOL2;
+    newM53->height=DIM_POOL2;
+    poolC2_53->m=newM53;
+    poolC2_52->next=poolC2_53;
+
+    struct PoolC2 *poolC2_54;
+    poolC2_54 = malloc (sizeof(struct PoolC2));
+    Matrix *newM54;
+    newM54=malloc (sizeof(Matrix));
+    newM54->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM54->width= DIM_POOL2;
+    newM54->height=DIM_POOL2;
+    poolC2_54->m=newM54;
+    poolC2_53->next=poolC2_54;
+
+    struct PoolC2 *poolC2_55;
+    poolC2_55 = malloc (sizeof(struct PoolC2));
+    Matrix *newM55;
+    newM55=malloc (sizeof(Matrix));
+    newM55->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM55->width= DIM_POOL2;
+    newM55->height=DIM_POOL2;
+    poolC2_55->m=newM55;
+    poolC2_54->next=poolC2_55;
+
+    struct PoolC2 *poolC2_56;
+    poolC2_56 = malloc (sizeof(struct PoolC2));
+    Matrix *newM56;
+    newM56=malloc (sizeof(Matrix));
+    newM56->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM56->width= DIM_POOL2;
+    newM56->height=DIM_POOL2;
+    poolC2_56->m=newM56;
+    poolC2_55->next=poolC2_56;
+
+    struct PoolC2 *poolC2_57;
+    poolC2_57 = malloc (sizeof(struct PoolC2));
+    Matrix *newM57;
+    newM57=malloc (sizeof(Matrix));
+    newM57->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM57->width= DIM_POOL2;
+    newM57->height=DIM_POOL2;
+    poolC2_57->m=newM57;
+    poolC2_56->next=poolC2_57;
+
+    struct PoolC2 *poolC2_58;
+    poolC2_58 = malloc (sizeof(struct PoolC2));
+    Matrix *newM58;
+    newM58=malloc (sizeof(Matrix));
+    newM58->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM58->width= DIM_POOL2;
+    newM58->height=DIM_POOL2;
+    poolC2_58->m=newM58;
+    poolC2_57->next=poolC2_58;
+
+    struct PoolC2 *poolC2_59;
+    poolC2_59 = malloc (sizeof(struct PoolC2));
+    Matrix *newM59;
+    newM59=malloc (sizeof(Matrix));
+    newM59->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM59->width= DIM_POOL2;
+    newM59->height=DIM_POOL2;
+    poolC2_59->m=newM59;
+    poolC2_58->next=poolC2_59;
+
+    struct PoolC2 *poolC2_60;
+    poolC2_60 = malloc (sizeof(struct PoolC2));
+    Matrix *newM60;
+    newM60=malloc (sizeof(Matrix));
+    newM60->matrix= calloc(DIM_POOL2*DIM_POOL2,sizeof(double));
+    newM60->width= DIM_POOL2;
+    newM60->height=DIM_POOL2;
+    poolC2_60->m=newM60;
+    poolC2_59->next=poolC2_60;
+    poolC2_60->next=NULL;
 
     printf("All pooling init2 [ok] \n" );
 
@@ -990,13 +1588,13 @@ struct ALLFM2 *convl45;
     size_t all= NB_FILTERS2 * NB_FILTERS1 * DIM_POOL2 * DIM_POOL2;
     struct FL *flatterned1 = init_fl(all);
 
-    printf("All flatterning [ok] \n" );
+    //printf("All flatterning [ok] \n" );
 
 
     // 9) Final Connected Layer with char as neurons
     struct CL_out *outin = init_out(NB_Char);
 
-    printf("All output [ok] \n");
+    //printf("All output [ok] \n");
 
     printf("all structures are done and are up and working \n");
 
@@ -1015,10 +1613,12 @@ struct ALLFM2 *convl45;
 
     Matrix matrice1 = surface_to_matrix_grayscale(img);
 
+
     int seuil = otsu(img);
 
 
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
+    SDL_FreeSurface(img);
 
     printf("image to matrice for path %s [ok] \n",imp.path );
 
@@ -1030,35 +1630,35 @@ struct ALLFM2 *convl45;
         //Going -> Convolution Layer 1
         ConvolutionLayer1(convo1,A1_1st, input);
 
-        printf("Convolution1   [ok]   \n");
+      //  printf("Convolution1   [ok]   \n");
         // 3) Relu activation function on feature maps
         ReluActiv1(convo1);
 
-        printf("Relu1   [ok]   \n");
+        //printf("Relu1   [ok]   \n");
         // 4) Pooling
          Pool1(convo1, poolC1);
 
-        printf("Pooling1   [ok]   \n");
+        //printf("Pooling1   [ok]   \n");
 
         // 5) C2 -> Convolutional Layer with 16 filters for each feature maps to get new feature maps
         ConvolutionLayer2( A2_1st, poolC1, convl1);
 
-        printf("Convolution2   [ok]   \n");
+        //printf("Convolution2   [ok]   \n");
         // 6) Relu activation function on the feature maps
         ReluActiv2(convl1);
 
-         printf("Relu2   [ok]   \n");
+        // printf("Relu2   [ok]   \n");
         // 7) Pooling
         Pool2(convl1, poolC2_1);
 
-        printf("Pooling2   [ok]   \n");
+        //printf("Pooling2   [ok]   \n");
         // 8) Flattern Layer -> First Fully Connected Layer
         FlatternLayer( poolC2_1, flatterned1);
 
-        printf("Flattern Layer   [ok]   \n");
-        FullyConnectedLayer1(flatterned1, outin->n);
+        //printf("Flattern Layer   [ok]   \n");
+        FullyConnectedLayer1(flatterned1, outin);
 
-        printf("Fully Connected Layer   [ok]   \n");
+       // printf("Fully Connected Layer   [ok]   \n");
         // 9) Fully connected output layer
         struct resultsfromoutput output=GetOutPut( outin);
 
@@ -1080,29 +1680,34 @@ struct ALLFM2 *convl45;
             BinIndicaor-=97;
           }
         }
+
+        double cross= CrossEntropy(outin, BinIndicaor);
+        printf("cross Entropy is %f \n",cross);
+
         BackforOutput(outin, BinIndicaor);
-        printf("Back For output [ok] \n" );
+        //printf("Back For output [ok] \n" );
 
         //2) Last Pooling (C2)
         GradientsFromPoolingLast(poolC2_1, convl1);
-        printf(" Back for gradient pool C2 [ok] \n" );
+        //printf(" Back for gradient pool C2 [ok] \n" );
 
         // 3) C2 Filters
         BackForFiltersLast(A2_1st, convl1,poolC1);
-        printf("Back for filters C2 [ok] \n" );
+        //printf("Back for filters C2 [ok] \n" );
 
         // 4) Pool layer C1
         GradientsFromPooling(poolC1, convo1);
-        printf("Back for pool layers 1 [ok] \n" );
+        //printf("Back for pool layers 1 [ok] \n" );
 
         // 5) C1 FIlters
         BackForFilters(A1_1st, convo1, input);
-        printf("Back for filters C1 [ok] \n" );
+        //printf("Back for filters C1 [ok] \n" );
 
-        free_Matrix2(input);
-        free_Matrix2(matrice1);
+        //free_Matrix2(input);
+        //free_Matrix2(matrice1);
+        freeMatrix1(input);
+        freeMatrix1(matrice1);
 
-        SDL_FreeSurface(img);
         }
         //FREE ALL MEMORY
         //Free all of this
@@ -1114,38 +1719,38 @@ struct ALLFM2 *convl45;
         //Free 1st layer of pooling
         free_ALLFilters1(A1_1st);
 
-        printf("free first filters [ok] \n");
+        //printf("free first filters [ok] \n");
         //Free 1st layer of convolution
         free_ALLFM1(convo1);
 
-        printf("free first feature maps [ok] \n");
+      //  printf("free first feature maps [ok] \n");
         //Free 1st layer of pooling
         free_PoolC1(poolC1);
 
-        printf("free first pooling layers [ok] \n");
+        //printf("free first pooling layers [ok] \n");
 
         //Free 2nd set of filters
         free_ALLFilters2(A2_1st);
 
-        printf("free second filters [ok] \n");
+        //printf("free second filters [ok] \n");
         //Free 2nd layer of convolution
         free_ALLMaps2(convl1);
 
-        printf("free second feature maps [ok] \n");
+        //printf("free second feature maps [ok] \n");
 
         //Free 2nd layer of Pooling
         free_PoolC2(poolC2_1);
 
-        printf("free second pooling [ok] \n");
+        //printf("free second pooling [ok] \n");
 
         //Free Flatterned Layer
         free_FlatternedLayer(flatterned1);
 
-        printf("free flattern layer [ok] \n");
+        //printf("free flattern layer [ok] \n");
         //Free output layer
         free_OutPutLayer(outin);
 
-        printf("free output layer [ok] \n");
+        //printf("free output layer [ok] \n");
         printf("all free [ok] \n");
 
         return 0;

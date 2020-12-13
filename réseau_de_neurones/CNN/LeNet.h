@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "../../Tools/matrix.h"
 #include <err.h>
+#include <time.h>
 
 //Maths and Constants
 #define RANDOM_RANGE(max) ( rand() % max )
@@ -25,7 +26,7 @@
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 20
+#define NB_ITERATION 1200
 
 //Struct
 struct TM
@@ -124,7 +125,7 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res);
 
 double GetInputFromFC(struct FL *flatterned);
 
-void FullyConnectedLayer1(struct FL *flatterned,  struct Neuron *CurNeu);
+void FullyConnectedLayer1(struct FL *flatterned,  struct CL_out *outin);
 
 struct resultsfromoutput GetOutPut(struct CL_out *outin);
 
@@ -151,6 +152,9 @@ void free_ALLMaps2(struct ALLFM2 *p);
 void free_PoolC2(struct PoolC2 *p);
 
 void free_Matrix2(Matrix m);
+void freeMatrix1(Matrix M);
+
+double CrossEntropy(struct CL_out *clout, int BinIndicaor);
 
 double SoftLayerBack(struct CL_out *clout, int BinIndicaor, int i);
 
