@@ -26,7 +26,7 @@
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 1200
+#define NB_ITERATION 1
 
 //Struct
 struct TM
@@ -129,9 +129,9 @@ void FullyConnectedLayer1(struct FL *flatterned,  struct CL_out *outin);
 
 struct resultsfromoutput GetOutPut(struct CL_out *outin);
 
-struct CL_out *init_out(size_t n);
+struct CL_out *init_out(int n);
 
-struct FL *init_fl(size_t n);
+struct FL *init_fl(int n);
 
 void free_Matrix(Matrix *m);
 

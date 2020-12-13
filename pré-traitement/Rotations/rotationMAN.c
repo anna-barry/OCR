@@ -40,42 +40,45 @@ struct Tuple shear3(double angle,int x, int y) {
     new_x=round(new_x - new_y * tangent);
     
     struct Tuple x_y_return = { new_x, new_y };
-
+    
     return x_y_return;
 }
-
-SDL_Surface* ManualRotation(SDL_Surface* image_surface , int degrees)
+SDL_Surface* ManualRotation(SDL_Surface* image_surface, double degrees)
 {
     //Rotation Angle
-    double angle = degrees * Pi / 180.;
+    double angle = degrees * Pi / 180;
     double cosine=cos(angle);
     double sine=sin(angle);
 
     int OriW = image_surface->w;
     int OriH = image_surface->h;
 
+
     //New height and width
     int new_height = round(fabs(OriH * cosine) + fabs(OriW * sine)) + 1;
     int new_width  = round(fabs(OriW * cosine) + fabs(OriH * sine)) + 1;
 
-    //Centre of the image that we are rotating
+    //Centre of the image about which we have to rotate the image
     int original_centre_height = round(((OriH+1)/2)-1);
     int original_centre_width = round(((OriW+1)/2)-1);
+
 
     //Centre of the new image that will be obtained
     int new_centre_height = round(((new_height+1)/2)-1);
     int new_centre_width = round(((new_width+1)/2)-1);
 
+    //printf("new_centre_height: %d, new_centre_width: %d\n", new_centre_height, new_centre_width);
+
     // New surface
     SDL_Surface* result=NULL;
     result=SDL_CreateRGBSurface (0, new_width, new_height, 32, 0, 0, 0, 0);
 
-    // Initialize with black pixels
+    // Initialize with white pixels
     for (int i = 0; i < new_height; ++i)
     {
         for (int j = 0; j < new_width; ++j)
         {
-            // initialise with black pixels
+            // initialise with white pixels
             Uint32 pixel = SDL_MapRGB(result->format, 255, 255, 255);
             put_pixel(result,j,i,pixel);
         }
@@ -91,7 +94,6 @@ SDL_Surface* ManualRotation(SDL_Surface* image_surface , int degrees)
 
             //Applying shear Transformation
             struct Tuple sheared_x_y = shear3(angle,x,y);
-
             int new_y = new_centre_height - sheared_x_y.y;
             int new_x = new_centre_width - sheared_x_y.x;
 
@@ -100,5 +102,7 @@ SDL_Surface* ManualRotation(SDL_Surface* image_surface , int degrees)
     }
 
     return result;
-
 }
+
+
+

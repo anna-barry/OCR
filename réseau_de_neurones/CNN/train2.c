@@ -124,7 +124,7 @@ int main()
     A1_5th->next=A1_6th;
     A1_6th->next=NULL;
 
-    //printf("All filters1 loaded [ok] \n" );
+    printf("All filters1 loaded [ok] \n" );
 
     //______________________________________________________________________________________
     //Convolution Layer1
@@ -190,7 +190,7 @@ int main()
 
 
 
-    //printf("All convolution1 init [ok] \n" );
+   printf("All convolution1 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer1
@@ -255,7 +255,7 @@ int main()
     poolC6->next=NULL;
 
 
-    //printf("All pooling init1 [ok] \n" );
+    printf("All pooling init1 [ok] \n" );
 
     //______________________________________________________________________________________
     //Filters and Convolution Layer2
@@ -976,7 +976,7 @@ struct ALLFM2 *convl45;
     convl59->next=convl60;
     convl60->next=NULL;
 
-    //printf("All convolution2 init [ok] \n" );
+    printf("All convolution2 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer2
@@ -1584,17 +1584,22 @@ struct PoolC2 *poolC2_45;
 
 
     //______________________________________________________________________________________
+    struct CL_out *outin = init_out(NB_Char);
+
+    printf("All output [ok] \n");
+
+
     // 8) Flattern Layer -> First Fully Connected Layer
     size_t all= NB_FILTERS2 * NB_FILTERS1 * DIM_POOL2 * DIM_POOL2;
     struct FL *flatterned1 = init_fl(all);
 
-    //printf("All flatterning [ok] \n" );
+    printf("All flatterning [ok] \n" );
 
 
     // 9) Final Connected Layer with char as neurons
-    struct CL_out *outin = init_out(NB_Char);
+  //  struct CL_out *outin = init_out(NB_Char);
 
-    //printf("All output [ok] \n");
+  //  printf("All output [ok] \n");
 
     printf("all structures are done and are up and working \n");
 

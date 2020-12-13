@@ -64,7 +64,7 @@ struct sendback
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 1200
+#define NB_ITERATION 1
 
 //__________________________________________________________________________________
 //
@@ -473,9 +473,9 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 struct FL *init_fl(int n)
 {
     struct FL *new;
-    new= malloc (sizeof(struct FL));
+    new= malloc (sizeof ( struct FL ));
     struct Neuron *newN;
-    newN = calloc(n,sizeof(double));
+    newN = malloc(n * sizeof(struct Neuron));
     for(int i=0;i<n;i++)
     {
         double random1=RAND_DOUBLE;
@@ -486,22 +486,33 @@ struct FL *init_fl(int n)
         newN[i].bias=random2;
     }
     new->n = newN;
-
-/*
-    struct FL *currPool = NULL;
-    currPool = new;
-
-    struct Neuron *CurNeu=NULL;
-    CurNeu= currPool->n;
-    for(int k=0; k<n; k++)
-    {
-        printf("both randoms are weight %f and bias %f for flattern layer n°%d \n",CurNeu[k].weight, CurNeu[k].bias,k);
-    }*/
-
-
     return new;
-
 }
+
+//Init Fully Connected Layer
+struct CL_out *init_out(int n)
+{
+
+    struct CL_out *newCL;
+    newCL= malloc(sizeof (struct CL_out));
+    struct Neuron *newN2;
+    newN2 = malloc(n * sizeof(struct Neuron));
+    for(int i=0;i<(int)n;i++)
+    {
+        double random1=RAND_DOUBLE;
+        double random2=RAND_DOUBLE;
+        //printf("both randoms are %f and %f for output layer \n",random1, random2);
+        newN2[i].input=0;
+        newN2[i].weight=random1;
+        newN2[i].bias=random2;
+    }
+    newCL->n = newN2;
+
+    return newCL;
+}
+
+
+
 //Works
 void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 {
@@ -520,7 +531,7 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
         double *indexPool= NULL;
         indexPool=(currPool->m->matrix);
 
-        //print_Matrix(*(currPool->m));
+        print_Matrix(*(currPool->m));
 
         //printf("in for i Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
         for(int j=0; j< DIM_POOL2; j++)
@@ -576,27 +587,6 @@ double GetInputFromFC(struct FL *flatterned)
     return max(res,0);
 }
 
-//Init Fully Connected Layer
-struct CL_out *init_out(size_t n)
-{
-
-    struct CL_out *new;
-    new= malloc (sizeof(struct FL));
-    struct Neuron *newN;
-    newN = calloc(n,sizeof(double));
-    for(int i=0;i<(int)n;i++)
-    {
-        double random1=RAND_DOUBLE;
-        double random2=RAND_DOUBLE;
-        //printf("both randoms are %f and %f for output layer \n",random1, random2);
-        newN[i].input=0;
-        newN[i].weight=random1;
-        newN[i].bias=random2;
-    }
-    new->n = newN;
-
-    return new;
-}
 
 
 void FullyConnectedLayer1(struct FL *flatterned, struct CL_out *outin)
@@ -637,7 +627,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
     for (int i=0;i<(NB_Char);i++)
     {
         //printf("the input is %f for n°%d \n",outN[i].input,i );
-      //  printf("exp of all this is %f with weight=%f anf bias=%f \n", exp(outN[i].input * outN[i].weight + outN[i].bias), outN[i].weight, outN[i].bias);
+        printf("exp of all this is %f with weight=%f anf bias=%f \n", exp(outN[i].input * outN[i].weight + outN[i].bias), outN[i].weight, outN[i].bias);
         sum=sum+exp(max(0,outN[i].input * outN[i].weight + outN[i].bias));
     }
 
