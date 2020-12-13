@@ -5,6 +5,8 @@
 #include "../../../Tools/matrix.h"
 #include "../../binarisation/binarisation.h"
 #include "../rotationMAN.h"
+//#include "../rotationAUTO.h"
+
 
 int main()
 {
@@ -19,7 +21,11 @@ int main()
 
     wait_for_keypressed();
 
-    image_surface = ManualRotation(image_surface, -30);
+    image_surface = ManualRotation(image_surface, -1);
+
+    //double angle = getSkewAngle(image_surface);
+
+    //printf("%f\n", angle);
 
     screen_surface = display_image(image_surface);
 
@@ -27,7 +33,7 @@ int main()
 
     update_surface(screen_surface, image_surface);
 
-    image_surface = ManualRotation(image_surface, 30);
+    image_surface = ManualRotation(image_surface, 1);
 
     update_surface(screen_surface, image_surface);
 
