@@ -8,8 +8,11 @@ make (enter)
 ./testxycut (enter)
 
 Then look at every new pictures that have appeared in this directory,
-The function being a group of recursive function, it only shows the last element that has been threw the function, the last elements being the last paragraph, last line, last word and last letter of the text, it only shows the last elements.
+The function being a group of recursive function, it only shows the last element that has been through the function, the last elements being the last paragraph, last line, last word and last letter of the text, it only shows the last elements.
 
-Unfortunately, for now I haven't found a way to register every word/letter that was created.
+Unfortunately, for now I haven't found a way to register every paragraph/line/word/letter that was created.
 
 However, it saves the text in the "textOCR" file, only with a, spaces and going to the next line, looking at what's printed we can recognize the text's shape.
+
+AUTHOR:
+marine Thunet

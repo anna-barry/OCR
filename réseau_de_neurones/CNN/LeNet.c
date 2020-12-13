@@ -377,10 +377,9 @@ struct PoolC2 *init_pool(size_t n)
 
         while (tmp && tmp->next)
         {
+            printf("here?\n");
             tmp=tmp->next;
-
         }
-
         struct PoolC2 *tmp2;
         tmp2= malloc (sizeof(struct PoolC2));
         Matrix *tempM;
@@ -393,7 +392,6 @@ struct PoolC2 *init_pool(size_t n)
 
         i++;
     }
-
     return new;
 
 }

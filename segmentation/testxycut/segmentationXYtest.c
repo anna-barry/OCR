@@ -29,22 +29,34 @@
 
 ///________________________CUTTING WORDS AND LINES____________________
 ///__________________________XY-CUT_____________________________________
-void textToFile(char text[], char *str)
+void textToFile(char text[], char *str, int first)
 {
-  FILE* fichier = NULL;
-  fichier = fopen(str, "a");
+    /*
+    description :
+    -on this function we recon that noises and spots were treated
+    -traces a black column if 1 pixel is in the column
+    -goes along each colum, it will help to detect easily
+    parameters :
+    char text[]= the text that has to be added to the text
+    char *str= the name of the file
+    int first= 1 if it is the beginingg of segmentation,
+                to replace the ancient text if already exists
+    dates/authors :
+    12/12
+    marine thunet and marie maturana
+    */
+    FILE* fichier = NULL;
 
-    if (fichier == NULL)
+    if (fichier == NULL && first==1)
     {
-        fclose(fichier);
         fichier = fopen(str, "w");
-        fputs(text, fichier);
     }
     else
     {
-        fputs(text,fichier);
+        fichier = fopen(str, "a");
     }
-    fclose(fichier);
+    fputs(text,fichier);
+    fclose(fichier), fichier = NULL;
 }
 
 //column reading to cut in vertical//
@@ -224,7 +236,7 @@ void _trycut(Matrix M, int line, char *name)
                         
                         //place for the tests
                         matToImg(createseg,"last word");
-                        textToFile(" ",name);
+                        textToFile(" ",name,0);
 
                         //Tree *Child = newTree(0);
                         //AddChild(T, Child);
@@ -278,7 +290,7 @@ void _trycut(Matrix M, int line, char *name)
                         
                         //place for the tests
                         matToImg(createseg,"last letter");
-                        textToFile("a",name);
+                        textToFile("a",name,0);
                         
                         //____FINAL___________
                         //intergrate the fonction when the
@@ -359,7 +371,7 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                 {
                     //place for the tests
                     matToImg(og,"last line");
-                    textToFile("\n",name);
+                    textToFile("\n",name,0);
                     
                     _trycut(og,1,name);
                 }
@@ -419,7 +431,7 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                     
                     //place for the tests
                     matToImg(og2,"last line");
-                    textToFile("\n",name);
+                    textToFile("\n",name,0);
                     
                     _trycut(og2,1,name);
                     
@@ -502,7 +514,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                     
                 horizontalcut(name,m,og,1,0);
                     
-                textToFile("\n\n",name);
+                textToFile("\n\n",name,0);
                 freeMatrix(s);
                 freeMatrix(m);
                 }
@@ -540,7 +552,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                     //Tree *Sibling = newTree(-3);
                     //AddSibling(T,Sibling);
                     verticalcut(name,rest,og1,line,0);
-                    textToFile("\n\n",name);
+                    textToFile("\n\n",name,0);
                     freeMatrix(rest);
                     freeMatrix(og1);
                 }
@@ -555,7 +567,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
 
 
 //________________begining_________________________//
-void beginSeg(Matrix M)
+void beginSeg(Matrix M,char *txt)
 {
     /*
     description :
@@ -568,11 +580,12 @@ void beginSeg(Matrix M)
     marine thunet
     */
     
-    char *txt = "textOCR";
+    //char *txt = "textOCR";
     //Tree *child = newTree(-3);
     //AddChild(txt,child);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
+    textToFile("",txt, 1);
     horizontalcut(txt,q,M,0,0);
     
     freeMatrix(p);
