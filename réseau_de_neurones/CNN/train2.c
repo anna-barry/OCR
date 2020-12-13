@@ -1690,22 +1690,22 @@ struct PoolC2 *poolC2_45;
         printf("cross Entropy is %f \n",cross);
 
         BackforOutput(outin, BinIndicaor);
-        //printf("Back For output [ok] \n" );
+        printf("Back For output [ok] \n" );
 
         //2) Last Pooling (C2)
-        GradientsFromPoolingLast(poolC2_1, convl1);
+        //GradientsFromPoolingLast(poolC2_1, convl1);
         //printf(" Back for gradient pool C2 [ok] \n" );
 
         // 3) C2 Filters
-        BackForFiltersLast(A2_1st, convl1,poolC1);
+        //BackForFiltersLast(A2_1st, convl1,poolC1);
         //printf("Back for filters C2 [ok] \n" );
 
         // 4) Pool layer C1
-        GradientsFromPooling(poolC1, convo1);
+        //GradientsFromPooling(poolC1, convo1);
         //printf("Back for pool layers 1 [ok] \n" );
 
         // 5) C1 FIlters
-        BackForFilters(A1_1st, convo1, input);
+        //BackForFilters(A1_1st, convo1, input);
         //printf("Back for filters C1 [ok] \n" );
 
         //free_Matrix2(input);

@@ -1181,6 +1181,14 @@ void BackforOutput(struct CL_out *clout, int BinIndicaor)
     outN[i].bias=SoftLayerBack(clout, BinIndicaor, i)*rout;
 
   }
+
+  for(int i=0; i<NB_Char; i++)
+  {
+    printf("output n°%d is input=%f and weight=%f and bias=%f \n",i,outN[i].input, outN[i].weight,outN[i].bias  );
+
+  }
+
+
 }
 
 void GradientsFromPoolingLast(struct PoolC2 *pool2, struct ALLFM2 *feat2)
