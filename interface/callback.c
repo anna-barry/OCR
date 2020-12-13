@@ -17,79 +17,66 @@
 
 void on_open_image (GtkWidget* widget, gpointer user_data)
 {
-	GtkWidget *image = GTK_WIDGET (user_data);
-	GtkWidget *toplevel = gtk_widget_get_toplevel (image);
-	GtkFileFilter *filter = gtk_file_filter_new ();
-	GtkWidget *dialog = gtk_file_chooser_dialog_new (("Open image"),
-	                                                 GTK_WINDOW (toplevel),
-	                                                 GTK_FILE_CHOOSER_ACTION_OPEN,
-	                                                 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-	                                                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-	                                                 NULL); //choose file manually from a dialog box
+  GtkWidget *image = GTK_WIDGET (user_data);
+  GtkWidget *toplevel = gtk_widget_get_toplevel (image);
+  GtkFileFilter *filter = gtk_file_filter_new ();
+  GtkWidget *dialog = gtk_file_chooser_dialog_new (("Open image"),
+						   GTK_WINDOW (toplevel),
+						   GTK_FILE_CHOOSER_ACTION_OPEN,
+						   GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+						   GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+						   NULL); //choose file manually from a dialog box
 
-	gtk_file_filter_add_pixbuf_formats (filter);
-	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),
-	                             filter);
+  gtk_file_filter_add_pixbuf_formats (filter);
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),
+			       filter);
 
-	switch (gtk_dialog_run (GTK_DIALOG (dialog)))
-	{
-		case GTK_RESPONSE_ACCEPT:
-		  {
-		    gchar *filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-		    char *extention = ".bmp";
-		    char *extentionn = ".BMP";
-		    unsigned long j = 0;
-		    unsigned res = 0;
-		    //compare if is a .bmp or .BMP
-		    for(unsigned long i = strlen(filename)-4; i < strlen(filename); i++)
-		      {
-			if((extention[j] == filename[i])||(extentionn[j] == filename[i]))
-			  res += 1;
-			j++;
-		      }
-		    if(res == 4)
-		      {
-			GdkPixbuf *pixbuf; 
-			pixbuf = gdk_pixbuf_new_from_file (filename , NULL);
+  switch (gtk_dialog_run (GTK_DIALOG (dialog)))
+    {
+    case GTK_RESPONSE_ACCEPT:
+      {
+	gchar *filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+	char *extention = ".bmp";
+	char *extentionn = ".BMP";
+	unsigned long j = 0;
+	unsigned res = 0;
+	//compare if is a .bmp or .BMP
+	for(unsigned long i = strlen(filename)-4; i < strlen(filename); i++)
+	  {
+	    if((extention[j] == filename[i])||(extentionn[j] == filename[i]))
+	      res += 1;
+	    j++;
+	  }
+	if(res == 4)
+	  {
+	    GdkPixbuf *pixbuf; 
+	    pixbuf = gdk_pixbuf_new_from_file (filename , NULL);
 			
-			if(pixbuf.get_width() < window.get_allocated_width() || pixbuf.get_height() < window.get_allocated_height())
-			  {
-			    GdkPixbuf *pixbuf_mini = NULL; 
+			  
+	    GdkPixbuf *pixbuf_mini = NULL; 
   
-			    pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
-								   gdk_pixbuf_get_width (pixbuf) / 3 , 
-								   gdk_pixbuf_get_height (pixbuf) / 3, 
-								   GDK_INTERP_NEAREST); 
+	    pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
+						   gdk_pixbuf_get_width (pixbuf) /2  , 
+						   gdk_pixbuf_get_height (pixbuf) /2 , 
+						   GDK_INTERP_NEAREST); 
   
-			    gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini);
-			  }
-
-			else
-			  {
-			    GdkPixbuf *pixbuf_mini = NULL; 
-  
-			    pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
-								   gdk_pixbuf_get_width (pixbuf) /2, 
-								   gdk_pixbuf_get_height (pixbuf) / 2, 
-								   GDK_INTERP_NEAREST); 
-  
-			    gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini);
-			  }
+	    gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini);
+			  
 	     
 		     
-		      }
-		    else
-		      {
-			cd_Errorpage(widget, user_data); //error page
-		      }
+	  }
+	else
+	  {
+	    cd_Errorpage(widget, user_data); //error page
+	  }
 			
-		  break;
-		}
-	default:
-		    break;
-		}
-		gtk_widget_destroy (dialog);
-	}
+	break;
+      }
+    default:
+      break;
+    }
+  gtk_widget_destroy (dialog);
+}
 
 
 //-------------------------------------------------------OPEN OCR FILE------------------------------------------------------------------------
