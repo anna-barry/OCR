@@ -1,3 +1,4 @@
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include "callback.h"
 #include "document.h"
 #include "string.h"
@@ -9,7 +10,6 @@
 // like save or open and different pages
 
 #define DEFAULT_FILE "texteOCR"
-
 
 //---------------------------------------------------------OPEN IMAGE-------------------------------------------------------------------------
 
@@ -49,7 +49,10 @@ void on_open_image (GtkWidget* widget, gpointer user_data)
 	  }
 	if(res == 4)
 	  {
-	    GdkPixbuf *pixbuf; 
+	    //lancer la fonction OCR(filename)
+	    GdkPixbuf *pixbuf;
+
+	    //resize the image with a pixbuf to see it on the window
 	    pixbuf = gdk_pixbuf_new_from_file (filename , NULL);
 			
 			  
@@ -60,7 +63,7 @@ void on_open_image (GtkWidget* widget, gpointer user_data)
 						   gdk_pixbuf_get_height (pixbuf) /2 , 
 						   GDK_INTERP_NEAREST); 
   
-	    gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini);
+	    gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image 
 			  
 	     
 		     
