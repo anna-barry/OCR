@@ -7,9 +7,9 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image
 
 all: testrebuilt
 
-testrebuilt: ../../Tools/help4display.o ../../Tools/pixel_operations.o testrebuilt.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../../segmentation/rlsa.o ../../segmentation/segmentationXY.o ../rebuilt.o
+testrebuilt: ../../Tools/help4display.o ../../Tools/pixel_operations.o testrebuilt.o ../../Tools/matrix.o ../../Tools/tree.o ../../pré-traitement/binarisation/binarisation.o ../../segmentation/rlsa.o ../rebuilt.o #../../segmentation/segmentationXY.o
 
-testrebuilt/.o:help4display.h pixel_operations.h matrix.h binarisation.h rlsa.h segmentationXY.h rebuilt.h
+testrebuilt/.o:help4display.h pixel_operations.h matrix.h binarisation.h rlsa.h rebuilt.h #segmentationXY.h
 
 clean:
 	${RM} *.o

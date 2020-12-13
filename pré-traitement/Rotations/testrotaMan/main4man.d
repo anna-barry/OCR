@@ -1,4 +1,4 @@
-testrebuilt.o: testrebuilt.c /usr/local/include/SDL/SDL.h \
+main4man: main4man.c /usr/local/include/SDL/SDL.h \
   /usr/local/include/SDL/SDL_main.h /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
   /usr/local/include/SDL/SDL_platform.h \
@@ -17,10 +17,5 @@ testrebuilt.o: testrebuilt.c /usr/local/include/SDL/SDL.h \
   /usr/local/include/SDL/SDL_quit.h /usr/local/include/SDL/SDL_loadso.h \
   /usr/local/include/SDL/SDL_timer.h \
   /usr/local/include/SDL/SDL_version.h \
-  /usr/local/include/SDL/SDL_image.h ../../Tools/help4display.h \
-  ../../Tools/pixel_operations.h ../../Tools/matrix.h ../../Tools/tree.h \
-  ../../pré-traitement/binarisation/binarisation.h \
-  ../../segmentation/rlsa.h ../../segmentation/../Tools/matrix.h \
-  ../../segmentation/segmentationXY.h ../../segmentation/../Tools/tree.h \
-  ../../segmentation/../pré-traitement/binarisation/binarisation.h \
-  ../rebuilt.h
+  /usr/local/include/SDL/SDL_image.h ../../../Tools/pixel_operations.h \
+  ../../../Tools/image_operations.h ../rotationMAN.h
