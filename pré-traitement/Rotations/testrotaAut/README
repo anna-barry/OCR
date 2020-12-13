@@ -1,0 +1,10 @@
+To compile just type :
+    make
+To execute just type (the results are in the curent repostery):
+    ./testresize
+To save your tests just type :
+    make save
+To clean te repostery with keeping your tests just type :
+    make clean
+To clean all and supress all tests just type :
+    make clean_all

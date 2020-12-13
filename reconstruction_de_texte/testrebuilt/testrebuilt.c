@@ -6,8 +6,8 @@
 #include "../../Tools/matrix.h"
 #include "../../Tools/tree.h"
 #include "../../pré-traitement/binarisation/binarisation.h"
-#include "../../segmentation/rlsa.h"
-#include "../../segmentation/segmentationXY.h"
+//#include "../../segmentation/rlsa.h"
+//#include "../../segmentation/segmentationXY.h"
 #include "../rebuilt.h"
 
 int main()
