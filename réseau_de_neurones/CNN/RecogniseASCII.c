@@ -1598,7 +1598,7 @@ struct PoolC2 *poolC2_45;
 
   //  printf("All output [ok] \n");
 
-    printf("all structures are done and are up and working \n");
+    //printf("all structures are done and are up and working \n");
 
     //___________________________________________________________________________________
     //Getting input matrix
@@ -1611,12 +1611,11 @@ struct PoolC2 *poolC2_45;
     {
 
     struct sendback imp = GetRandomSet();
-
-    //SDL_Surface* img = load_image2(imp.path, imp2.path);
+    res=imp.ASCII;
 
     if (SDL_LoadBMP(imp.path))
     {
-    SDL_Surface* img = load_image(imp.path);
+    SDL_Surface* img = SDL_LoadBMP(imp.path);
     Matrix matrice1 = surface_to_matrix_grayscale(img);
 
 
@@ -1626,7 +1625,7 @@ struct PoolC2 *poolC2_45;
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
     SDL_FreeSurface(img);
 
-    if(i==0)
+    if(i==NB_ITERATION-1)
     {
       input=M;
     }
@@ -1658,8 +1657,7 @@ struct PoolC2 *poolC2_45;
         FullyConnectedLayer1(flatterned1, outin);
 
         // 9) Fully connected output layer
-        //struct resultsfromoutput output=GetOutPut( outin);
-        double resASCII= imp.ASCII;
+        struct resultsfromoutput output=GetOutPut( outin);
         int righti=imp.ASCII;
         if (righti<58) {
           righti-=48;
@@ -1669,14 +1667,14 @@ struct PoolC2 *poolC2_45;
           righti-=97;
         }
 
-        //_____________________________________________________________________________
 
-        //BACKPROPAGATION
 
         //_____________________________________________________________________________
         // BackPropagation
         //1) OutPut
-
+        if (i==0) {
+          res=(int)output.ASCII;
+        }
         //double cross= CrossEntropy(outin,righti);
 
         BackforOutput(outin, righti);
@@ -1696,9 +1694,6 @@ struct PoolC2 *poolC2_45;
 
         freeMatrix1(input);
         freeMatrix1(matrice1);
-        if (i==0) {
-          res=resASCII;
-        }
       }
 
         }
