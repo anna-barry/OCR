@@ -17,5 +17,7 @@ Unfortunately, for now I haven't found a way to register every paragraph/line/wo
 
 However, it saves the text in the "textOCR" file, only with a, spaces and going to the next line, looking at what's printed we can recognize the text's shape.
 
+Then see that the file was created, if you want to test with another picture, add a picture.bmp in this file and name it lorem.bmp, enter "make clean" and enter the two command upon.
+
 AUTHOR:
 marine Thunet
