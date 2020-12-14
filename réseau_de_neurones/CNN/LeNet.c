@@ -213,8 +213,7 @@ void ReluActiv1(struct ALLFM1 *cfm1)
 void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
 {
 
-  //printf("Poooling 1 _____________________________________________________________________________________\n" );
-    //printf("Pooling 1 \n");
+
     struct ALLFM1 *currFeatureMap=NULL;
     currFeatureMap=cfm1;
 
@@ -358,7 +357,7 @@ struct PoolC2 *init_pool(size_t n)
 
         while (tmp && tmp->next)
         {
-            printf("here?\n");
+
             tmp=tmp->next;
         }
         struct PoolC2 *tmp2;
@@ -410,10 +409,7 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 
             }
         }
-        printf("Current Matrix is \n");
-        print_Matrix(*(currFeatureMap->m));
-        printf("After Pooling layer \n ");
-        print_Matrix(*(currPool->m));
+
         currFeatureMap=currFeatureMap->next;
         currPool=currPool->next;
 
@@ -512,10 +508,6 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
         indexForFlat+=1;
     }
 
-   /* for(int w=0;w<NB_FILTERS2 * NB_FILTERS1;w++)
-    {
-        printf("value n°%d is %f \n",w,CurNeu[w].input);
-    }*/
 
 }
 
@@ -545,7 +537,7 @@ double GetInputFromFC(struct FL *flatterned)
         }
 
     }
-    //printf("res from fc is %f \n",res );
+
     return max(res,0);
 }
 
@@ -563,7 +555,7 @@ void FullyConnectedLayer1(struct FL *flatterned, struct CL_out *outin)
     {
         double getres=GetInputFromFC(flatterned);
         CurNeu[i].input= getres;
-        //printf("input from flattern to fully connected layer after getInputFromFC %f \n", getres);
+
     }
 }
 
@@ -609,7 +601,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
             maxB=outN[i].bias;
         }
         outN[i].input=exp((outN[i].input*outN[i].weight)+outN[i].bias)/sum;
-        //printf("current is %f for %d \n", outN[i].input,i);
+
     }
 
     // Digits
@@ -630,7 +622,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
             maxA+=65;
         }
     }
-    //printf("maxA is %f \n",maxA);
+
     struct resultsfromoutput res={maxA,maxI,maxiO,maxW,maxB};
     return res;
 }
@@ -1052,7 +1044,7 @@ struct sendback GetRandomSet()
     //res.path=Limages[random];
     strcpy(res.path, Limages[random]);
     res.ASCII=Llabels[random];
-  //  printf("path is %s and ASCII is %d \n",res.path,res.ASCII);
+
     return res;
 }
 
@@ -1082,8 +1074,7 @@ double SoftLayerBack(struct CL_out *clout, int BinIndicaor, int i)
 
   if(BinIndicaor==i)
   {
-  //  printf("____________________________________");
-  //  printf("input %f for %d \n",outN[BinIndicaor].input,i);
+
     if ( outN[BinIndicaor].input ==0 ) {
       return 0;
     }
@@ -1111,7 +1102,7 @@ void BackforOutput(struct CL_out *clout, int BinIndicaor)
 
       sum+=outN[i].input;
   }
-  //printf("sum is %f \n",sum );
+
 
   double BinIndicaorInput = outN[BinIndicaor].input;
   double upDateNewBias = RAND_DOUBLE;

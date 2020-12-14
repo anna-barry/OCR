@@ -7,6 +7,8 @@
 #include "../Tools/image_operations.h"
 #include "../Tools/matrix.h"
 #include "../Tools/tree.h"
+#include "../pré-traitement/Rotations/rotationAUTO.h"
+#include "../pré-traitement/Rotations/rotationMAN.h"
 #include "../pré-traitement/binarisation/binarisation.h"
 #include "../segmentation/rlsa.h"
 #include "../segmentation/testxycut/segmentationXYtest.h"
@@ -17,6 +19,9 @@ void MakeOCR (char *txt, char *image)
   init_sdl();
 
   img = SDL_LoadBMP(image);
+
+  SDL_Surface* tmp;
+  ManualRotation(img , getSkewAngle(img , tmp));
     
   Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
     
@@ -28,6 +33,7 @@ void MakeOCR (char *txt, char *image)
     
 
   SDL_FreeSurface(img);
+  SDL_FreeSurface(tmp);
 
 }
 
