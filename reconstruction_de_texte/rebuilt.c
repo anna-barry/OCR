@@ -31,7 +31,7 @@ char *textBuider(Tree *tree, char *text){
 
   */
   if (tree->key){
-    printf("1\n");
+    //printf("1\n");
     if (tree->key==-4){//racine
       if (tree->child) {
         Tree *child = tree->child;

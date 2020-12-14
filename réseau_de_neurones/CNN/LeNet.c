@@ -23,6 +23,8 @@
  #include "../../Tools/matrix.h"
 #include <err.h>
 #include <string.h>
+#include <time.h>
+
 //___________________________________________________________________________
 //
 ////1) Model initialization
@@ -62,7 +64,7 @@ struct sendback
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 20
+#define NB_ITERATION 1200
 
 //__________________________________________________________________________________
 //
@@ -165,6 +167,9 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
 
     struct ALLFM1 *currFeatureMap=NULL;
     currFeatureMap=cfm1;
+    printf("________________________ Convolution1 _____________________________________ \n");
+    //printf("input is: \n" );
+    //print_Matrix(input);
 
     for(int i=0; i<NB_FILTERS1; i++)
     {
@@ -188,6 +193,11 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
                 }
             }
         }
+        //printf("Filter is \n" );
+        //print_Matrix(*(currfilter->m));
+        //printf("output is \n" );
+        //print_Matrix(*(currFeatureMap->m));
+
         currfilter=currfilter->next;
         currFeatureMap=currFeatureMap->next;
     }
@@ -210,6 +220,8 @@ void ReluActiv1(struct ALLFM1 *cfm1)
             }
         }
     }*/
+    //printf("Relu 1 _________________________________________________________\n" );
+    //printf("relu n1 works? \n");
     struct ALLFM1 *currFeatureMap=NULL;
     currFeatureMap=cfm1;
 
@@ -225,6 +237,8 @@ void ReluActiv1(struct ALLFM1 *cfm1)
                 indexConv[y*DIM_C1+x]=max(0, indexConv[y*DIM_C1+x]);
              }
          }
+
+         //print_Matrix(*(currFeatureMap->m));
         currFeatureMap=currFeatureMap->next;
     }
 }
@@ -235,6 +249,8 @@ void ReluActiv1(struct ALLFM1 *cfm1)
 void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
 {
 
+  //printf("Poooling 1 _____________________________________________________________________________________\n" );
+    //printf("Pooling 1 \n");
     struct ALLFM1 *currFeatureMap=NULL;
     currFeatureMap=cfm1;
 
@@ -267,7 +283,7 @@ void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
             i4pool+=1;
             }
             }
-
+            //print_Matrix(*(currPool->m));
             currFeatureMap=currFeatureMap->next;
             currPool=currPool->next;
     }
@@ -282,17 +298,23 @@ void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
 void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 *cfm2)
 {
 
+    //printf("CONVOLUTION 2______________________________________________________________ \n" );
+
     int indexForTest=0;
     struct PoolC1 *curPool=NULL;
     curPool= pc1;
+
     struct ALLFilters2 *currfilter =NULL;
-        currfilter=A2;
+    currfilter=A2;
+
     struct ALLFM2 *currFeatureMap=NULL;
     currFeatureMap=cfm2;
 
     for(int i0=0; i0<NB_FILTERS1;i0++)
     {
         currfilter=A2;
+        //printf("Input \n" );
+        //print_Matrix(*(curPool->m));
 
          for(int i=0; i<NB_FILTERS2; i++)
     {
@@ -324,6 +346,13 @@ void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 
             }
         }
         indexForTest+=1;
+
+        //printf("Filter is \n" );
+        //print_Matrix(*(currfilter->m));
+        //printf("input is Pooling layer 1: \n" );
+        //print_Matrix(*(curPool->m));
+        //printf("output is \n" );
+        //print_Matrix(*(currFeatureMap->m));
 
         currfilter=currfilter->next;
         currFeatureMap=currFeatureMap->next;
@@ -398,6 +427,8 @@ struct PoolC2 *init_pool(size_t n)
 // 4) Pooling after C2's activation
 void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 {
+    //printf("Poooling 2 _____________________________________________________________________________________\n" );
+    //printf("In pooling 2 \n");
     struct ALLFM2 *currFeatureMap=NULL;
     currFeatureMap=cfm2;
 
@@ -427,6 +458,7 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 
             }
         }
+        //print_Matrix(*(currPool->m));
         currFeatureMap=currFeatureMap->next;
         currPool=currPool->next;
 
@@ -436,25 +468,50 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 
 //____________________________________________________________________________________
 // 8) Flattern Layer + First Fully Connected Layer
-struct FL *init_fl(size_t n)
+struct FL *init_fl(int n)
 {
     struct FL *new;
-    new= malloc (sizeof(struct FL));
+    new= malloc (sizeof ( struct FL ));
     struct Neuron *newN;
-    newN = calloc(n,sizeof(double));
-    for(int i=0;i<(int)n;i++)
+    newN = malloc(n * sizeof(struct Neuron));
+    for(int i=0;i<n;i++)
     {
         double random1=RAND_DOUBLE;
         double random2=RAND_DOUBLE;
+        //printf("both randoms are %f and %f for flattern layer for n°%d \n",random1, random2,i);
         newN[i].input=0;
         newN[i].weight=random1;
         newN[i].bias=random2;
     }
     new->n = newN;
-
     return new;
-
 }
+
+//Init Fully Connected Layer
+struct CL_out *init_out(int n)
+{
+
+    struct CL_out *newCL;
+    newCL= malloc(sizeof (struct CL_out));
+    struct Neuron *newN2;
+    newN2 = malloc(n * sizeof(struct Neuron));
+    for(int i=0;i<(int)n;i++)
+    {
+        double random1=RAND_DOUBLE;
+        double random2=RAND_DOUBLE;
+        //printf("both randoms are %f and %f for output layer \n",random1, random2);
+        newN2[i].input=0;
+        newN2[i].weight=random1;
+        newN2[i].bias=random2;
+    }
+    newCL->n = newN2;
+
+    return newCL;
+}
+
+
+
+//Works
 void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 {
 
@@ -463,22 +520,47 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 
     struct Neuron *CurNeu=NULL;
     CurNeu= res->n;
+    //printf("before loop Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
+
+    int indexForFlat=0;
 
     for (int i = 0; i < NB_FILTERS2 * NB_FILTERS1 ; i++)
     {
         double *indexPool= NULL;
         indexPool=(currPool->m->matrix);
 
+        //print_Matrix(*(currPool->m));
+
+        //printf("in for i Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
         for(int j=0; j< DIM_POOL2; j++)
         {
             for(int k=0; k< DIM_POOL2;k++ )
             {
-                CurNeu[i].input= indexPool[j*DIM_POOL2+k];
-               // printf("Current input %f \n",CurNeu[i].input);
+              //printf("in double for Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
+                CurNeu[indexForFlat].input= indexPool[(j*DIM_POOL2)+k];
+
+                //printf("Current input for fully connected is %f with weight=%f and bias=%f for n°%d \n",CurNeu[indexForFlat].input,CurNeu[indexForFlat].weight,CurNeu[indexForFlat].bias, indexForFlat);
+                indexForFlat+=1;
 
             }
         }
         currPool=currPool->next;
+    }
+
+    indexForFlat=0;
+    double sum=0;
+    for (int i = 0; i < (NB_FILTERS2 * NB_FILTERS1*DIM_POOL2*DIM_POOL2) ; i++)
+    {
+        sum=sum+exp(CurNeu[indexForFlat].input);
+        indexForFlat+=1;
+    }
+
+    indexForFlat=0;
+
+    for (int i = 0; i < (NB_FILTERS2 * NB_FILTERS1*DIM_POOL2*DIM_POOL2) ; i++)
+    {
+        CurNeu[indexForFlat].input= exp(CurNeu[indexForFlat].input)/sum;
+        indexForFlat+=1;
     }
 
    /* for(int w=0;w<NB_FILTERS2 * NB_FILTERS1;w++)
@@ -493,50 +575,47 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 
 double GetInputFromFC(struct FL *flatterned)
 {
+
     double res=0;
     struct Neuron *CurNeu=NULL;
     CurNeu= flatterned->n;
 
+
     for(int i=0; i<NB_FILTERS1*NB_FILTERS2*DIM_POOL2*DIM_POOL2; i++)
     {
         //Dropout -> not all features are seen for better performance
-        double drop=RAND_DOUBLE;
-        if(drop>0.3)
+
+        double drop= ( (double)rand()/(double)RAND_MAX );
+        //printf("probability is %f \n",drop );
+        if(drop>0.4)
         {
-            res+=(CurNeu[i].input*CurNeu[i].weight) + CurNeu[i].bias;
+
+              //printf(" the input is %f for n°%d with weights =%f and bias=%f \n", (CurNeu[i].input*CurNeu[i].weight + CurNeu[i].bias),i,CurNeu[i].weight,CurNeu[i].bias);
+              //printf("res is %f for now \n",res );
+            res+=max(0,(CurNeu[i].input*CurNeu[i].weight + CurNeu[i].bias));
+
         }
+
     }
-
-    return res;
-}
-//Init Fully Connected Layer
-struct CL_out *init_out(size_t n)
-{
-
-    struct CL_out *new;
-    new= malloc (sizeof(struct FL));
-    struct Neuron *newN;
-    newN = calloc(n,sizeof(double));
-    for(int i=0;i<(int)n;i++)
-    {
-        double random1=RAND_DOUBLE;
-        double random2=RAND_DOUBLE;
-        newN[i].input=0;
-        newN[i].weight=random1;
-        newN[i].bias=random2;
-    }
-    new->n = newN;
-
-    return new;
+    //printf("res from fc is %f \n",res );
+    return max(res,0);
 }
 
 
-void FullyConnectedLayer1(struct FL *flatterned, struct Neuron *CurNeu)
+
+void FullyConnectedLayer1(struct FL *flatterned, struct CL_out *outin)
 {
+  struct CL_out *IndexOut=NULL;
+  IndexOut=outin;
+
+  struct Neuron *CurNeu=NULL;
+  CurNeu=IndexOut->n;
+
     for(int i=0; i<NB_Char;i++)
     {
         double getres=GetInputFromFC(flatterned);
         CurNeu[i].input= getres;
+        //printf("input from flattern to fully connected layer after getInputFromFC %f \n", getres);
     }
 }
 
@@ -555,34 +634,38 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
     struct CL_out *IndexOut=NULL;
     IndexOut=outin;
 
+    struct Neuron *outN=NULL;
+    outN=IndexOut->n;
+
 
     for (int i=0;i<(NB_Char);i++)
     {
-        struct Neuron *outN=NULL;
-        outN=IndexOut->n;
-
-        sum=sum+exp((outN[i].input * outN[i].weight) + outN[i].bias);
+        //printf("the input is %f for n°%d \n",outN[i].input,i );
+        //printf("exp of all this is %f with weight=%f and bias=%f for %i \n", exp(outN[i].input * outN[i].weight + outN[i].bias), outN[i].weight, outN[i].bias,i);
+        sum=sum+exp(max(0,outN[i].input * outN[i].weight + outN[i].bias));
     }
 
-    struct Neuron *outN2=NULL;
-    outN2=IndexOut->n;
+    //printf("sum is %f \n",sum );
 
-    double maxiO=exp((outN2[0].input*outN2[0].weight)+outN2[0].bias)/sum;
+    //outN=IndexOut->n;
+
+    double maxiO=exp((outN[0].input*outN[0].weight)+outN[0].bias)/sum;
     double maxA=0;
     double maxI=0;
-    double maxW=outN2[0].weight;
-    double maxB=outN2[0].bias;
+    double maxW=outN[0].weight;
+    double maxB=outN[0].bias;
     for(int i=1; i<NB_Char; i++)
     {
-        double curexp=exp((outN2[i].input*outN2[i].weight)+outN2[i].bias)/sum;
+        double curexp=exp((outN[i].input*outN[i].weight)+outN[i].bias)/sum;
         if (curexp>maxiO)
         {
             maxiO=curexp;
             maxA=i;
             maxI=i;
-            maxW=outN2[i].weight;
-            maxB=outN2[i].bias;
+            maxW=outN[i].weight;
+            maxB=outN[i].bias;
         }
+        //printf("current is %f \n", curexp);
     }
 
     // Digits
@@ -636,6 +719,11 @@ void free_Matrix2(Matrix m)
 
     }
 
+}
+void freeMatrix1(Matrix M){
+  free(M.matrix);
+  M.width = 0;
+  M.height = 0;
 }
 void free_FlatternedLayer(struct FL *flatterned1)
 {
@@ -804,7 +892,7 @@ struct sendback GetRandomSet()
                       "images/Arial_Unicode.ttf/T_56.bmp",  "images/Arial_Unicode.ttf/u_31.bmp",
                   "images/Arial_Unicode.ttf/U_57.bmp",  "images/Arial_Unicode.ttf/v_32.bmp",
                    "images/Arial_Unicode.ttf/V_58.bmp",  "images/Arial_Unicode.ttf/w_33.bmp",
-                    "images/Arial_Unicode.ttf/W_69.bmp", "images/Arial_Unicode.ttf/x_34.bmp",
+                    "images/Arial_Unicode.ttf/W_59.bmp", "images/Arial_Unicode.ttf/x_34.bmp",
                     "images/Arial_Unicode.ttf/X_60.bmp",  "images/Arial_Unicode.ttf/y_35.bmp",
                       "images/Arial_Unicode.ttf/Y_61.bmp",  "images/Arial_Unicode.ttf/z_36.bmp",
                         "images/Arial_Unicode.ttf/Z_62.bmp", "images/Avenir.ttc/0_1.bmp",
@@ -835,7 +923,7 @@ struct sendback GetRandomSet()
                                       "images/Avenir.ttc/T_56.bmp",  "images/Avenir.ttc/u_31.bmp",
                                        "images/Avenir.ttc/U_57.bmp",  "images/Avenir.ttc/v_32.bmp",
                                         "images/Avenir.ttc/V_58.bmp",  "images/Avenir.ttc/w_33.bmp",
-                                         "images/Avenir.ttc/W_69.bmp", "images/Avenir.ttc/x_34.bmp",
+                                         "images/Avenir.ttc/W_59.bmp", "images/Avenir.ttc/x_34.bmp",
                                          "images/Avenir.ttc/X_60.bmp",  "images/Avenir.ttc/y_35.bmp",
                                            "images/Avenir.ttc/Y_61.bmp",  "images/Avenir.ttc/z_36.bmp",
                                             "images/Avenir.ttc/Z_62.bmp",  "images/Courier.dfont/0_1.bmp",
@@ -866,7 +954,7 @@ struct sendback GetRandomSet()
                                        "images/Courier.dfont/T_56.bmp",  "images/Courier.dfont/u_31.bmp",
                                         "images/Courier.dfont/U_57.bmp",  "images/Courier.dfont/v_32.bmp",
                                          "images/Courier.dfont/V_58.bmp",  "images/Courier.dfont/w_33.bmp",
-                                         "images/Courier.dfont/W_69.bmp", "images/Courier.dfont/x_34.bmp",
+                                         "images/Courier.dfont/W_59.bmp", "images/Courier.dfont/x_34.bmp",
                                          "images/Courier.dfont/X_60.bmp",  "images/Courier.dfont/y_35.bmp",
                                            "images/Courier.dfont/Y_61.bmp",  "images/Courier.dfont/z_36.bmp",
                                             "images/Courier.dfont/Z_62.bmp",  "images/Geneva.dfont/0_1.bmp",
@@ -897,7 +985,7 @@ struct sendback GetRandomSet()
                                        "images/Geneva.dfont/T_56.bmp",  "images/Geneva.dfont/u_31.bmp",
                                        "images/Geneva.dfont/U_57.bmp",  "images/Geneva.dfont/v_32.bmp",
                                          "images/Geneva.dfont/V_58.bmp",  "images/Geneva.dfont/w_33.bmp",
-                                         "images/Geneva.dfont/W_69.bmp", "images/Geneva.dfont/x_34.bmp",
+                                         "images/Geneva.dfont/W_59.bmp", "images/Geneva.dfont/x_34.bmp",
                                          "images/Geneva.dfont/X_60.bmp",  "images/Geneva.dfont/y_35.bmp",
                                          "images/Geneva.dfont/Y_61.bmp",  "images/Geneva.dfont/z_36.bmp",
                                          "images/Geneva.dfont/Z_62.bmp",  "images/Helvetica.ttc/0_1.bmp",
@@ -928,7 +1016,7 @@ struct sendback GetRandomSet()
                                                                 "images/Helvetica.ttc/T_56.bmp",  "images/Helvetica.ttc/u_31.bmp",
                                                                   "images/Helvetica.ttc/U_57.bmp",  "images/Helvetica.ttc/v_32.bmp",
                                                                     "images/Helvetica.ttc/V_58.bmp",  "images/Helvetica.ttc/w_33.bmp",
-                                                               "images/Helvetica.ttc/W_69.bmp", "images/Helvetica.ttc/x_34.bmp",
+                                                               "images/Helvetica.ttc/W_59.bmp", "images/Helvetica.ttc/x_34.bmp",
                                                                 "images/Helvetica.ttc/X_60.bmp",  "images/Helvetica.ttc/y_35.bmp",
                                                                 "images/Helvetica.ttc/Y_61.bmp",  "images/Helvetica.ttc/z_36.bmp",
                                                                 "images/Helvetica.ttc/Z_62.bmp",  "images/LucidaGrande.ttc/0_1.bmp",
@@ -959,7 +1047,7 @@ struct sendback GetRandomSet()
                                                                             "images/LucidaGrande.ttc/T_56.bmp",  "images/LucidaGrande.ttc/u_31.bmp",
                                                                              "images/LucidaGrande.ttc/U_57.bmp",  "images/LucidaGrande.ttc/v_32.bmp",
                                                                                "images/LucidaGrande.ttc/V_58.bmp",  "images/LucidaGrande.ttc/w_33.bmp",
-                                                                                 "images/LucidaGrande.ttc/W_69.bmp", "images/LucidaGrande.ttc/x_34.bmp",
+                                                                                 "images/LucidaGrande.ttc/W_59.bmp", "images/LucidaGrande.ttc/x_34.bmp",
                                                                                  "images/LucidaGrande.ttc/X_60.bmp",  "images/LucidaGrande.ttc/y_35.bmp",
                                                                                  "images/LucidaGrande.ttc/Y_61.bmp",  "images/LucidaGrande.ttc/z_36.bmp",
                                                                                  "images/LucidaGrande.ttc/Z_62.bmp",  "images/Times.ttc/0_1.bmp",
@@ -990,13 +1078,30 @@ struct sendback GetRandomSet()
                                                                                            "images/Times.ttc/T_56.bmp",  "images/Times.ttc/u_31.bmp",
                                                                                             "images/Times.ttc/U_57.bmp",  "images/Times.ttc/v_32.bmp",
                                                                                               "images/Times.ttc/V_58.bmp",  "images/Times.ttc/w_33.bmp",
-                                                                                                "images/Times.ttc/W_69.bmp", "images/Times.ttc/x_34.bmp",
+                                                                                                "images/Times.ttc/W_59.bmp", "images/Times.ttc/x_34.bmp",
                                                                                                 "images/Times.ttc/X_60.bmp",  "images/Times.ttc/y_35.bmp",
                                                                                                  "images/Times.ttc/Y_61.bmp",  "images/Times.ttc/z_36.bmp",
                                                                                                  "images/Times.ttc/Z_62.bmp"};
 
 
-    int Llabels[]={48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90,48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90,48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90};
+    int Llabels[]={48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103,
+      71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81,
+      114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,51,52,53,
+      54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75,
+      108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86,
+      119, 87, 120, 88, 121, 89, 122, 90,48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69,
+      102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80,
+      113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,
+      51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74,
+       107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85,
+        118, 86, 119, 87, 120, 88, 121, 89, 122, 90,48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,
+        101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112,
+         80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,
+         51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102, 70, 103, 71, 104, 72, 105, 73, 106, 74, 107,
+          75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114, 82, 115, 83, 116, 84, 117, 85, 118, 86,
+           119, 87, 120, 88, 121, 89, 122, 90, 48,49,50,51,52,53,54,55,56,57,97,65,98,66,99,67,100,68,101,69, 102,
+        70, 103, 71, 104, 72, 105, 73, 106, 74, 107, 75, 108, 76, 109, 77, 110, 78, 111, 79, 112, 80, 113, 81, 114,
+         82, 115, 83, 116, 84, 117, 85, 118, 86, 119, 87, 120, 88, 121, 89, 122, 90};
 
     int random= RANDOM_RANGE(441);
     struct sendback res;
@@ -1010,17 +1115,17 @@ struct sendback GetRandomSet()
 
 
 //____________________________________ Back Propagation _______________________________
-/*double CrossEntropy(CL_out *clout, int BinIndicaor)
+double CrossEntropy(struct CL_out *clout, int BinIndicaor)
 {
     struct CL_out *IndexOut=NULL;
-    IndexOut=outin;
+    IndexOut=clout;
 
     struct Neuron *outN=NULL;
     outN=IndexOut->n;
 
     return -(log(exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias)));
 
-}*/
+}
 
 //Chain Rule derivation for output layers
 double SoftLayerBack(struct CL_out *clout, int BinIndicaor, int i)

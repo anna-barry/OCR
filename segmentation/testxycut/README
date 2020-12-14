@@ -7,6 +7,9 @@ Write the following instructions:
 make (enter)
 ./testxycut (enter)
 
+when finished: 
+make clean (enter)
+
 Then look at every new pictures that have appeared in this directory,
 The function being a group of recursive function, it only shows the last element that has been through the function, the last elements being the last paragraph, last line, last word and last letter of the text, it only shows the last elements.
 
