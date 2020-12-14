@@ -8,19 +8,14 @@ LDLIBS= `pkg-config --libs sdl` -lSDL_image -lm
 
 all:
 	make testrota
-	mkdir rsltTst
 
-save:
-	cp *.bmp ../testr/rsltTst
+testrota: ../../../Tools/pixel_operations.o testrota.o ../../../Tools/matrix.o ../../binarisation/binarisation.o ../rotationAUTO.o ../../../Tools/image_operations.o 
 
-testrota: ../../../Tools/pixel_operations.o testrota.o ../../../Tools/matrix.o ../../binarisation/binarisation.o ../rotationMAN.o ../../../Tools/image_operations.o #../rotationAUTO.o
-
-testrota/.o: pixel_operations.h matrix.h binarisation.h rotationMAN.h image_operations.h #rotationAUTO.h
+testrota/.o: pixel_operations.h matrix.h binarisation.h rotationAUTO.h image_operations.h
 
 trash:
 	${RM} *.o
 	${RM} *.d
-	#${RM} *.bmp
 	${RM} ../*.o
 	${RM} ../*.d
 	${RM} ../../../Tools/*.o
@@ -30,10 +25,4 @@ trash:
 	${RM} testrota
 
 clean:
-	#make save
 	make trash
-
-clean_all:
-	make trash
-	${RM} ../testresize/rsltTst/*.bmp
-	rmdir rsltTst

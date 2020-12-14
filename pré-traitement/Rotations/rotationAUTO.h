@@ -6,7 +6,9 @@
 #include <math.h>
 
 #include "../../Tools/pixel_operations.h"
+#include "../../Tools/image_operations.h"
 
-double getSkewAngle(SDL_Surface* image_surface);
+SDL_Surface* ManualRot(SDL_Surface* image_surface, double degrees);
+double getSkewAngle(SDL_Surface* image_surface, SDL_Surface* screen_surface);
 
 #endif
