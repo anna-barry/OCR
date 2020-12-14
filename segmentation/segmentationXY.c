@@ -6,9 +6,12 @@
 #include "../pré-traitement/binarisation/binarisation.h"
 #include "rlsa.h"
 #include "resizeMatrix.h"
+#include "../réseau_de_neurones/CNN/RecogniseASCII.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
+#include "../réseau_de_neurones/CNN/LeNet.h"
+#include <math.h>
 
 ////____________FROM RLSA TO XY-CUT______________________________
 
@@ -29,34 +32,22 @@
 
 ///________________________CUTTING WORDS AND LINES____________________
 ///__________________________XY-CUT_____________________________________
-void textToFile(char text[], char *str, int first)
+void textToFile(char text[], char *str)
 {
-    /*
-    description :
-    -on this function we recon that noises and spots were treated
-    -traces a black column if 1 pixel is in the column
-    -goes along each colum, it will help to detect easily
-    parameters :
-    char text[]= the text that has to be added to the text
-    char *str= the name of the file
-    int first= 1 if it is the beginingg of segmentation,
-                to replace the ancient text if already exists
-    dates/authors :
-    12/12
-    marine thunet and marie maturana
-    */
-    FILE* fichier = NULL;
+  FILE* fichier = NULL;
+  fichier = fopen(str, "a");
 
-    if (fichier == NULL && first==1)
+    if (fichier == NULL)
     {
+        fclose(fichier);
         fichier = fopen(str, "w");
+        fputs(text, fichier);
     }
     else
     {
-        fichier = fopen(str, "a");
+        fputs(text,fichier);
     }
-    fputs(text,fichier);
-    fclose(fichier), fichier = NULL;
+    fclose(fichier);
 }
 
 //column reading to cut in vertical//
@@ -234,7 +225,7 @@ void _trycut(Matrix M, int line, char *name)
                         //matrix of the word that was found
                         createseg=cutMatrix(reel,0,x,h_size,ix-x);
                         
-                        textToFile(" ",name,0);
+                        textToFile(" ",name);
 
                         //Tree *Child = newTree(0);
                         //AddChild(T, Child);
@@ -260,7 +251,7 @@ void _trycut(Matrix M, int line, char *name)
     
     else
     {
-        
+        int a;
         M=vertical(M);
                 //int letter=0;//the code og the letter to put in the tree then
         for (int ix=0; ix<w_size; ix++)
@@ -286,20 +277,10 @@ void _trycut(Matrix M, int line, char *name)
                         createseg=cutMatrix(reel,0,x,h_size,ix-x+1);
                         createseg=resizeMatrix(createseg,32);
                         
-                        textToFile("a",name,0);
-                        
-                        //____FINAL___________
-                        //intergrate the fonction when the
-                        //neural network is created
-    
-                        //for now that is how it works but useless,
-                        //we'll have to send the ascii code of the char
-                        //letter=ascii code;
-                    
-                        //T->key=97;
-                        //Tree *Child = newTree(97);
-                        //AddChild(T, Child); //will be the value of the char
-                        
+                        a=getASCII(createseg);
+                        char *c=(char) a;
+                        //char new= [char]a;
+                        textToFile(c,name);
                         
                         x=ix;
                         freeMatrix(createseg);
@@ -365,7 +346,8 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                 cutted++;
                 if (line==1)
                 {
-                    textToFile("\n",name,0);
+                    
+                    textToFile("\n",name);
                     
                     _trycut(og,1,name);
                 }
@@ -423,7 +405,7 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                 {
                     og2=cutMatrix(og,ybeg,0,y-ybeg,width);
                     
-                    textToFile("\n",name,0);
+                    textToFile("\n",name);
                     
                     _trycut(og2,1,name);
                     
@@ -501,10 +483,11 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                 {
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
+                
                     
                 horizontalcut(name,m,og,1,0);
                     
-                textToFile("\n\n",name,0);
+                textToFile("\n\n",name);
                 freeMatrix(s);
                 freeMatrix(m);
                 }
@@ -542,7 +525,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                     //Tree *Sibling = newTree(-3);
                     //AddSibling(T,Sibling);
                     verticalcut(name,rest,og1,line,0);
-                    textToFile("\n\n",name,0);
+                    textToFile("\n\n",name);
                     freeMatrix(rest);
                     freeMatrix(og1);
                 }
@@ -557,7 +540,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
 
 
 //________________begining_________________________//
-void beginSeg(Matrix M,char *txt)
+void beginSeg(Matrix M)
 {
     /*
     description :
@@ -570,12 +553,10 @@ void beginSeg(Matrix M,char *txt)
     marine thunet
     */
     
-    //char *txt = "textOCR";
-    //Tree *child = newTree(-3);
-    //AddChild(txt,child);
+    char *txt = "textOCR";
+    textToFile("",txt);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
-    textToFile("",txt, 1);
     horizontalcut(txt,q,M,0,0);
     
     freeMatrix(p);

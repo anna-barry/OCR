@@ -1,5 +1,5 @@
-../../pré-traitement/binarisation/binarisation.o: \
-  ../../pré-traitement/binarisation/binarisation.c \
+../segmentationXY.o: ../segmentationXY.c ../../Tools/matrix.h \
+  ../../Tools/tree.h ../../pré-traitement/binarisation/binarisation.h \
   /usr/local/include/SDL/SDL.h /usr/local/include/SDL/SDL_main.h \
   /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
@@ -19,8 +19,10 @@
   /usr/local/include/SDL/SDL_quit.h /usr/local/include/SDL/SDL_loadso.h \
   /usr/local/include/SDL/SDL_timer.h \
   /usr/local/include/SDL/SDL_version.h \
-  /usr/local/include/SDL/SDL_image.h \
-  ../../pré-traitement/binarisation/../../Tools/pixel_operations.h \
-  ../../pré-traitement/binarisation/../../Tools/matrix.h \
-  ../../pré-traitement/binarisation/../../Tools/image_operations.h \
-  ../../pré-traitement/binarisation/binarisation.h
+  /usr/local/include/SDL/SDL_image.h ../rlsa.h ../resizeMatrix.h \
+  ../../Tools/minifunc.h ../../réseau_de_neurones/CNN/RecogniseASCII.h \
+  ../../réseau_de_neurones/CNN/LeNet.h \
+  ../../réseau_de_neurones/CNN/../../Tools/matrix.h \
+  ../../réseau_de_neurones/CNN/../../Tools/pixel_operations.h \
+  ../../réseau_de_neurones/CNN/../../Tools/image_operations.h \
+  ../../réseau_de_neurones/CNN/../../pré-traitement/binarisation/binarisation.h

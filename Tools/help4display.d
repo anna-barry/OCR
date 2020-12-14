@@ -1,4 +1,4 @@
-train2.o: train2.c LeNet.h ../../Tools/matrix.h \
+../../Tools/help4display.o: ../../Tools/help4display.c \
   /usr/local/include/SDL/SDL.h /usr/local/include/SDL/SDL_main.h \
   /usr/local/include/SDL/SDL_stdinc.h \
   /usr/local/include/SDL/SDL_config.h \
@@ -18,6 +18,4 @@ train2.o: train2.c LeNet.h ../../Tools/matrix.h \
   /usr/local/include/SDL/SDL_quit.h /usr/local/include/SDL/SDL_loadso.h \
   /usr/local/include/SDL/SDL_timer.h \
   /usr/local/include/SDL/SDL_version.h \
-  /usr/local/include/SDL/SDL_image.h ../../Tools/pixel_operations.h \
-  ../../Tools/image_operations.h \
-  ../../pré-traitement/binarisation/binarisation.h
+  /usr/local/include/SDL/SDL_image.h ../../Tools/help4display.h
