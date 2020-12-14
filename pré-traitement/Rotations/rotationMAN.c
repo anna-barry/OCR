@@ -3,6 +3,7 @@
 //#undef ManualRotation
 //#undef update_surface
 #include "../../Tools/pixel_operations.h"
+#include "rotationMAN.h"
 #include <stdio.h>
 #include <math.h>
 
