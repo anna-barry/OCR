@@ -44,43 +44,24 @@ int main()
 
     init_sdl();
     
-    SDL_Surface* img = load_image("lorem.bmp");
+    SDL_Surface* img = load_image("loremipsum.bmp");
     
     Matrix f= surface_to_matrix_grayscale(img);
     
     //int seuil = otsu(img);
-
-<<<<<<< HEAD
-    image_surface = load_image("loremipsum.bmp");
-    screen_surface = display_image(image_surface);
-    Matrix m= surface_to_matrix_grayscale(image_surface);
-    printf("matrix to grayscale [ok] \n");
-    matToImg(smooth(m),"smooth");
-    update_surface(screen_surface, image_surface);
-    printf("update surface1 [ok] \n ");
-    matToImg(contrast(m),"contrast");
-    update_surface(screen_surface, image_surface);
-    printf("update surface2 [ok] \n ");
-    SDL_FreeSurface(image_surface);
-    SDL_FreeSurface(screen_surface);
-    printf("free all [ok] \n");
-=======
     //Matrix f =  matrix_grayscale_to_binar(m, seuil) ;
-
     
     matToImgGRAY(f,"original");
-    
-    Matrix c=contrast(f);
-    matToImgGRAY(c,"contrast");
     
     Matrix s=smooth(f);
     matToImgGRAY(s,"smooth");
     
+    Matrix c=contrast(f);
+    matToImgGRAY(c,"contrast");
+    
     
     /*Matrix c=contrast(matricef);
     matToImg(c,"contrast");*/
-
->>>>>>> dbd8b9380455a3f2de82586c9a7c9bf7a4651d25
     return 0;
 
 

@@ -124,7 +124,7 @@ int main()
     A1_5th->next=A1_6th;
     A1_6th->next=NULL;
 
-    printf("All filters1 loaded [ok] \n" );
+    //printf("All filters1 loaded [ok] \n" );
 
     //______________________________________________________________________________________
     //Convolution Layer1
@@ -190,7 +190,7 @@ int main()
 
 
 
-   printf("All convolution1 init [ok] \n" );
+  // printf("All convolution1 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer1
@@ -976,7 +976,7 @@ struct ALLFM2 *convl45;
     convl59->next=convl60;
     convl60->next=NULL;
 
-    printf("All convolution2 init [ok] \n" );
+    //printf("All convolution2 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer2
@@ -1580,20 +1580,20 @@ struct PoolC2 *poolC2_45;
     poolC2_59->next=poolC2_60;
     poolC2_60->next=NULL;
 
-    printf("All pooling init2 [ok] \n" );
+    //printf("All pooling init2 [ok] \n" );
 
 
     //______________________________________________________________________________________
     struct CL_out *outin = init_out(NB_Char);
 
-    printf("All output [ok] \n");
+    //printf("All output [ok] \n");
 
 
     // 8) Flattern Layer -> First Fully Connected Layer
     size_t all= NB_FILTERS2 * NB_FILTERS1 * DIM_POOL2 * DIM_POOL2;
     struct FL *flatterned1 = init_fl(all);
 
-    printf("All flatterning [ok] \n" );
+    //printf("All flatterning [ok] \n" );
 
 
     // 9) Final Connected Layer with char as neurons
@@ -1690,22 +1690,22 @@ struct PoolC2 *poolC2_45;
         printf("cross Entropy is %f \n",cross);
 
         BackforOutput(outin, BinIndicaor);
-        //printf("Back For output [ok] \n" );
+        printf("Back For output [ok] \n" );
 
         //2) Last Pooling (C2)
-        GradientsFromPoolingLast(poolC2_1, convl1);
+        //GradientsFromPoolingLast(poolC2_1, convl1);
         //printf(" Back for gradient pool C2 [ok] \n" );
 
         // 3) C2 Filters
-        BackForFiltersLast(A2_1st, convl1,poolC1);
+        //BackForFiltersLast(A2_1st, convl1,poolC1);
         //printf("Back for filters C2 [ok] \n" );
 
         // 4) Pool layer C1
-        GradientsFromPooling(poolC1, convo1);
+        //GradientsFromPooling(poolC1, convo1);
         //printf("Back for pool layers 1 [ok] \n" );
 
         // 5) C1 FIlters
-        BackForFilters(A1_1st, convo1, input);
+        //BackForFilters(A1_1st, convo1, input);
         //printf("Back for filters C1 [ok] \n" );
 
         //free_Matrix2(input);

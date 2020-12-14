@@ -26,7 +26,8 @@ int main()
     Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; //matrice binaire finale
     
     //matToImg(matricef, "new"); // transforme la matrice en image
-    beginSeg(matricef);
+    char *txt = "textOCR";
+    beginSeg(matricef,txt);
     
     //freeTree(t);
     
