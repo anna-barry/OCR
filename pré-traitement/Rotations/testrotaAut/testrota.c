@@ -17,7 +17,10 @@ int main()
     SDL_Surface* screen_surface;
     SDL_Surface* surface_image;
     init_sdl();
-
+    //
+    //here is the path you should modify if you want to get an other image :
+    //                         \                                  /
+    //                         \                                 /
     image_surface = load_image("../testrotaAUT/Img/loremipsum.bmp");
     screen_surface = display_image(image_surface);
     wait_for_keypressed();

@@ -249,7 +249,7 @@ SDL_Surface* ManualRot(SDL_Surface* image_surface, double degrees)
     return result;
 }
 /*
- *          Automatic Rotation algorithm by A.Barry and G.Du Mesnil du Buisson
+ *          Automatic Rotation algorithm by G.Du Mesnil du Buisson
  *
  *  description:
  *
@@ -260,7 +260,7 @@ SDL_Surface* ManualRot(SDL_Surface* image_surface, double degrees)
  *
  *      Surface* of image
  *
- *  Version 0.0 on 1/11/2020
+ *  Version 0.0 on 13/12/2020
  */
 
 //Entropy Calculation Function
@@ -354,30 +354,3 @@ double getSkewAngle(SDL_Surface* image_surface, SDL_Surface* screen_surface)
 
     return angleFinal;
 }
-
-// int main()
-// {
-//     SDL_Surface* image_surface;
-//     SDL_Surface* screen_surface;
-//     SDL_Surface* surface_image;
-//     init_sdl();
-//
-//     image_surface = load_image("loremipsum.bmp");
-//     screen_surface = display_image(image_surface);
-//     wait_for_keypressed();
-//
-//     surface_image = ManualRotation(image_surface, 0);
-//     screen_surface = display_image(surface_image);
-//     update_surface(screen_surface,surface_image);
-//     double angle = getSkewAngle(surface_image,screen_surface);
-//     printf("%f\n", angle);
-//     wait_for_keypressed();
-//
-//     SDL_FreeSurface(image_surface);
-//     SDL_FreeSurface(screen_surface);
-//     SDL_FreeSurface(surface_image);
-//
-//     return 0;
-//
-//
-// }

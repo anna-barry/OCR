@@ -101,6 +101,18 @@ marine thunet
 
 void dfs_printer(Tree *tree)
 {
+  /*
+   * General description:
+    Function that takes a tree in parameter and print the tree in the Terminal
+
+    Parameters:
+    - Tree *tree: pointer of the tree to print
+
+    dates/authors :
+    12/12
+    geoffroy du mesnil du buisson
+
+  */
   //printf("on rentre\n");
     if (tree->key)
     {
@@ -132,6 +144,22 @@ void dfs_printer(Tree *tree)
 
 void rec_createAtree(Tree *tree, int arr[], int i, int size)
 {
+  /*
+   * General description:
+    Function that takes an array and recurcively create a tree
+
+    Parameters:
+    - Tree *tree: pointer of the tree to create
+    - int arr[]: the array that contain every value of the tree
+    - int i: the index in the list
+    - int size : the size of the list
+
+
+    dates/authors :
+    12/12
+    geoffroy du mesnil du buisson
+
+  */
     Tree *theChild = newTree(arr[i]);
     while (i<size) {
     AddChild(tree, theChild);
@@ -141,6 +169,19 @@ void rec_createAtree(Tree *tree, int arr[], int i, int size)
 }
 
 Tree *createAtree(int arr[], int size){
+  /*
+   * General description:
+    Function that takes an array and recurcively create a tree 
+
+    Parameters:
+    - int arr[]: the array that contain every value of the tree
+    - int size : the size of the list
+
+    dates/authors :
+    12/12
+    geoffroy du mesnil du buisson
+
+  */
   Tree *theTree = newTree(-4);
   rec_createAtree(theTree,arr,0, size);
   return theTree;
