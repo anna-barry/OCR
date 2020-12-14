@@ -16,10 +16,14 @@ clean:
 	${RM} *.d
 	${RM} *.o
 	${RM} *.d
-	${RM} ../Tools/*.o
-	${RM} ../Tools/*.d
-	${RM} ../pré-traitement/binarisation/*.o
-	${RM} ../pré-traitement/binarisation/*.d
+	${RM} ../../Tools/*.o
+	${RM} ../../Tools/*.d
+	${RM} ../../pré-traitement/binarisation/*.o
+	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} testxycut
 	${RM} last*
 	${RM} textOCR
+	${RM} ../*.o
+	${RM} ../*.d
+	${RM} ../../réseau_de_neurones/CNN/*.o
+	${RM} ../../réseau_de_neurones/CNN/*.d
