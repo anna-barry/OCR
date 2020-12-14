@@ -1614,8 +1614,12 @@ struct PoolC2 *poolC2_45;
     {
     struct sendback imp = GetRandomSet();
 
-    SDL_Surface* img = load_image(imp.path);
+    //SDL_Surface* img = load_image2(imp.path, imp2.path);
 
+
+    if (SDL_LoadBMP(imp.path))
+    {
+    SDL_Surface* img = load_image(imp.path);
     Matrix matrice1 = surface_to_matrix_grayscale(img);
 
 
@@ -1625,7 +1629,14 @@ struct PoolC2 *poolC2_45;
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
     SDL_FreeSurface(img);
 
-    printf("image to matrice for path %s [ok] \n",imp.path );
+    if (i%10000==0) {
+        printf("________________________________________________________ \n \n ");
+    }
+
+
+    /*if (i%100==0) {
+      printf("image to matrice for path %s [ok] \n",imp.path );
+    }*/
 
 
     // Forward Propagate __________________________________________________________________________
@@ -1666,52 +1677,58 @@ struct PoolC2 *poolC2_45;
        // printf("Fully Connected Layer   [ok]   \n");
         // 9) Fully connected output layer
         struct resultsfromoutput output=GetOutPut( outin);
+        int righti=imp.ASCII;
+        if (righti<58) {
+          righti-=48;
+        } else if (righti<91) {
+          righti-=65;
+        } else {
+          righti-=97;
+        }
 
-        printf("The output is: %f and should be %d \n",output.ASCII, imp.ASCII);
+        if (i%10000==0) {
+          printf("The ASCII char output is: %f and should be %d for training n°%d \n",output.ASCII, imp.ASCII,i);
+        }
+
+
+
 
         //_____________________________________________________________________________
         // BackPropagation
         //1) OutPut
-        int BinIndicaor= imp.ASCII;
-        if(imp.ASCII<58)
-        {
-          BinIndicaor-=48;
-        }
-        else
-        {
-          if (imp.ASCII<91) {
-            BinIndicaor-=65;
-          } else {
-            BinIndicaor-=97;
-          }
+        double cross= CrossEntropy(outin,righti);
+
+        if (i%10000==0) {
+              printf("cross Entropy is %f \n",cross);
         }
 
-        double cross= CrossEntropy(outin, BinIndicaor);
-        printf("cross Entropy is %f \n",cross);
 
-        BackforOutput(outin, BinIndicaor);
-        printf("Back For output [ok] \n" );
+
+
+        BackforOutput(outin, righti);
+        //printf("Back For output [ok] \n" );
 
         //2) Last Pooling (C2)
-        //GradientsFromPoolingLast(poolC2_1, convl1);
-        //printf(" Back for gradient pool C2 [ok] \n" );
+        GradientsFromPoolingLast(poolC2_1, convl1);
+      //  printf(" Back for gradient pool C2 [ok] \n" );
 
         // 3) C2 Filters
-        //BackForFiltersLast(A2_1st, convl1,poolC1);
+        BackForFiltersLast(A2_1st, convl1,poolC1);
         //printf("Back for filters C2 [ok] \n" );
 
         // 4) Pool layer C1
-        //GradientsFromPooling(poolC1, convo1);
+         GradientsFromPooling(poolC1, convo1);
         //printf("Back for pool layers 1 [ok] \n" );
 
         // 5) C1 FIlters
-        //BackForFilters(A1_1st, convo1, input);
+        BackForFilters(A1_1st, convo1, input);
         //printf("Back for filters C1 [ok] \n" );
 
         //free_Matrix2(input);
         //free_Matrix2(matrice1);
         freeMatrix1(input);
         freeMatrix1(matrice1);
+      }
 
         }
         //FREE ALL MEMORY
@@ -1720,7 +1737,7 @@ struct PoolC2 *poolC2_45;
         //Input Matrix
 
         //Free 1 set of filters
-        printf("until freed memory [ok] \n");
+        //printf("until freed memory [ok] \n");
         //Free 1st layer of pooling
         free_ALLFilters1(A1_1st);
 

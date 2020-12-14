@@ -26,7 +26,7 @@
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 1200
+#define NB_ITERATION 12000000
 
 //Struct
 struct TM
