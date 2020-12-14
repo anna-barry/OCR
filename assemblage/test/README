@@ -1,0 +1,12 @@
+Author: Marie Maturana
+
+To test this function that is supposed to merge every ocr function, 
+
+Open a terminal in this file
+Enter:
+
+make (enter)
+./test (enter)
+
+Then see that the file was created, if you want to test with another picture, add a picture.bmp in this file and name it lorem.bmp, enter "make clean" and enter the two command upon.
+

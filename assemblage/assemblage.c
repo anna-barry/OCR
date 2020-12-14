@@ -11,12 +11,12 @@
 #include "../segmentation/rlsa.h"
 #include "../segmentation/testxycut/segmentationXYtest.h"
 
-void MakeOCR ()
+void MakeOCR (char *txt, char *image)
 {
   SDL_Surface* img;
   init_sdl();
 
-  img = SDL_LoadBMP("/Users/marie/Documents/OCR/pré-traitement/binarisation/test/lorem.bmp");
+  img = SDL_LoadBMP(image);
     
   Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
     
@@ -24,7 +24,7 @@ void MakeOCR ()
     
   Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; //matrice binaire finale
     
-  beginSeg(matricef);
+  beginSeg(matricef,txt);
     
 
   SDL_FreeSurface(img);
