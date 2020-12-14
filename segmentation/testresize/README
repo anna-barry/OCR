@@ -1,10 +1,18 @@
+README RESIZE
+
+You can change those values :
+
+          -The path of the image (default : "theImageForResize.bmp")
+
+          -The size of the new char (default : "10")
+
 To compile just type :
     make
 To execute just type (the results are in the curent repostery):
     ./testresize
 To save your tests just type :
     make save
-To clean te repostery with keeping your tests just type :
+To clean te directory with keeping your tests just type :
     make clean
 To clean all and supress all tests just type :
     make clean_all

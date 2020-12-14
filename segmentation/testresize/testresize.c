@@ -16,6 +16,8 @@ int main()
 
     //load image in bmp
 
+    // //                         \                                         /
+    // //                         \                                        /
     SDL_Surface* img = load_image("../testresize/Img/theImageForResize.bmp");
 
     Matrix matrice1 = surface_to_matrix_grayscale(img);
@@ -27,7 +29,8 @@ int main()
     Matrix shrunk = cutMatrix(matimage,0,0,20,20);
 
     matToImg(shrunk, "the original mat.bmp");
-
+    //                                            \  /
+    //here is the angle you want to modify         v
     Matrix theResizeMatrix = resizeMatrix(shrunk, 10);
 
     matToImg(theResizeMatrix, "The new one.bmp");

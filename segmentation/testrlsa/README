@@ -1,0 +1,16 @@
+README RLSA
+
+Things you could get to modify:
+
+        -The path of the image (default : "lorem.bmp")
+
+        -The values of the HorizontaleRLSA, VerticaleRLSA
+
+(0) To compile just type :
+      make
+
+(1) To execute just type:
+      ./testrebuilt
+
+(2) To clean the directory :
+      make clean

@@ -1,6 +1,19 @@
 #include "rebuilt.h"
 
 char* mycat(char *s1, char *s2){
+  /*
+  description :
+  CONCATAIN TWO STRINGS WITH ALOCATION MEMORY
+
+  parameters :
+  char *s1 : the original string
+  char *s2 : the string that will be concatain to the string *s1.
+
+  dates/authors :
+  04/12
+  geoffroy du mesnil du buisson
+
+  */
   char *result = malloc(strlen(s1)+strlen(s2)+1);
   strcpy(result, s1);
   strcat(result, s2);
@@ -8,6 +21,18 @@ char* mycat(char *s1, char *s2){
 }
 
 char* char2string(char c){
+  /*
+  description :
+  PARSE A CHAR INTO A STING
+
+  parameters :
+  char c : the char will be transform into a string
+
+  dates/authors :
+  04/12
+  geoffroy du mesnil du buisson
+
+  */
   char *str=malloc(2*sizeof(char));
   if(str==NULL)
     return NULL;

@@ -1,0 +1,18 @@
+README REBUILT
+
+In order to try some specific values and to be sure it is really working you can put a list of the children
+node and the both functions createAtree() and dfs_printer() will create a tree based on the list print is and
+create a char based on that tree. Or you can load the segmentation by add the commented text in the main.
+
+Things you could get to modify:
+
+        -The path of the image (default : "lorem.bmp")
+
+(0) To compile just type :
+      make
+
+(1) To execute just type:
+      ./testrebuilt
+
+(2) To clean the directory :
+      make clean

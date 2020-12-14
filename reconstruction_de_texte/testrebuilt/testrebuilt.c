@@ -16,6 +16,9 @@ int main()
     // init_sdl();
     //
     // //load image in bmp
+    // //here is the path you should modify if you want to get an other image :
+    // //                \           /
+    // //                \          /
     // img = SDL_LoadBMP("lorem.bmp");
     //
     // Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
@@ -30,7 +33,7 @@ int main()
 
     Tree *tree = createAtree(arr, 4);
 
-    dfs_printer(tree);//to make sure the tree is corectly done.
+    dfs_printer(tree);//print the tree to make sure the tree is corectly done.
 
     char *theTexte = textBuider(tree, "Your text is : ");
 

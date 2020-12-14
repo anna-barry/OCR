@@ -1,10 +1,20 @@
-To compile just type :
-    make
-To execute just type (the results are in the curent repostery):
-    ./testresize
-To save your tests just type :
-    make save
-To clean te repostery with keeping your tests just type :
-    make clean
-To clean all and supress all tests just type :
-    make clean_all
+README ROTATION AUTO
+
+In order to try some specific values and to be sure it is really working you can put an Image WITHOUT a rotation angle in the
+directory "Img". Then call the function rotation on it with whatever angle you want in order the angle is between -15.00 to 15.00.
+then the getSkewAngle() function should return you the angle of the rotate image.
+
+Things you could get to modify:
+
+        -The path of the image (default : "../testrotaAUT/Img/loremipsum.bmp")
+
+        -The angle you want to try (default : "-2")
+
+(0) To compile just type :
+      make
+
+(1) To execute just type:
+      ./testrota
+
+(2) To clean the directory :
+      make clean
