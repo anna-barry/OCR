@@ -7,6 +7,7 @@
 #include "error.h"
 #include "../assemblage/assemblage.h"
 #include "../pré-traitement/Rotations/rotationMAN.h"
+#include "../pré-traitement/Rotations/rotationAUTO.h"
 #include "../pré-traitement/traitement/testtraitement.h"
 
 // by marie maturana
@@ -15,7 +16,7 @@
 // like save or open and different pages
 
 #define DEFAULT_FILE "textOCR"
-#define DEFAULT_FILE2 "traitement_image.bmp"
+#define DEFAULT_FILE2 "manuelRotation.bmp"
 #define DEFAULT_FILE3 "smooth.bmp"
 #define DEFAULT_FILE4 "contrast.bmp"
 
@@ -72,9 +73,7 @@ void on_open_image (GtkWidget* widget, gpointer user_data)
   
 	    gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image 
 	    MakeOCR("textOCR", filename);
-	    traitement(filename); 
-	     
-		     
+	    traitement(filename);  	     
 	  }
 	else
 	  {
@@ -141,113 +140,6 @@ static void open_image_s (const gchar *file_name, GtkWidget *image)
   gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image  
 }
 
-//-----------------------------------------------------ROTATE IMAGE  --------------------------------------------------------------------------
-
-
-static void open_image_1 (const gchar *file_name, GtkWidget *image);
-
-void cb_rotate_image_1 (GtkWidget *widget, gpointer user_data)
-{
-   ManualRotation(30);  
-  open_image_1 (DEFAULT_FILE2,  GTK_WIDGET (user_data));
-}
-
-static void open_image_1 (const gchar *file_name, GtkWidget *image)
-{
-  GdkPixbuf *pixbuf;
-  
-  pixbuf = gdk_pixbuf_new_from_file (file_name , NULL);
- 
-  GdkPixbuf *pixbuf_mini = NULL; 
-  
-  pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
-					 gdk_pixbuf_get_width (pixbuf) /2  , 
-					 gdk_pixbuf_get_height (pixbuf) /2 , 
-					 GDK_INTERP_NEAREST); 
-  
-  gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image
-}
-
-//-----------------------------------------------------ROTATE IMAGE 1/4 --------------------------------------------------------------------------
-
-
-static void open_image_2 (const gchar *file_name, GtkWidget *image);
-
-void cb_rotate_image_2 (GtkWidget *widget, gpointer user_data)
-{
-   ManualRotation(90); 
-  open_image_2 (DEFAULT_FILE2,  GTK_WIDGET (user_data));
-}
-
-static void open_image_2 (const gchar *file_name, GtkWidget *image)
-{
-  GdkPixbuf *pixbuf;
-  
-  pixbuf = gdk_pixbuf_new_from_file (file_name , NULL);
- 
-  GdkPixbuf *pixbuf_mini = NULL; 
-  
-  pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
-					 gdk_pixbuf_get_width (pixbuf) /2  , 
-					 gdk_pixbuf_get_height (pixbuf) /2 , 
-					 GDK_INTERP_NEAREST); 
-  
-  gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image
-}
-
-//-----------------------------------------------------ROTATE IMAGE 1/2 --------------------------------------------------------------------------
-
-
-static void open_image_3 (const gchar *file_name, GtkWidget *image);
-
-void cb_rotate_image_3 (GtkWidget *widget, gpointer user_data)
-{
-   ManualRotation(180); 
-  open_image_3 (DEFAULT_FILE2,  GTK_WIDGET (user_data));
-}
-
-static void open_image_3 (const gchar *file_name, GtkWidget *image)
-{
-  GdkPixbuf *pixbuf;
-  
-  pixbuf = gdk_pixbuf_new_from_file (file_name , NULL);
- 
-  GdkPixbuf *pixbuf_mini = NULL; 
-  
-  pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
-					 gdk_pixbuf_get_width (pixbuf) /2  , 
-					 gdk_pixbuf_get_height (pixbuf) /2 , 
-					 GDK_INTERP_NEAREST); 
-  
-  gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image
-}
-
-//-----------------------------------------------------ROTATE IMAGE 3/4 --------------------------------------------------------------------------
-
-
-static void open_image_4 (const gchar *file_name, GtkWidget *image);
-
-void cb_rotate_image_4 (GtkWidget *widget, gpointer user_data)
-{
-  ManualRotation(270); 
-  open_image_4 (DEFAULT_FILE2,  GTK_WIDGET (user_data));
-}
-
-static void open_image_4 (const gchar *file_name, GtkWidget *image)
-{
-  GdkPixbuf *pixbuf;
-  
-  pixbuf = gdk_pixbuf_new_from_file (file_name , NULL);
- 
-  GdkPixbuf *pixbuf_mini = NULL; 
-  
-  pixbuf_mini = gdk_pixbuf_scale_simple (pixbuf, 
-					 gdk_pixbuf_get_width (pixbuf) /2  , 
-					 gdk_pixbuf_get_height (pixbuf) /2 , 
-					 GDK_INTERP_NEAREST); 
-  
-  gtk_image_set_from_pixbuf(GTK_IMAGE (image),pixbuf_mini); //choose the final image
-}
 
 //-------------------------------------------------------OPEN OCR FILE------------------------------------------------------------------------
 
@@ -583,17 +475,6 @@ void cb_pageReWrite (GtkWidget *widget, gpointer user_data)
     gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
   }
 
-  // save button
-  {
-    GtkWidget *button = NULL;
-    GtkWidget *image = NULL; 
-    button = gtk_button_new();
-    image = gtk_image_new_from_file("images/boutonSave.png");
-    gtk_container_add(GTK_CONTAINER(button), image);
-    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_save), NULL);
-    gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
-  }
-
   // save as button
   {
     GtkWidget *button = NULL;
@@ -746,54 +627,6 @@ void cb_pageOCR (GtkWidget *widget, gpointer user_data)
     gtk_box_pack_start (GTK_BOX (button_box2), button, FALSE, FALSE, 0);
   }
 
-  //turn image
-
-  {
-    GtkWidget *button = NULL;
-    GtkWidget *image = NULL; 
-    button = gtk_button_new();
-    image = gtk_image_new_from_file("images/rotate135.png");
-    gtk_container_add(GTK_CONTAINER(button), image); 
-    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_rotate_image_4 ), imageF );
-    gtk_box_pack_start (GTK_BOX (button_box2), button, FALSE, FALSE, 0);
-  }
-
-    //turn image
-
-  {
-    GtkWidget *button = NULL;
-    GtkWidget *image = NULL; 
-    button = gtk_button_new();
-    image = gtk_image_new_from_file("images/rotate.png");
-    gtk_container_add(GTK_CONTAINER(button), image); 
-    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_rotate_image_1 ), imageF );
-    gtk_box_pack_start (GTK_BOX (button_box2), button, FALSE, FALSE, 0);
-  }
-
-    //turn image
-
-  {
-    GtkWidget *button = NULL;
-    GtkWidget *image = NULL; 
-    button = gtk_button_new();
-    image = gtk_image_new_from_file("images/rotate45.png");
-    gtk_container_add(GTK_CONTAINER(button), image); 
-    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_rotate_image_2), imageF );
-    gtk_box_pack_start (GTK_BOX (button_box2), button, FALSE, FALSE, 0);
-  }
-
-    //turn image
-
-  {
-    GtkWidget *button = NULL;
-    GtkWidget *image = NULL; 
-    button = gtk_button_new();
-    image = gtk_image_new_from_file("images/rotate90.png");
-    gtk_container_add(GTK_CONTAINER(button), image); 
-    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_rotate_image_3), imageF );
-    gtk_box_pack_start (GTK_BOX (button_box2), button, FALSE, FALSE, 0);
-  }
-
   //smooth
 
    {
@@ -836,13 +669,13 @@ void cb_pageOCR (GtkWidget *widget, gpointer user_data)
     gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
   }
 
-  // save as button
+   // save as button
   {
     GtkWidget *button = NULL;
     GtkWidget *image = NULL; 
     button = gtk_button_new();
     image = gtk_image_new_from_file("images/boutonSaveAs.png");
-    gtk_container_add(GTK_CONTAINER(button), image); 
+    gtk_container_add(GTK_CONTAINER(button), image);
     g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_saveas), NULL);
     gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
   }
