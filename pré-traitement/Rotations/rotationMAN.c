@@ -3,6 +3,7 @@
 //#undef ManualRotation
 //#undef update_surface
 #include "../../Tools/pixel_operations.h"
+#include "rotationMAN.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -183,6 +184,7 @@ SDL_Surface* ManualRotation(SDL_Surface* image_surface, double degrees)
             put_pixel(result, new_x, new_y, get_pixel(image_surface,j,i));
         }
     }
-
+    
+    SDL_SaveBMP(result, "manuelRotation.bmp");
     return result;
 }

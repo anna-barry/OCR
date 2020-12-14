@@ -64,7 +64,7 @@ struct sendback
 #define DIM_C2 10
 #define DIM_POOL2 5
 #define NB_Char 60
-#define NB_ITERATION 1200
+#define NB_ITERATION 50
 
 //__________________________________________________________________________________
 //
@@ -72,21 +72,6 @@ struct sendback
 //
 //__________________________________________________________________________________
 
-/*struct ALLFilters1 *init_ALLF1()
-{
-    struct ALLFilters1 *my_ALL = malloc(sizeof(struct ALLFilters1));
-    struct Matrix *m1 = malloc(sizeof(struct Matrix));
-    m1.width =
-    m1.height =
-    m1->matrix =
-    my_ALL->matrix = m1;
-    struct ALLFilters1 *second = ma;loc
-    struct ALLFilters1 *tmp = my_ALL;
-    while (tmp && tmp->next)
-        free(tmp->matrix->matrix)
-
-        tmp = tmp->next;
-}*/
 
 // Filters for C1
 struct ALLFilters1{
@@ -167,9 +152,7 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
 
     struct ALLFM1 *currFeatureMap=NULL;
     currFeatureMap=cfm1;
-    printf("________________________ Convolution1 _____________________________________ \n");
-    //printf("input is: \n" );
-    //print_Matrix(input);
+
 
     for(int i=0; i<NB_FILTERS1; i++)
     {
@@ -193,11 +176,6 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
                 }
             }
         }
-        //printf("Filter is \n" );
-        //print_Matrix(*(currfilter->m));
-        //printf("output is \n" );
-        //print_Matrix(*(currFeatureMap->m));
-
         currfilter=currfilter->next;
         currFeatureMap=currFeatureMap->next;
     }
@@ -209,19 +187,6 @@ void ConvolutionLayer1(struct ALLFM1 *cfm1, struct ALLFilters1 *A1, Matrix input
 // 3) Relu activation after C1 ________________________________________________________
 void ReluActiv1(struct ALLFM1 *cfm1)
 {
-    /*
-    for(int i=0;i<NB_FILTERS1; i++)
-    {
-        for(int y=0; y<DIM_C1; y++)
-        {
-            for(int x=0; x<DIM_C1;x++)
-            {
-                cfm1->fm1[i].matrix[y*DIM_C1+x]=max(0, cfm1->fm1[i].matrix[y*DIM_C1+x]);
-            }
-        }
-    }*/
-    //printf("Relu 1 _________________________________________________________\n" );
-    //printf("relu n1 works? \n");
     struct ALLFM1 *currFeatureMap=NULL;
     currFeatureMap=cfm1;
 
@@ -238,7 +203,6 @@ void ReluActiv1(struct ALLFM1 *cfm1)
              }
          }
 
-         //print_Matrix(*(currFeatureMap->m));
         currFeatureMap=currFeatureMap->next;
     }
 }
@@ -283,7 +247,7 @@ void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
             i4pool+=1;
             }
             }
-            //print_Matrix(*(currPool->m));
+
             currFeatureMap=currFeatureMap->next;
             currPool=currPool->next;
     }
@@ -298,8 +262,6 @@ void Pool1(struct ALLFM1 *cfm1,struct PoolC1 *pc1)
 void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 *cfm2)
 {
 
-    //printf("CONVOLUTION 2______________________________________________________________ \n" );
-
     int indexForTest=0;
     struct PoolC1 *curPool=NULL;
     curPool= pc1;
@@ -313,8 +275,6 @@ void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 
     for(int i0=0; i0<NB_FILTERS1;i0++)
     {
         currfilter=A2;
-        //printf("Input \n" );
-        //print_Matrix(*(curPool->m));
 
          for(int i=0; i<NB_FILTERS2; i++)
     {
@@ -346,14 +306,6 @@ void ConvolutionLayer2(struct ALLFilters2 *A2, struct PoolC1 *pc1,struct ALLFM2 
             }
         }
         indexForTest+=1;
-
-        //printf("Filter is \n" );
-        //print_Matrix(*(currfilter->m));
-        //printf("input is Pooling layer 1: \n" );
-        //print_Matrix(*(curPool->m));
-        //printf("output is \n" );
-        //print_Matrix(*(currFeatureMap->m));
-
         currfilter=currfilter->next;
         currFeatureMap=currFeatureMap->next;
     }
@@ -458,7 +410,10 @@ void Pool2(struct ALLFM2 *cfm2,struct PoolC2 *pc2)
 
             }
         }
-        //print_Matrix(*(currPool->m));
+        printf("Current Matrix is \n");
+        print_Matrix(*(currFeatureMap->m));
+        printf("After Pooling layer \n ");
+        print_Matrix(*(currPool->m));
         currFeatureMap=currFeatureMap->next;
         currPool=currPool->next;
 
@@ -478,7 +433,6 @@ struct FL *init_fl(int n)
     {
         double random1=RAND_DOUBLE;
         double random2=RAND_DOUBLE;
-        //printf("both randoms are %f and %f for flattern layer for n°%d \n",random1, random2,i);
         newN[i].input=0;
         newN[i].weight=random1;
         newN[i].bias=random2;
@@ -499,7 +453,6 @@ struct CL_out *init_out(int n)
     {
         double random1=RAND_DOUBLE;
         double random2=RAND_DOUBLE;
-        //printf("both randoms are %f and %f for output layer \n",random1, random2);
         newN2[i].input=0;
         newN2[i].weight=random1;
         newN2[i].bias=random2;
@@ -520,7 +473,6 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
 
     struct Neuron *CurNeu=NULL;
     CurNeu= res->n;
-    //printf("before loop Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
 
     int indexForFlat=0;
 
@@ -529,17 +481,14 @@ void FlatternLayer(struct PoolC2 *pc2,struct FL *res)
         double *indexPool= NULL;
         indexPool=(currPool->m->matrix);
 
-        //print_Matrix(*(currPool->m));
 
-        //printf("in for i Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
         for(int j=0; j< DIM_POOL2; j++)
         {
             for(int k=0; k< DIM_POOL2;k++ )
             {
-              //printf("in double for Current wieght and bias for 512 %f %f\n", CurNeu[512].weight,CurNeu[512].bias);
+
                 CurNeu[indexForFlat].input= indexPool[(j*DIM_POOL2)+k];
 
-                //printf("Current input for fully connected is %f with weight=%f and bias=%f for n°%d \n",CurNeu[indexForFlat].input,CurNeu[indexForFlat].weight,CurNeu[indexForFlat].bias, indexForFlat);
                 indexForFlat+=1;
 
             }
@@ -586,12 +535,11 @@ double GetInputFromFC(struct FL *flatterned)
         //Dropout -> not all features are seen for better performance
 
         double drop= ( (double)rand()/(double)RAND_MAX );
-        //printf("probability is %f \n",drop );
+
         if(drop>0.4)
         {
 
-              //printf(" the input is %f for n°%d with weights =%f and bias=%f \n", (CurNeu[i].input*CurNeu[i].weight + CurNeu[i].bias),i,CurNeu[i].weight,CurNeu[i].bias);
-              //printf("res is %f for now \n",res );
+
             res+=max(0,(CurNeu[i].input*CurNeu[i].weight + CurNeu[i].bias));
 
         }
@@ -630,30 +578,25 @@ struct resultsfromoutput{
 struct resultsfromoutput GetOutPut(struct CL_out *outin)
 {
     double sum= 0;
-
     struct CL_out *IndexOut=NULL;
     IndexOut=outin;
-
     struct Neuron *outN=NULL;
     outN=IndexOut->n;
 
 
     for (int i=0;i<(NB_Char);i++)
     {
-        //printf("the input is %f for n°%d \n",outN[i].input,i );
-        //printf("exp of all this is %f with weight=%f and bias=%f for %i \n", exp(outN[i].input * outN[i].weight + outN[i].bias), outN[i].weight, outN[i].bias,i);
         sum=sum+exp(max(0,outN[i].input * outN[i].weight + outN[i].bias));
     }
 
-    //printf("sum is %f \n",sum );
-
-    //outN=IndexOut->n;
 
     double maxiO=exp((outN[0].input*outN[0].weight)+outN[0].bias)/sum;
-    double maxA=0;
+    outN[0].input=exp((outN[0].input*outN[0].weight)+outN[0].bias)/sum;
+
     double maxI=0;
     double maxW=outN[0].weight;
     double maxB=outN[0].bias;
+    double maxA=0;
     for(int i=1; i<NB_Char; i++)
     {
         double curexp=exp((outN[i].input*outN[i].weight)+outN[i].bias)/sum;
@@ -665,11 +608,12 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
             maxW=outN[i].weight;
             maxB=outN[i].bias;
         }
-        //printf("current is %f \n", curexp);
+        outN[i].input=exp((outN[i].input*outN[i].weight)+outN[i].bias)/sum;
+        //printf("current is %f for %d \n", outN[i].input,i);
     }
 
     // Digits
-    if (maxA<10)
+    if ( maxA<10)
     {
         maxA+=48;
     }
@@ -686,7 +630,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
             maxA+=65;
         }
     }
-    printf("maxA is %f \n",maxA);
+    //printf("maxA is %f \n",maxA);
     struct resultsfromoutput res={maxA,maxI,maxiO,maxW,maxB};
     return res;
 }
@@ -1108,7 +1052,7 @@ struct sendback GetRandomSet()
     //res.path=Limages[random];
     strcpy(res.path, Limages[random]);
     res.ASCII=Llabels[random];
-    printf("path is %s and ASCII is %d \n",res.path,res.ASCII);
+  //  printf("path is %s and ASCII is %d \n",res.path,res.ASCII);
     return res;
 }
 
@@ -1123,7 +1067,7 @@ double CrossEntropy(struct CL_out *clout, int BinIndicaor)
     struct Neuron *outN=NULL;
     outN=IndexOut->n;
 
-    return -(log(exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias)));
+    return -(log(outN[BinIndicaor].input*outN[BinIndicaor].weight+outN[BinIndicaor].bias));
 
 }
 
@@ -1138,7 +1082,12 @@ double SoftLayerBack(struct CL_out *clout, int BinIndicaor, int i)
 
   if(BinIndicaor==i)
   {
-    return -1/(exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias));
+  //  printf("____________________________________");
+  //  printf("input %f for %d \n",outN[BinIndicaor].input,i);
+    if ( outN[BinIndicaor].input ==0 ) {
+      return 0;
+    }
+    return -1/(outN[BinIndicaor].input);
   }
   else
   {
@@ -1152,41 +1101,41 @@ void BackforOutput(struct CL_out *clout, int BinIndicaor)
 {
   struct CL_out *IndexOut=NULL;
   IndexOut=clout;
-
+  double NEwW = RAND_DOUBLE;
   struct Neuron *outN=NULL;
   outN=IndexOut->n;
 
-  int sum=0;
+  double sum=0;
   for (int i=0;i<(NB_Char);i++)
   {
 
-      sum=sum+exp((outN[i].input * outN[i].weight) + outN[i].bias);
+      sum+=outN[i].input;
   }
+  //printf("sum is %f \n",sum );
+
+  double BinIndicaorInput = outN[BinIndicaor].input;
+  double upDateNewBias = RAND_DOUBLE;
+  double BinIndicaorWeight = outN[BinIndicaor].weight;
+  double BinIndicaorBias = outN[BinIndicaor].bias;
 
   for(int i=0; i<NB_Char; i++)
   {
     double rout=0;
     if (i==BinIndicaor) {
-      rout= exp((outN[i].input * outN[i].weight) + outN[i].bias)*(sum-exp((outN[i].input * outN[i].weight) + outN[i].bias))/(sum*sum);
+      rout = exp((outN[i].input * outN[i].weight) + outN[i].bias)*(sum-exp((outN[i].input * outN[i].weight) + outN[i].bias))/(sum*sum);
     }
     else
     {
-      rout= -exp((outN[i].input * outN[i].weight) + outN[i].bias)*exp((outN[BinIndicaor].input * outN[BinIndicaor].weight) + outN[BinIndicaor].bias/(sum*sum));
+      rout= -exp((outN[i].input * outN[i].weight) + outN[i].bias)*exp((((BinIndicaorInput * BinIndicaorWeight) + BinIndicaorBias)/(sum*sum)));
     }
 
-    outN[i].input=SoftLayerBack(clout, BinIndicaor, i)*rout*outN[i].weight;
-    outN[i].weight=SoftLayerBack(clout, BinIndicaor, i)*rout*outN[i].input;
-    outN[i].bias=SoftLayerBack(clout, BinIndicaor, i)*rout;
+    double softback= SoftLayerBack(clout, BinIndicaor, i);
+
+    outN[i].input=max(0,softback*rout*outN[i].weight);
+    outN[i].weight= NEwW;
+    outN[i].bias= upDateNewBias;
 
   }
-
-  for(int i=0; i<NB_Char; i++)
-  {
-    printf("output n°%d is input=%f and weight=%f and bias=%f \n",i,outN[i].input, outN[i].weight,outN[i].bias  );
-
-  }
-
-
 }
 
 void GradientsFromPoolingLast(struct PoolC2 *pool2, struct ALLFM2 *feat2)
@@ -1273,6 +1222,7 @@ void BackForFiltersLast(struct ALLFilters2 *filers2, struct ALLFM2 *feat2,struct
          {
               //Find Gradient
               double gradient=0;
+              double GradRes=RAND_DOUBLE;
               for (int j = 0; j < DIM_C2; j++) {
                 for (int i = 0; i < DIM_C2; i++) {
 
@@ -1281,7 +1231,9 @@ void BackForFiltersLast(struct ALLFilters2 *filers2, struct ALLFM2 *feat2,struct
 
                   }
 
-                  indexFilter2[y*DIM_FILTER+x]=gradient;
+                  gradient=(max(0,gradient));
+                  indexConv2[1*DIM_C2+0]=gradient;
+                  indexFilter2[y*DIM_FILTER+x]=GradRes;
 
          }
        }
@@ -1355,12 +1307,13 @@ void BackForFilters(struct ALLFilters1 *filter1, struct ALLFM1 *feat1, Matrix in
 
   struct ALLFilters1 *currFilter=NULL;
   currFilter= filter1;
+  int y1 =0;
 
   for(int nb=0;nb<NB_FILTERS1;nb++)
   {
     double *indexConv1= NULL;
     indexConv1=(currFeatureMap->m->matrix);
-
+    int x0=1;
     double *indexFilter1=NULL;
     indexFilter1=(currFilter->m->matrix);
 
@@ -1370,6 +1323,7 @@ void BackForFilters(struct ALLFilters1 *filter1, struct ALLFM1 *feat1, Matrix in
        {
          //Find Gradient
             double gradient=0;
+            double new4= RAND_DOUBLE;
             for (int j = 0; j < DIM_C1; j++) {
               for (int i = 0; i < DIM_C1; i++) {
 
@@ -1378,7 +1332,8 @@ void BackForFilters(struct ALLFilters1 *filter1, struct ALLFM1 *feat1, Matrix in
 
                 }
 
-                indexFilter1[y*DIM_FILTER+x]=gradient;
+                indexConv1[y1*DIM_C1+x0]=gradient;
+                indexFilter1[y*DIM_FILTER+x]=new4;
        }
      }
      currFeatureMap=currFeatureMap->next;

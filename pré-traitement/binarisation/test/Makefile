@@ -1,4 +1,5 @@
 
+
 CC=gcc
 
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
@@ -20,4 +21,4 @@ clean:
 	${RM} ../../../Tools/*.o
 	${RM} ../../../Tools/*.d
 	${RM} test
-	${RM} new
+	${RM} new*

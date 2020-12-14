@@ -7,10 +7,8 @@
 #include "../../../Tools/matrix.h"
 #include "../binarisation.h"
 
-// by marie maturana and geoffroy du mesnil du buisson
-//  15/10 -> 24/10
-// grayscale and binarisation with the otsu method
-// matrix creation
+// by marie maturana 
+// test for grayscale and binarisation with the otsu method
 
 
 int main()
@@ -20,13 +18,39 @@ int main()
     
     SDL_Surface* img = load_image("loremipsum.bmp");
   
-    Matrix matrice1 = surface_to_matrix_grayscale(img); 
+    Matrix matrice = surface_to_matrix_grayscale(img); 
 
     int seuil = otsu(img); 
 
-    Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ;
+    Matrix matricefi =  matrix_grayscale_to_binar(matrice, seuil) ;
 
-    matToImg(matricef, "new");
+    matToImg(matricefi, "new");
+
+    ///////////////////////////////////////////////////////////////////
+
+    SDL_Surface* imga = load_image("lorem.bmp");
+  
+    Matrix matrice1 = surface_to_matrix_grayscale(imga); 
+
+    int seuil1 = otsu(imga); 
+
+    Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil1) ;
+
+    matToImg(matricef, "new1");
+
+    ////////////////////////////////////////////////////////////////////
+
+    SDL_Surface* img2 = load_image("gafa-stop.bmp");
+  
+    Matrix matricee = surface_to_matrix_grayscale(img2); 
+
+    int seuill = otsu(img2); 
+
+    Matrix matricefii =  matrix_grayscale_to_binar(matricee, seuill) ;
+
+    matToImg(matricefii, "new2");
+
+
 
     return 0; 
     

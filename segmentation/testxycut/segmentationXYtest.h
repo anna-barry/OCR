@@ -5,9 +5,9 @@
 #include "../../Tools/tree.h"
 #include "../../pré-traitement/binarisation/binarisation.h"
 
-void textToFile(char text[], char *str, int first);
+void textToFile(char text[], char *str, int i);
 
-void beginSeg(Matrix M, char *txt);
+void beginSeg(Matrix M,char *txt); 
 
 void segmentation(Matrix M);
 

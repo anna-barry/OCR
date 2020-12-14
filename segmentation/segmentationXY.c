@@ -6,9 +6,12 @@
 #include "../pré-traitement/binarisation/binarisation.h"
 #include "rlsa.h"
 #include "resizeMatrix.h"
+#include "../réseau_de_neurones/CNN/RecogniseASCII.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
+#include "../réseau_de_neurones/CNN/LeNet.h"
+#include <math.h>
 
 ////____________FROM RLSA TO XY-CUT______________________________
 
@@ -29,34 +32,22 @@
 
 ///________________________CUTTING WORDS AND LINES____________________
 ///__________________________XY-CUT_____________________________________
-void textToFile(char text[], char *str, int first)
+void textToFile(char text[], char *str, int i)
 {
-    /*
-    description :
-    -on this function we recon that noises and spots were treated
-    -traces a black column if 1 pixel is in the column
-    -goes along each colum, it will help to detect easily
-    parameters :
-    char text[]= the text that has to be added to the text
-    char *str= the name of the file
-    int first= 1 if it is the beginingg of segmentation,
-                to replace the ancient text if already exists
-    dates/authors :
-    12/12
-    marine thunet and marie maturana
-    */
-    FILE* fichier = NULL;
+  FILE* fichier = NULL;
+  fichier = fopen(str, "a");
 
-    if (fichier == NULL && first==1)
+    if (fichier == NULL || i==1)
     {
+        fclose(fichier);
         fichier = fopen(str, "w");
+        fputs(text, fichier);
     }
     else
     {
-        fichier = fopen(str, "a");
+        fputs(text,fichier);
     }
-    fputs(text,fichier);
-    fclose(fichier), fichier = NULL;
+    fclose(fichier);
 }
 
 //column reading to cut in vertical//
@@ -260,7 +251,7 @@ void _trycut(Matrix M, int line, char *name)
     
     else
     {
-        
+        int a;
         M=vertical(M);
                 //int letter=0;//the code og the letter to put in the tree then
         for (int ix=0; ix<w_size; ix++)
@@ -286,20 +277,79 @@ void _trycut(Matrix M, int line, char *name)
                         createseg=cutMatrix(reel,0,x,h_size,ix-x+1);
                         createseg=resizeMatrix(createseg,32);
                         
-                        textToFile("a",name,0);
-                        
-                        //____FINAL___________
-                        //intergrate the fonction when the
-                        //neural network is created
-    
-                        //for now that is how it works but useless,
-                        //we'll have to send the ascii code of the char
-                        //letter=ascii code;
-                    
-                        //T->key=97;
-                        //Tree *Child = newTree(97);
-                        //AddChild(T, Child); //will be the value of the char
-                        
+                        a=getASCII(createseg);
+                        printf("%i\n",a);
+                        switch(a)
+                           {
+                               case 48: textToFile("0",name,0);break;
+                               case 49 : textToFile("1",name,0); break;
+                               case 50 : textToFile("2",name,0); break;
+                               case 51: textToFile("3",name,0);break;
+                               case 52 : textToFile("4",name,0); break;
+                               case 53 : textToFile("5",name,0); break;
+                               case 54: textToFile("6",name,0);break;
+                               case 55 : textToFile("7",name,0); break;
+                               case 56 : textToFile("8",name,0); break;
+                               case 57 :textToFile("9",name,0);break;
+                                   
+                               case 65: textToFile("A",name,0);break;
+                               case 66 : textToFile("B",name,0); break;
+                               case 67 : textToFile("C",name,0); break;
+                               case 68: textToFile("D",name,0);break;
+                               case 69 : textToFile("E",name,0); break;
+                               case 70 : textToFile("F",name,0); break;
+                               case 71: textToFile("G",name,0);break;
+                               case 72 : textToFile("H",name,0); break;
+                               case 73 : textToFile("I",name,0); break;
+                               case 74 :textToFile("J",name,0);break;
+                               case 75 :textToFile("K",name,0);break;
+                               case 76 :textToFile("L",name,0);break;
+                               case 77: textToFile("M",name,0);break;
+                               case 78 : textToFile("N",name,0); break;
+                               case 79 : textToFile("O",name,0); break;
+                               case 80: textToFile("P",name,0);break;
+                               case 81 : textToFile("Q",name,0); break;
+                               case 82 : textToFile("R",name,0); break;
+                               case 83: textToFile("S",name,0);break;
+                               case 84 : textToFile("T",name,0); break;
+                               case 85 : textToFile("U",name,0); break;
+                               case 86 :textToFile("V",name,0);break;
+                               case 87: textToFile("W",name,0);break;
+                               case 88 : textToFile("X",name,0); break;
+                               case 89 : textToFile("Y",name,0); break;
+                               case 90: textToFile("Z",name,0);break;
+                                   
+                               case 97 : textToFile("a",name,0); break;
+                               case 98 : textToFile("b",name,0); break;
+                               case 99: textToFile("c",name,0);break;
+                               case 100 : textToFile("d",name,0); break;
+                               case 101 : textToFile("e",name,0); break;
+                               case 102 :textToFile("f",name,0);break;
+                               case 103: textToFile("g",name,0);break;
+                               case 104 : textToFile("h",name,0); break;
+                               case 105: textToFile("i",name,0); break;
+                               case 106: textToFile("j",name,0);break;
+                               case 107: textToFile("k",name,0); break;
+                               case 108: textToFile("l",name,0); break;
+                               case 109: textToFile("m",name,0);break;
+                               case 110: textToFile("n",name,0); break;
+                               case 111: textToFile("o",name,0); break;
+                               case 112:textToFile("p",name,0);break;
+                               case 113: textToFile("q",name,0);break;
+                               case 114: textToFile("r",name,0); break;
+                               case 115: textToFile("s",name,0); break;
+                               case 116: textToFile("t",name,0);break;
+                               case 117: textToFile("u",name,0); break;
+                               case 118: textToFile("v",name,0); break;
+                               case 119: textToFile("w",name,0);break;
+                               case 120: textToFile("x",name,0); break;
+                               case 121: textToFile("y",name,0); break;
+                               case 122:textToFile("z",name,0);break;
+                               default :textToFile("?",name,0);break;
+                           }
+                        //char *c= (char*)a;
+                        //char new= [char]a;
+                        //textToFile(c,name);
                         
                         x=ix;
                         freeMatrix(createseg);
@@ -365,6 +415,7 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                 cutted++;
                 if (line==1)
                 {
+                    
                     textToFile("\n",name,0);
                     
                     _trycut(og,1,name);
@@ -501,6 +552,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                 {
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
+                
                     
                 horizontalcut(name,m,og,1,0);
                     
@@ -557,7 +609,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
 
 
 //________________begining_________________________//
-void beginSeg(Matrix M,char *txt)
+void beginSeg(Matrix M)
 {
     /*
     description :
@@ -570,12 +622,10 @@ void beginSeg(Matrix M,char *txt)
     marine thunet
     */
     
-    //char *txt = "textOCR";
-    //Tree *child = newTree(-3);
-    //AddChild(txt,child);
+    char *txt = "textOCR";
+    textToFile("",txt,1);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
-    textToFile("",txt, 1);
     horizontalcut(txt,q,M,0,0);
     
     freeMatrix(p);

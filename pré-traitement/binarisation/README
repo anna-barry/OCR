@@ -1,0 +1,18 @@
+Explications de la binarisation :
+
+Cette binarisation, ce dossier et les fichiers contenues dedans on été réalisés par Marie avec le type Matrix de Geoffroy.
+
+binarisation.c = toutes les fonctions necessaires à la binarisation
+
+Pour tester cette partie :
+
+- aller dans le dossier test en faisant "cd test"
+- entrer make all dans le terminal
+- entrer ./test dans le terminal
+
+Ce make va tester la binarisation sur 3 images présentes dans le fichier et le résultat de la binarisation sera dans le fichier "new" "new1"
+"new2".
+
+- pour les ouvrir, entrer "open new", "open new1", "open new2" dans le terminal
+
+Vous pouvez les comparer avec les photos initiales "loremipsum.bmp", "lorem.bmp" et "gafa-stop.bmp"

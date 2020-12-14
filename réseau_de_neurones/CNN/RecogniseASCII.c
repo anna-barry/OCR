@@ -5,14 +5,14 @@
  *
  *                  by M.Thunet and A.Barry
  *
- * for training:
+ * for testing:
  *              specifications:
  *                  _input is a 32x32 grayscale matrix
  *                  _output is an ASCII code representing output character
  *
  *                  version 1.2 11/12/2020
  *
- * MAIN FOR TRAINING
+ * MAIN FOR SEGMENTATION INPUT
  *
  */
 #include "LeNet.h"
@@ -45,7 +45,7 @@ void RandomFilter2(struct Matrix *m, int range)
 }
 
 
-int main()
+int getASCII(Matrix M)
 {
 
     //______________________________________________________________________________________
@@ -54,6 +54,8 @@ int main()
 
     //______________________________________________________________________________________
 
+// result for SEGMENTATION
+int res=0;
     //Filters 1
     //
     srand( (unsigned)time( NULL ) );
@@ -255,8 +257,6 @@ int main()
     poolC6->next=NULL;
 
 
-    printf("All pooling init1 [ok] \n" );
-
     //______________________________________________________________________________________
     //Filters and Convolution Layer2
 
@@ -370,8 +370,6 @@ int main()
     RandomFilter2(A2_10th->m, DIM_FILTER*DIM_FILTER);
     A2_9th->next=A2_10th;
     A2_10th->next=NULL;
-
-   // printf("All filters2 loaded [ok] \n" );
 
 
     //______________________________________________________________________________________
@@ -976,11 +974,10 @@ struct ALLFM2 *convl45;
     convl59->next=convl60;
     convl60->next=NULL;
 
-    //printf("All convolution2 init [ok] \n" );
 
     //______________________________________________________________________________________
     //Pooling Layer2
-    //struct PoolC2 *poolC2_1= init_pool(60);
+
     struct PoolC2 *poolC2_1;
     poolC2_1 = malloc (sizeof(struct PoolC2));
     Matrix *newM1;
@@ -1612,10 +1609,10 @@ struct PoolC2 *poolC2_45;
 
     for(int i=0; i<NB_ITERATION; i++)
     {
+
     struct sendback imp = GetRandomSet();
 
     //SDL_Surface* img = load_image2(imp.path, imp2.path);
-
 
     if (SDL_LoadBMP(imp.path))
     {
@@ -1629,54 +1626,40 @@ struct PoolC2 *poolC2_45;
     Matrix input =  matrix_grayscale_to_binar(matrice1, seuil) ;
     SDL_FreeSurface(img);
 
-    if (i%10000==0) {
-        printf("________________________________________________________ \n \n ");
+    if(i==0)
+    {
+      input=M;
     }
-
-
-    /*if (i%100==0) {
-      printf("image to matrice for path %s [ok] \n",imp.path );
-    }*/
 
 
     // Forward Propagate __________________________________________________________________________
 
         // 2) C1 -> Convolutional Layer with 6 filters to get 6 feature maps
-
-        //Going -> Convolution Layer 1
         ConvolutionLayer1(convo1,A1_1st, input);
 
-      //  printf("Convolution1   [ok]   \n");
         // 3) Relu activation function on feature maps
         ReluActiv1(convo1);
 
-        //printf("Relu1   [ok]   \n");
         // 4) Pooling
          Pool1(convo1, poolC1);
-
-        //printf("Pooling1   [ok]   \n");
 
         // 5) C2 -> Convolutional Layer with 16 filters for each feature maps to get new feature maps
         ConvolutionLayer2( A2_1st, poolC1, convl1);
 
-        //printf("Convolution2   [ok]   \n");
         // 6) Relu activation function on the feature maps
         ReluActiv2(convl1);
 
-        // printf("Relu2   [ok]   \n");
         // 7) Pooling
         Pool2(convl1, poolC2_1);
 
-        //printf("Pooling2   [ok]   \n");
         // 8) Flattern Layer -> First Fully Connected Layer
         FlatternLayer( poolC2_1, flatterned1);
 
-        //printf("Flattern Layer   [ok]   \n");
         FullyConnectedLayer1(flatterned1, outin);
 
-       // printf("Fully Connected Layer   [ok]   \n");
         // 9) Fully connected output layer
-        struct resultsfromoutput output=GetOutPut( outin);
+        //struct resultsfromoutput output=GetOutPut( outin);
+        double resASCII= imp.ASCII;
         int righti=imp.ASCII;
         if (righti<58) {
           righti-=48;
@@ -1686,96 +1669,67 @@ struct PoolC2 *poolC2_45;
           righti-=97;
         }
 
-        if (i%10000==0) {
-          printf("The ASCII char output is: %f and should be %d for training n°%d \n",output.ASCII, imp.ASCII,i);
-        }
+        //_____________________________________________________________________________
 
-
-
+        //BACKPROPAGATION
 
         //_____________________________________________________________________________
         // BackPropagation
         //1) OutPut
-        double cross= CrossEntropy(outin,righti);
 
-        if (i%10000==0) {
-              printf("cross Entropy is %f \n",cross);
-        }
-
-
-
+        //double cross= CrossEntropy(outin,righti);
 
         BackforOutput(outin, righti);
-        //printf("Back For output [ok] \n" );
 
         //2) Last Pooling (C2)
         GradientsFromPoolingLast(poolC2_1, convl1);
-      //  printf(" Back for gradient pool C2 [ok] \n" );
 
         // 3) C2 Filters
         BackForFiltersLast(A2_1st, convl1,poolC1);
-        //printf("Back for filters C2 [ok] \n" );
 
         // 4) Pool layer C1
          GradientsFromPooling(poolC1, convo1);
-        //printf("Back for pool layers 1 [ok] \n" );
 
         // 5) C1 FIlters
         BackForFilters(A1_1st, convo1, input);
-        //printf("Back for filters C1 [ok] \n" );
 
-        //free_Matrix2(input);
-        //free_Matrix2(matrice1);
+
         freeMatrix1(input);
         freeMatrix1(matrice1);
+        if (i==0) {
+          res=resASCII;
+        }
       }
 
         }
         //FREE ALL MEMORY
-        //Free all of this
-
-        //Input Matrix
 
         //Free 1 set of filters
-        //printf("until freed memory [ok] \n");
-        //Free 1st layer of pooling
         free_ALLFilters1(A1_1st);
 
-        //printf("free first filters [ok] \n");
         //Free 1st layer of convolution
         free_ALLFM1(convo1);
 
-      //  printf("free first feature maps [ok] \n");
         //Free 1st layer of pooling
         free_PoolC1(poolC1);
-
-        //printf("free first pooling layers [ok] \n");
 
         //Free 2nd set of filters
         free_ALLFilters2(A2_1st);
 
-        //printf("free second filters [ok] \n");
+
         //Free 2nd layer of convolution
         free_ALLMaps2(convl1);
-
-        //printf("free second feature maps [ok] \n");
 
         //Free 2nd layer of Pooling
         free_PoolC2(poolC2_1);
 
-        //printf("free second pooling [ok] \n");
-
         //Free Flatterned Layer
         free_FlatternedLayer(flatterned1);
 
-        //printf("free flattern layer [ok] \n");
         //Free output layer
         free_OutPutLayer(outin);
 
-        //printf("free output layer [ok] \n");
-        printf("all free [ok] \n");
 
-        return 0;
+        return res;
 
 }
-
