@@ -631,7 +631,7 @@ struct resultsfromoutput GetOutPut(struct CL_out *outin)
         }
     }
     //printf("maxA is %f \n",maxA);
-    struct resultsfromoutput res={maxA,getMaxI,maxiO,maxW,maxB};
+    struct resultsfromoutput res={maxA,maxI,maxiO,maxW,maxB};
     return res;
 }
 
