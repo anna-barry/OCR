@@ -1658,8 +1658,8 @@ struct PoolC2 *poolC2_45;
         FullyConnectedLayer1(flatterned1, outin);
 
         // 9) Fully connected output layer
-        struct resultsfromoutput output=GetOutPut( outin);
-        double resASCII= imp.ASCII
+        //struct resultsfromoutput output=GetOutPut( outin);
+        double resASCII= imp.ASCII;
         int righti=imp.ASCII;
         if (righti<58) {
           righti-=48;

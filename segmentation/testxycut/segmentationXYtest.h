@@ -5,11 +5,7 @@
 #include "../../Tools/tree.h"
 #include "../../pré-traitement/binarisation/binarisation.h"
 
-char* mycat(char *s1, char *s2);
-
-char* char2string(char c);
-
-void textBuider(int code, char *text);
+void textToFile(char text[], char *str, int i);
 
 void beginSeg(Matrix M,char *txt); 
 

@@ -4,6 +4,7 @@
 #include "../Tools/matrix.h"
 #include "../Tools/tree.h"
 #include "../pré-traitement/binarisation/binarisation.h"
+void textToFile(char text,char *str, int i);
 
 Tree *beginSeg(Matrix M);
 
