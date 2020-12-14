@@ -1659,6 +1659,7 @@ struct PoolC2 *poolC2_45;
 
         // 9) Fully connected output layer
         struct resultsfromoutput output=GetOutPut( outin);
+        double resASCII= imp.ASCII
         int righti=imp.ASCII;
         if (righti<58) {
           righti-=48;
@@ -1668,14 +1669,14 @@ struct PoolC2 *poolC2_45;
           righti-=97;
         }
 
+        //_____________________________________________________________________________
 
+        //BACKPROPAGATION
 
         //_____________________________________________________________________________
         // BackPropagation
         //1) OutPut
-        if (i==0) {
-          res=(int)output.ASCII;
-        }
+
         //double cross= CrossEntropy(outin,righti);
 
         BackforOutput(outin, righti);
@@ -1695,6 +1696,9 @@ struct PoolC2 *poolC2_45;
 
         freeMatrix1(input);
         freeMatrix1(matrice1);
+        if (i==0) {
+          res=resASCII;
+        }
       }
 
         }
