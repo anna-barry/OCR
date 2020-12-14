@@ -56,17 +56,6 @@ int main (int argc, char **argv)
   button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_box_pack_start (GTK_BOX (main_box), button_box, FALSE, FALSE, 0);
       
-    //create information button
-    {
-      GtkWidget *button = NULL;
-      GtkWidget *image = NULL; 
-      button = gtk_button_new(); //create button
-      image = gtk_image_new_from_file("images/bouton2.png"); //open image
-      gtk_container_add(GTK_CONTAINER(button), image); //add image to the button
-      g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_quit), text_view); // add an action 
-      gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0); // add button to box button
-    }
-
     //create the start button
     {
       GtkWidget *button = NULL;

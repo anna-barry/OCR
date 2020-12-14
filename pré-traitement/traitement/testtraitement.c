@@ -38,6 +38,26 @@ int matToImgGRAY(Matrix M, char *str)
 }
 
 
+void traitement(char *image)
+{
+  SDL_Surface* img;
+  init_sdl();
+
+  img = SDL_LoadBMP(image);
+    
+  Matrix f= surface_to_matrix_grayscale(img);
+        
+  Matrix c=contrast(f);
+  matToImgGRAY(c,"contrast.bmp");
+    
+  Matrix s=smooth(f);
+  matToImgGRAY(s,"smooth.bmp");
+
+
+}
+
+
+
 int main()
 {
 
@@ -66,6 +86,3 @@ int main()
 
 
 }
-
-
-

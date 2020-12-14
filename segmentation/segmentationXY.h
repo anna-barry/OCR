@@ -5,9 +5,7 @@
 #include "../Tools/tree.h"
 #include "../pré-traitement/binarisation/binarisation.h"
 
-void textToFile(char text[], char *str, int first)
-
-Tree *beginSeg(Matrix M,char *txt);
+Tree *beginSeg(Matrix M);
 
 void segmentation(Matrix M);
 
