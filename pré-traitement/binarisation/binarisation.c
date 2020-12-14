@@ -6,11 +6,13 @@
 #include "../../Tools/image_operations.h"
 #include "binarisation.h"
 
-// by marie maturana and geoffroy du mesnil du buisson
-//  15/10 -> 24/10
+// by marie maturana
 // grayscale and binarisation with the otsu method
-// matrix creation
 
+
+
+
+// transform the greyscale matrice in binaire matrice
 
 Matrix matrix_grayscale_to_binar(Matrix M, int seuil)
 {
@@ -39,6 +41,7 @@ Matrix matrix_grayscale_to_binar(Matrix M, int seuil)
   return THEmatrix;
 }
 
+//make matrix of grayscale
 
 
 Matrix surface_to_matrix_grayscale(SDL_Surface *img)
@@ -63,6 +66,7 @@ Matrix surface_to_matrix_grayscale(SDL_Surface *img)
   return M;
 }
 
+//create the histogram for otsu
 
 Matrix create_histogram(Matrix M)
 {
@@ -81,6 +85,7 @@ Matrix create_histogram(Matrix M)
 
 
 //Otsu's algorithm, calculate the optimal threshold
+
 int otsu(SDL_Surface* img)
 {
 
@@ -136,8 +141,10 @@ int otsu(SDL_Surface* img)
 
     }
 
-  return t-20;
+  return t-10;
 }
+
+//transform the matrice in an image in a file
 
 int matToImg(Matrix M, char *str)
 {
