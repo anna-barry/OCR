@@ -11,7 +11,7 @@ char* char2string(char c);
 
 void textBuider(int code, char *text);
 
-void beginSeg(Matrix M);
+void beginSeg(Matrix M,char *txt); 
 
 void segmentation(Matrix M);
 

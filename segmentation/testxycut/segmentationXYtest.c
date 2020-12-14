@@ -555,7 +555,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
 
 
 //________________begining_________________________//
-void beginSeg(Matrix M)
+void beginSeg(Matrix M,char *txt)
 {
     /*
     description :
@@ -568,11 +568,12 @@ void beginSeg(Matrix M)
     marine thunet
     */
     
-    char *txt = "textOCR";
+    //char *txt = "textOCR";
     //Tree *child = newTree(-3);
     //AddChild(txt,child);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);
+    textToFile("",txt);
     horizontalcut(txt,q,M,0,0);
     
     freeMatrix(p);
