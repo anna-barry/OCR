@@ -18,6 +18,8 @@ clean:
 	${RM} ../*.d
 	${RM} ../../Tools/*.o
 	${RM} ../../Tools/*.d
+	${RM} ../../réseau_de_neurones/CNN/*.o
+	${RM} ../../réseau_de_neurones/CNN/*.o
 	${RM} ../../pré-traitement/binarisation/*.o
 	${RM} ../../pré-traitement/binarisation/*.d
 	${RM} ../../segmentation/*.o
