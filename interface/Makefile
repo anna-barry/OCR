@@ -35,6 +35,7 @@ clean:
 	${RM} last*
 	${RM} main
 	${RM} textOCR
+	${RM} manuelRotation.bmp
 
 
 # END
