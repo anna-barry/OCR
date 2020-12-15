@@ -1,18 +1,18 @@
-Explications de la binarisation :
+Explanations of binarization:
 
-Cette binarisation, ce dossier et les fichiers contenues dedans on été réalisés par Marie avec le type Matrix de Geoffroy.
+This binarization, this folder and the files contained in it were made by Marie with the files of pixels_operations and images_operations and the Matrix type of Geoffroy being located in Tools.
 
-binarisation.c = toutes les fonctions necessaires à la binarisation
+binarization. c = all functions required for binarization
 
-Pour tester cette partie :
+To test this part:
 
-- aller dans le dossier test en faisant "cd test"
-- entrer make all dans le terminal
-- entrer ./test dans le terminal
+- go to the test folder by doing "cd test"
+- enter make all in terminal
+- enter . /test in terminal
 
-Ce make va tester la binarisation sur 3 images présentes dans le fichier et le résultat de la binarisation sera dans le fichier "new" "new1"
+This make will test the binarization on 3 images present in the file and the result of the binarization will be in the file "new" "new1"
 "new2".
 
-- pour les ouvrir, entrer "open new", "open new1", "open new2" dans le terminal
+- to open them, enter "open new", "open new1", "open new2" in the terminal
 
-Vous pouvez les comparer avec les photos initiales "loremipsum.bmp", "lorem.bmp" et "gafa-stop.bmp"
+You can compare them with the initial photos "loremipsum.bmp", "lorem.bmp" and "gafa-stop.bmp"
