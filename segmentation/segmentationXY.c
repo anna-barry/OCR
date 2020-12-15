@@ -278,7 +278,6 @@ void _trycut(Matrix M, int line, char *name)
                         createseg=resizeMatrix(createseg,32);
                         
                         a=getASCII(createseg);
-                        printf("%i\n",a);
                         switch(a)
                            {
                                case 48: textToFile("0",name,0);break;
@@ -609,7 +608,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
 
 
 //________________begining_________________________//
-void beginSeg(Matrix M)
+void beginSeg(Matrix M,char *txt)
 {
     /*
     description :
@@ -622,7 +621,7 @@ void beginSeg(Matrix M)
     marine thunet
     */
     
-    char *txt = "textOCR";
+    //char *txt = "textOCR";
     textToFile("",txt,1);
     Matrix p = rlsa(M,250,1200);
     Matrix q = rlsa(p,400,1300);

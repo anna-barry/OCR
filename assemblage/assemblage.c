@@ -17,23 +17,18 @@ void MakeOCR (char *txt, char *image)
 {
   SDL_Surface* img;
   init_sdl();
-
   img = SDL_LoadBMP(image);
-
-  SDL_Surface* tmp;
-  ManualRotation(img , getSkewAngle(img , tmp));
     
+    
+    double skew=0;
+  ManualRotation(img ,skew);
   Matrix matrice1 = surface_to_matrix_grayscale(img); //matrice contenant les valeurs de gris des pixels
-    
   int seuil = otsu(img); // calcul du seuil
-    
   Matrix matricef =  matrix_grayscale_to_binar(matrice1, seuil) ; //matrice binaire finale
-    
   beginSeg(matricef,txt);
-    
 
   SDL_FreeSurface(img);
-  SDL_FreeSurface(tmp);
+
 
 }
 
