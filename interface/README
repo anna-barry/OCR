@@ -1,55 +1,55 @@
-L'interface a été entièrement réalisée par Marie.
-Cette dernière permet de montrer le travail réalisé dans l'ocr, de sélectionner une image et et de récupérer un texte.
+The interface was entirely created by Marie.
+This allows you to show the work done in the ocr, select an image and retrieve text.
 
-Pour l'ouvrir :
+To open it:
 
--entrer "make all" dans le terminal et laisser compiler
-- entrer ./main dans le terminal
-L'interface va s'afficher. Pour la quitter, appuyer sur les boutons "quit" ou la croix en haut de la page car des fonction de fermeture sont associée.
+-enter "make all" in the terminal and let compile
+- enter . /main in terminal
+The interface will be displayed. To exit it, press the "quit" buttons or the cross at the top of the page because closing functions are associated.
 
-- n'oublier pas de Make clean si vous voulez relancer l'interface
-
-
-Page d'acceuil :
-
-- appuyer sur start pour continuer ou quit pour quitter l'interface
+- don’t forget to make clean if you want to restart the interface
 
 
-Menu :
+Home page:
 
-- cliquer sur "Modifying" pour modifier un document
--cliquer sur "Make OCR" pour faire un OCR
--cliquer sur "New Document" pour fzire une nouveau document
--cliquer sur qui pour quitter l'interface
-
-Modifying :
-
-- ouvrir un nouveau document avec le bouton open
-- vous pouvez écrire et modifier le document
-- save as pour enregistrer votre document
--cliquer sur qui pour quitter l'interface
-
-New Document :
-
-- open new pour ouvrir une nouvelle page -> obligatoire sinon rien ne marche pas
-- ecrire
-- save as pour enregistrer à l'endroit voulu et au nom voulu 
--cliquer sur qui pour quitter l'interface
-
-Make OCR :
-
-- open a image pour choisir une image .bmp, si c'est un autre format, une page d'erreur s'affichera
-- cliquer sur smooth pour voir l'image avec le flouttage dans le prétraitement 
--cliquer sur smooth pour voir l'image avec le contraste dans le prétraitement
-- appuyer sur make ocr pour récuperer le texte qui est automatiquement enregistré en tant que fichier au nom de textOCR (pour le modifier vous pouvez faire retour et l'ouvrir dans la page Modifying)
--cliquer sur qui pour quitter l'interface
-
-Pour retrouver ses documents, aller dans le dossier ou on a enregistré le fichier et chercher le bon fichier au bon nom choisi lors de l'enregistrement dans la boîte de dialogue. Si on veut récupérer uniquement le text de l'OCR sans modification : rester dans ce fichier et taper "open textOCR"
-
-Ne pas oubliez de faire un Make clean.
+- press start to continue or quit to exit the interface
 
 
-Lors du test sur la vm de l'école à l'aide de Geoffroy:
+Menu:
 
-- des warning apparaissent indiquant qu'à la prochaine version de GTK les outils ne seront plus disponible
--les boites de dialogues s'ouvrent toujours derrière la page à priori hors aucun de nous avons ce problème sur MAC, il faut quitter le mode plein écran de l'interface
+- Click on "Modifying" to edit a document
+-click on "Make OCR" to make an OCR
+-click on "New Document" to create a new document
+-click on who to exit the interface
+
+Modifying:
+
+- open a new document with the open button
+- you can write and edit the document
+- save as to save your document
+-click on who to exit the interface
+
+New Document:
+
+- open new to open a new page -> mandatory otherwise nothing works
+- write
+- save as to save in the desired place and name 
+-click on who to exit the interface
+
+Make OCR:
+
+- open a image to choose an image. bmp, if it is a different format, an error page will be displayed
+- click smooth to see image with blurring in preprocessing 
+-click smooth to see image with contrast in preprocessing
+- press make ocr to retrieve the text that is automatically saved as a file with the name of textOCR (to edit it you can return and open it in the Modifying page)
+-click on who to exit the interface
+
+To retrieve documents, go to the folder where the file was saved and search for the correct file with the correct name chosen when saving in the dialog box. If you want to retrieve only the text of the OCR without modification: stay in this file and type "open textOCR"
+
+Don’t forget to make it clean.
+
+
+During the test on the school’s vm using Geoffroy:
+
+- Warning appears indicating that at the next version of GTK the tools will no longer be available
+-the dialog boxes always open behind the page a priori out of any of us have this problem on MAC, we must leave the full screen mode of the interface
