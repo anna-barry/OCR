@@ -668,17 +668,6 @@ void cb_pageOCR (GtkWidget *widget, gpointer user_data)
     g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_openOCR), text_view);
     gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
   }
-
-   // save as button
-  {
-    GtkWidget *button = NULL;
-    GtkWidget *image = NULL; 
-    button = gtk_button_new();
-    image = gtk_image_new_from_file("images/boutonSaveAs.png");
-    gtk_container_add(GTK_CONTAINER(button), image);
-    g_signal_connect (G_OBJECT (button), "clicked", G_CALLBACK (cb_saveas), NULL);
-    gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
-  }
   
   // return button
   {
