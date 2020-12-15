@@ -7,7 +7,20 @@ Write the following instructions:
 make (enter)
 ./testxycut (enter)
 
-Then look at every new pictures that have appeared in this directory,
+when it is al finished
+
+make clean
+
+Then open at every new pictures that have appeared in this directory,
+last_letter: the last letter that was cutted
+last_word: the last word that was cutted
+last_line: the last line that was cutted
+last_paragraph: the last paragraph that was cutted
+
+To see the original image, clic on lorem.bmp
+To test with other images, you can add a new bmp file and rename it "lore.bmp"
+
+
 The function being a group of recursive function, it only shows the last element that has been threw the function, the last elements being the last paragraph, last line, last word and last letter of the text, it only shows the last elements.
 
 Unfortunately, for now I haven't found a way to register every word/letter that was created.

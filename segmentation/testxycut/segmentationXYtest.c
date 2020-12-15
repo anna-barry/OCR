@@ -231,7 +231,7 @@ void _trycut(Matrix M, int line, char *name)
                         createseg=cutMatrix(reel,0,x,h_size,ix-x);
                         
                         textToFile(" ",name,0);
-                        matToImg(createseg,"last word");
+                        matToImg(createseg,"last_word");
 
                         //Tree *Child = newTree(0);
                         //AddChild(T, Child);
@@ -257,7 +257,7 @@ void _trycut(Matrix M, int line, char *name)
     
     else
     {
-        int a;
+        //int a;
         M=vertical(M);
                 //int letter=0;//the code og the letter to put in the tree then
         for (int ix=0; ix<w_size; ix++)
@@ -359,7 +359,7 @@ void _trycut(Matrix M, int line, char *name)
                         
                         //for the test, nerual netork not added to see how fast goes the segmentation
                         textToFile("a",name,0);
-                        matToImg(createseg,"last letter");
+                        matToImg(createseg,"last_letter");
                         x=ix;
                         freeMatrix(createseg);
                         begin=0;
@@ -424,7 +424,7 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                 cutted++;
                 if (line==1)
                 {
-                    matToImg(og,"last line");
+                    matToImg(og,"last_line");
                     textToFile("\n",name,0);
                     
                     _trycut(og,1,name);
@@ -482,7 +482,7 @@ void horizontalcut(char *name,Matrix M,Matrix og,int line, int cutted)
                 if (line==1)
                 {
                     og2=cutMatrix(og,ybeg,0,y-ybeg,width);
-                    matToImg(og2,"last line");
+                    matToImg(og2,"last_line");
                     textToFile("\n",name,0);
                     
                     _trycut(og2,1,name);
@@ -561,7 +561,7 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                 {
                 Matrix s = rlsa(og,250,40);
                 Matrix m = rlsa(s,400,200);
-                matToImg(og,"lastparagraph");
+                matToImg(og,"last_paragraph");
                     
                 horizontalcut(name,m,og,1,0);
                     
@@ -599,9 +599,6 @@ void verticalcut(char *name,Matrix M,Matrix og, int line, int cutted)
                 {
                     rest=cutMatrix(M,0,x,lenght,width-x);
                     og1=cutMatrix(og,0,x,lenght,width-x);
-                    /*adding sibling*/
-                    //Tree *Sibling = newTree(-3);
-                    //AddSibling(T,Sibling);
                     verticalcut(name,rest,og1,line,0);
                     textToFile("\n\n",name,0);
                     freeMatrix(rest);
